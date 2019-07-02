@@ -5,6 +5,6 @@ aurora = require('./core/compile');
 aurora.serve();
 
 //Config for use config.js
-module.exports.enviroment = 'mainn';
+module.exports.enviroment = 'main';
 
 aurora.enviroment();

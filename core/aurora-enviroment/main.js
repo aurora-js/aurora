@@ -5,7 +5,7 @@ var name_file_config = '';
 function main(name_config){
     var response_check = check_config(name_config);
     if(response_check.action == true){
-        return connection;
+        return connection.connect(require(response_check.data));
     }
     console.log(response_check.data);
     return process.exit();
