@@ -5,4 +5,5 @@ module.exports.config = {
     'user' : 'root',
     'password' : '',
     'database' : 'aurora',
+    'db_type' : 'mysql'
 };
