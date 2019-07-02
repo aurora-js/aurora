@@ -1,5 +1,10 @@
 //For run module 
-module = require('./core/compile');
+aurora = require('./core/compile');
 
-module.serve();
+//For run serve
+aurora.serve();
 
+//Config for use config.js
+module.exports.enviroment = 'mainn';
+
+aurora.enviroment();

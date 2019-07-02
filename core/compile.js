@@ -6,10 +6,15 @@ function serve(){
     require('../route/api');
 }
 
-//For config.js 
+//Run enviroment with
+/*
+Parameter :
+1. Name config (Default config.js)
+*/
 function aurora_enviroment(){
-    aurora_enviroment_module.main();
+    aurora_enviroment_module.main(require('../app').enviroment);
 }
 
 module.exports.aurora_enviroment = aurora_enviroment;
 module.exports.serve = serve;
+module.exports.enviroment = aurora_enviroment;
