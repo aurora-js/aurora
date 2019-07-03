@@ -2,6 +2,9 @@ var connection = require('./connection');
 var serve = require('./serve');
 var name_file_config = '';
 
+/*
+Run main for check name file
+*/
 function main(name_config){
     var response_check = check_config(name_config);
     if(response_check.action == true){
