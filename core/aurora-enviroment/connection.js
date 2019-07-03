@@ -2,9 +2,9 @@
 var mysql = require('mysql');
 
 function connect(config){
-    switch (config.db_type) {
+    switch (config.config.db_type) {
         case 'mysql':
-            return connection_mysql(config);
+            return connection_mysql(config.config);
             break;
     
         default:
@@ -25,7 +25,8 @@ function connection_mysql(config){
     
     db.connect(function (err) {
         if (err) {
-            console.log("ERROR!, database host not defined!");
+            console.log("ERROR!\nDatabase host not defined!");
+            return process.exit();
         } else {
             console.log("CONNECTED");
         }
