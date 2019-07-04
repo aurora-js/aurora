@@ -1,5 +1,0 @@
-
-//function insert//
-function insert{
-
-}

@@ -2,6 +2,9 @@ var connection = require('./connection');
 var serve = require('./serve');
 var name_file_config = '';
 
+/*
+Run main for check name file
+*/
 function main(name_config){
     var response_check = check_config(name_config);
     if(response_check.action == true){
@@ -17,12 +20,11 @@ Check name config and file config
 Retrun true or false with response 
 */
 function check_config(name_config){
-
     //get name config
     if(name_config == null || name_config == 'main'){
         name_file_config = '../../config';
     }else{
-        name_file_config = name_config+'.config.js'; 
+        name_file_config = '../../'+name_config+'.config.js'; 
     }
 
     //check file config

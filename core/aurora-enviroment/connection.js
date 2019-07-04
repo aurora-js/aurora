@@ -1,10 +1,13 @@
 //create connection
 var mysql = require('mysql');
 
+/*
+Check database type for same with syntax query
+*/
 function connect(config){
-    switch (config.db_type) {
+    switch (config.config.db_type) {
         case 'mysql':
-            return connection_mysql(config);
+            return connection_mysql(config.config);
             break;
     
         default:
@@ -14,6 +17,9 @@ function connect(config){
     }
 }
 
+/*
+Run configuration for database type mysql
+*/
 function connection_mysql(config){
     var db = mysql.createConnection({
         host: config.host,
@@ -25,11 +31,12 @@ function connection_mysql(config){
     
     db.connect(function (err) {
         if (err) {
-            console.log("ERROR!, database host not defined!");
-        } else {
-            console.log("CONNECTED");
-        }
+            console.log("ERROR!\nDatabase host not defined!");
+            return process.exit();
+        } 
     });
+    
+    return db;
 }
 
 module.exports.connect = connect;

@@ -12,7 +12,7 @@ Parameter :
 1. Name config (Default config.js)
 */
 function aurora_enviroment(){
-    aurora_enviroment_module.main(require('../app').enviroment);
+    return aurora_enviroment_module.main(require('../app').enviroment);
 }
 
 module.exports.aurora_enviroment = aurora_enviroment;
