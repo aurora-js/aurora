@@ -7,4 +7,4 @@ aurora.serve();
 //Config for use config.js
 module.exports.enviroment = 'calvin';
 
-aurora.enviroment();
+//aurora.enviroment();

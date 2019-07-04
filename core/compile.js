@@ -1,5 +1,6 @@
 //Get main function Aurora Enviroment
 var aurora_enviroment_module = require('./aurora-enviroment/main');
+var aurora_db_module = ('./aurora_db_module/main');
 
 //Run serve
 function serve(){
@@ -15,6 +16,13 @@ function aurora_enviroment(){
     return aurora_enviroment_module.main(require('../app').enviroment);
 }
 
-module.exports.aurora_enviroment = aurora_enviroment;
+/*
+Run aurora db
+*/
+function aurora_db(type,value){
+    return aurora_db_module.main(type,value);
+}
+
 module.exports.serve = serve;
 module.exports.enviroment = aurora_enviroment;
+module.exports.db = aurora_db;
