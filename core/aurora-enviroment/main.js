@@ -7,9 +7,28 @@ Run main for check name file
 */
 function main(name_config){
     var response_check = check_config(name_config);
+    //if no error
     if(response_check.action == true){
         return connection.connect(require(response_check.data));
     }
+    //if error
+    console.log(response_check.data);
+    return process.exit();
+}
+
+/*
+Run main for check name file and remove db type default and change to custom db
+*/
+function main_without_db(name_config,custom_db){
+    var response_check = check_config(name_config);
+    //if no error
+    if(response_check.action == true){
+        var data_config  = require(response_check.data);
+        //change default db type to custom db type
+        data_config.config.db_type = custom_db;
+        return connection.connect(data_config);
+    }
+    //if error
     console.log(response_check.data);
     return process.exit();
 }
@@ -35,4 +54,7 @@ function check_config(name_config){
         return {data : 'ERROR!\n'+name_config+' config not found \nPlease make sure you have '+name_file_config+' or not', action : false};
     }
 }
+
+
 module.exports.main = main;
+module.exports.main_without_db = main_without_db;
