@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Node delivered HTML</title>
-
+	<script>
+		var api = require('../../route/api');
+	</script>
 </head>
 <body>
-   <div>
-   	<h1>Send JSON to Node</h1>
-        <button onClick="sendJSON()">Send</button>
-        <p id ="result">
-        </p>
-   </div>
+   
 <script>
  var myData = [
 	{
@@ -29,18 +26,6 @@
     ]
 
 function sendJSON(){
-
-var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
-xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-       document.getElementById("result").innerHTML =
-       this.responseText;
-    }
- };
-xmlhttp.open("POST", "http://localhost:3000");
-xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-xmlhttp.send(JSON.stringify(myData));
-
 }
 
 </script>
