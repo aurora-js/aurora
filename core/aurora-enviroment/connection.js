@@ -1,3 +1,6 @@
+//Include module
+var compile = require('../compile');
+
 //create connection
 var mysql = require('mysql');
 
@@ -9,9 +12,11 @@ function connect(config){
         case 'mysql':
             return connection_mysql(config.config);
             break;
-    
+        case 'mysqlnodb':
+            return connection_mysql_without_db(config.config);
+            break;
         default:
-            console.log('ERROR!\nDatabase Type Not Found');
+            console.log('ERROR!\nDatabase type not found');
             return process.exit();
             break;
     }
@@ -30,15 +35,72 @@ function connection_mysql(config){
     });
     
     db.connect(function (err) {
-        if (err) {
-            console.log("ERROR!\nDatabase host not defined!");
-            return process.exit();
-        } 
+        if(err){
+            switch (err.errno) {
+                case 1049:
+                        console.log("ERROR!\nDatabase not found!");
+                        return compile.command('DATABASE','CREATE DATABASE',{database : config.database, type : 'mysql'});
+                    break;
+                case 'ENOTFOUND' :
+                        console.log("ERROR!\nHost not found!");
+                        return process.exit();
+                    break;
+                case 'ECONNREFUSED' :
+                        console.log("ERROR!\nPort not found!");
+                        return process.exit();
+                    break;
+                case 'ER_ACCESS_DENIED_ERROR' :
+                        console.log("ERROR!\nYour user or password database is wrong!");
+                        return process.exit();
+                    break;
+                default:
+                        console.log("ERROR!\nCheck your config.js!");
+                        return process.exit();
+                    break;
+            }
+        }
     });
     
     return db;
 }
 
+
+/*
+Run configuration for database type mysql without database
+*/
+function connection_mysql_without_db(config){
+    var db = mysql.createConnection({
+        host: config.host,
+        user: config.user,
+        password: config.password,
+        port: config.port,
+    });
+    
+    db.connect(function (err) {
+        if(err){
+            switch (err.errno) {
+                case 'ENOTFOUND' :
+                        console.log("ERROR!\nHost not found!");
+                        return process.exit();
+                    break;
+                case 'ECONNREFUSED' :
+                        console.log("ERROR!\nPort not found!");
+                        return process.exit();
+                    break;
+                case 'ER_ACCESS_DENIED_ERROR' :
+                        console.log("ERROR!\nYour user or password database is wrong!");
+                        return process.exit();
+                    break;
+                default:
+                        console.log("ERROR!\nCheck your config.js!");
+                        return process.exit();
+                    break;
+            }
+        }
+    });
+    
+    return db;
+}
 module.exports.connect = connect;
 
 
