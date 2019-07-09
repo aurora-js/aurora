@@ -15,4 +15,10 @@ function create_db(value){
     });
 }
 
+//Function create table
+function create_table(table,field){
+    console.log(table);
+}
+
 module.exports.create_db = create_db;
+module.exports.create_table = create_table;

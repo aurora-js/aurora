@@ -7,10 +7,8 @@ var app     = express();
 var main  = require('../core/aurora-crud/aura/sysaura');
 //declare route for function in sysaura//
 
-function create(val){
-    if(main.models('bisa')){
-        main.insert(val);
-    }
+function create(req,res){
+    return main.insert(req,res);
 }
 
 module.exports.create = create;
