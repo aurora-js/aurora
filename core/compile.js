@@ -45,7 +45,7 @@ function aurora_command(module,command,value){
 Run aurora schema
 */
 function aurora_schema(command){
-    return aurora_db_module.schema(command);
+    return aurora_db_module.schema(command,'mysql');
 }
 
 
