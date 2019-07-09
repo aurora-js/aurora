@@ -41,9 +41,17 @@ function aurora_command(module,command,value){
     return aurora_command_module.modules(module,command,value);
 }
 
+/*
+Run aurora schema
+*/
+function aurora_schema(command){
+    return aurora_db_module.schema(command);
+}
+
 
 module.exports.serve = serve;
 module.exports.enviroment = aurora_enviroment;
 module.exports.aurora_enviroment_without_db = aurora_enviroment_without_db;
 module.exports.db = aurora_db;
 module.exports.command = aurora_command;
+module.exports.schema = aurora_schema;
