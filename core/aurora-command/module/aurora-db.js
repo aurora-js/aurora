@@ -2,7 +2,7 @@
 var compile = require('../../compile');
 
 /*
-For command, we user commander and inquirer
+For command, we use commander and inquirer
 Thank you so much commander and inquirer
 
 https://www.npmjs.com/package/commander
@@ -18,24 +18,24 @@ Value is {
   type      : type_database
 }
 */
-function create_database(command,value){
-    return inquirer.prompt([{
-        name: 'db',
-        type: 'confirm',
-        message: 'Do you want make '+ value.database +' database ?',
-      }]).then((answers) => {
-        if(answers.db == true){
-            return compile.db(command,value.type,value.database);
-        }else{
-            return process.exit();
-        }
-      });
+function create_database(command, value) {
+  return inquirer.prompt([{
+    name: 'db',
+    type: 'confirm',
+    message: 'Do you want make ' + value.database + ' database ?',
+  }]).then((answers) => {
+    if (answers.db == true) {
+      return compile.db(command, value.type, value.database);
+    } else {
+      return process.exit();
+    }
+  });
 }
 
 //Universal function for give message to user in command
-function send_message(value){
-    console.log(value);
-    return process.exit();
+function send_message(value) {
+  console.log(value);
+  return process.exit();
 }
 
 module.exports.create_database = create_database;
