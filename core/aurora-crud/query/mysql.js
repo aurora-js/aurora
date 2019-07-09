@@ -1,5 +1,5 @@
 //get connection function from file compile.js with name aurora_enviroment//
-var express = require('../../compile.js');
+var express = require('../compile.js');
 //get express module//
 var express = require('express');
 var app     = express();

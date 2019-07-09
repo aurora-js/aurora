@@ -7,7 +7,7 @@ var sysaura  = require('../controllers/controllersmain');
 app.use(express.static('../public'));
 
 app.get('/myfile', function(req, res) {
-    res.send(sysaura.create());
+    res.sendFile(path.join(__dirname+ '/../public/myfile.html'));
 });
 
 app.listen(port);
