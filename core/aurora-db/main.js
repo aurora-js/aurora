@@ -17,10 +17,10 @@ function main(command, type, value) {
 }
 
 //Function for run schema
-function schema(command) {
+function schema(command,type) {
     switch (command) {
         case 'RUN':
-            return schema_run.run();
+            return schema_run.run(type);
             break;
 
         default:
