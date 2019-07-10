@@ -18,6 +18,13 @@ var default_field = {
     notNull: false,
     length: null,
     autoIncrement: false,
+    default : null,
+    comment : null,
+    useCurrent : false,
+    unique : false,
+    index : null,
+    column_index : null,
+    primary : false
 };
 var type_database = null;
 
@@ -38,13 +45,9 @@ function run(type){
     type_database = type;
 
     //Foreach file to get up value
-    files.forEach(element => {
+    files.forEach(function(element,keys) {
         var schemafile = require('../../../database/schema/'+element);
         
-        //var json = eval(schemafile.up.blueprint);
-        // Convert to JSON using a replacer function to output
-        // the string version of a function with /Function(
-        // in front and )/ at the end.
         var json = JSON.stringify(schemafile.up.blueprint, function(key, value) {
             if (typeof value === "function") {
             return "/Function(" + value.toString() + ")/";
@@ -52,9 +55,6 @@ function run(type){
             return value;
         });
         
-        // Convert to an object using a reviver function that
-        // recognizes the /Function(...)/ value and converts it
-        // into a function via -shudder- `eval`.
         var obj2 = JSON.parse(json, function(key, value) {
             if (typeof value === "string" &&
                 value.startsWith("/Function(") &&
@@ -64,10 +64,21 @@ function run(type){
             }
             return value;
         });
+        
+        //For run function in json
         obj2();
 
+        //Check last file
+        var last = false;
+        if(keys == files.length-1) {
+            last = true;
+        }
+
         //Run create to file query
-        require('../query/'+type_database).create_table(schemafile.up.table_name,field_arr);
+        require('../query/'+type_database).create_table(schemafile.up.table_name,field_arr,last);
+
+
+
     });
     
     
@@ -83,17 +94,55 @@ function run(type){
 */
 function increment(val){
     add_value('name', val, true);
-    add_value('type', 'integer', false);
+    add_value('type', 'INT', false);
+    add_value('notNull', true, false);
     add_value('autoIncrement', true, false);
+    add_value('primary', true, false);
 }
+
 function varchar(val,leng){
     add_value('name', val, true);
     add_value('length', leng || null, false);
-    add_value('type', 'varchar', false);
+    add_value('type', 'VARCHAR', false);
 }
+
 function nullable(){
     add_value('notNull', true, false);
 }
+
+function index(val,arr){
+    add_value('index', val, true);
+    add_value('column_index', arr, false);
+}
+
+function integer(val,leng){
+    add_value('name', val, true);
+    add_value('length', leng || null, false);
+    add_value('type', 'INT', false);
+}
+
+function smallInteger(val,leng){
+    add_value('name', val, true);
+    add_value('length', leng || null, false);
+    add_value('type', 'SMALLINT', false);
+}
+
+function mediumInteger(val,leng){
+    add_value('name', val, true);
+    add_value('length', leng || null, false);
+    add_value('type', 'MEDIUMINT', false);
+}
+
+function bigInteger(val,leng){
+    add_value('name', val, true);
+    add_value('length', leng || null, false);
+    add_value('type', 'BIGINT', false);
+}
+
+
+// function unsigned(){
+//     add_value('unsigned', true, false);
+// }
 
 //Check length array
 function check_length(){
@@ -115,6 +164,15 @@ function add_value(field, val, newrow){
             unsigned: false, 
             notNull: false,
             length: null,
+            autoIncrement: false,
+            default : null,
+            comment : null,
+            useCurrent : false,
+            unique : false,
+            index : null,
+            column_index : null,
+            primary : false
+            
         };
 
     //If not add row to array field_arr
