@@ -5,11 +5,14 @@ var express = require('express');
 var app     = express();
 var table = "";
 
+
 //declare var con from enviroment//
 var enviroment = require('../../compile.js');
+var con = enviroment.enviroment();
 
 //function insert//
-function insert(){
+function insert(req, res){
+    console.log(req);
     //contoh : enviroment.query(){
     //              if(err){
     //              "error cuy"
@@ -18,8 +21,20 @@ function insert(){
 
 
     //dibawah ini coba2
-    var data = [{id:1, name: "one"},{id: 2, name: "two"}];
-    return data;
+    var values = {
+        name: req.body.name,
+        age: req.body.age
+       }
+
+    con.query('INSERT INTO members (name, age) VALUES ?', [values], function(err,result){
+        if(err) {
+            console.log(err);
+         }
+        else {
+            console.log('Success');
+         }
+    });
+    
     //
 }
 

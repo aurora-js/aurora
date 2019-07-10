@@ -13,8 +13,8 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname+ '/../public/myfile.html'));
 });
 
-app.post('/', function(req, res) {
-    res.send(sysaura.create());
+app.post('/simpan', function(req, res) {
+    res.send(sysaura.create(req,res));
 });
 
 app.listen(port);
