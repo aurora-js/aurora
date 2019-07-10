@@ -15,4 +15,4 @@ module.exports.enviroment = process.argv[2] || 'main';
 
 aurora.enviroment();
 
-aurora.schema("RUN");
+//aurora.schema("RUN");
