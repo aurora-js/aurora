@@ -2,6 +2,7 @@
 var aurora_enviroment_module = require('./aurora-enviroment/main');
 var aurora_db_module = require('./aurora-db/main');
 var aurora_command_module = require('./aurora-command/main');
+var app = require('../app');
 
 //Run serve
 function serve(){
@@ -14,7 +15,7 @@ Parameter :
 1. Name config (Default config.js)
 */
 function aurora_enviroment(){
-    return aurora_enviroment_module.main(require('../app').enviroment);
+    return aurora_enviroment_module.main(app.config_enviroment);
 }
 
 //Run enviroment without db
@@ -23,7 +24,7 @@ Parameter :
 1. Name config (Default config.js)
 */
 function aurora_enviroment_without_db(custom_db){
-    return aurora_enviroment_module.main_without_db(require('../app').enviroment, custom_db);
+    return aurora_enviroment_module.main_without_db(app.config_enviroment, custom_db);
 }
 
 /*
