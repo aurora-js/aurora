@@ -5,6 +5,7 @@ var query = "";
 var table_name = "";
 var index_column = [];
 
+
 //function for create database
 function create_db(value) {
     con = compile.aurora_enviroment_without_db('mysqlnodb');
@@ -58,7 +59,7 @@ function create_table(table, field, last) {
                 }
             }else{
 
-                //unction create index or relation or unique
+                //Function create index or relation or unique
                 check_relation_module(element);
             }
         
@@ -164,6 +165,10 @@ function check_attribute(field) {
         query_attribute = query_attribute + " PRIMARY KEY";
     }
 
+    if (field.unique == true) {
+        query_attribute = query_attribute + " UNIQUE";
+    }
+
     //If field have alter
     if (query_attribute != null) {
         return {
@@ -221,6 +226,12 @@ function check_relation_module(field){
 /*---------------------------------------------------------------------------------------------*/
 
 
+
+/* ---------------------------------------- CREATE RELATION --------------------------------------*/
+
+
+
+/*---------------------------------------------------------------------------------------------*/
 
 
 /*-------------------------------------------- QUERY FUNCTION ------------------------------------*/

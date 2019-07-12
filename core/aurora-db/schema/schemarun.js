@@ -110,6 +110,10 @@ function nullable(){
     add_value('notNull', true, false);
 }
 
+function unique(){
+    add_value('unique', true, false);
+}
+
 function index(val,arr){
     add_value('index', val, true);
     add_value('column_index', arr, false);
