@@ -20,7 +20,7 @@ function create_db(value) {
 }
 
 //Function create table
-function create_table(table, field, last) {
+function create_table(table, engine, field, last) {
     table_name = table;
 
     //Open syntax sql to create table
@@ -66,7 +66,7 @@ function create_table(table, field, last) {
     });
 
     //Close sytax sql
-    query = query + " );";
+    query = query + " ) ENGINE="+engine+";";
 
     //function run query from variable query
     run_query('Table', query, 'created', last);
