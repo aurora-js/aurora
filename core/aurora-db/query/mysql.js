@@ -22,7 +22,6 @@ function create_db(value) {
 //Function create table
 function create_table(table, engine, field, last) {
     table_name = table;
-
     //Open syntax sql to create table
     query = "CREATE TABLE " + table_name + "(";
 
@@ -69,12 +68,14 @@ function create_table(table, engine, field, last) {
     query = query + " ) ENGINE="+engine+";";
 
     //function run query from variable query
-    run_query('Table', query, 'created', last);
+    return run_query('Table', query, 'created', last, table_name).then(function () {
+        //check create INDEX after create TABLE
+        if(index_column.length>0){
+            return create_index_column(last);
+        }
+    });
 
-    //check create INDEX
-    if(index_column.length>0){
-        create_index_column(last);
-    }
+    
 
 }
 
@@ -124,6 +125,9 @@ function grammar_generate(type, name, length) {
         case 'SERIAL':
             grammar = "SERIAL";
             break;
+        case 'FOREIGN':
+            grammar = "FOREIGN KEY";
+            break;
         default:
             return null;
             break;
@@ -132,6 +136,13 @@ function grammar_generate(type, name, length) {
     if (length != null) {
         return name + " " + grammar + "(" + length + ")";
     }
+
+    //check if column relation 
+    if(grammar == 'FOREIGN KEY'){
+        return grammar + " (" + name + ")";
+    }
+
+    //Default syntax alter column
     return name + " " + grammar;
 }
 
@@ -169,6 +180,22 @@ function check_attribute(field) {
         query_attribute = query_attribute + " UNIQUE";
     }
 
+    if (field.references_table != null) {
+        query_attribute = query_attribute + " REFERENCES "+ field.references_table;
+    }
+
+    if (field.references_id != null) {
+        query_attribute = query_attribute + " ("+ field.references_id +")";
+    }
+
+    if (field.ondelete != null) {
+        query_attribute = query_attribute + " ON DELETE "+ field.ondelete;
+    }
+
+    if (field.onupdate != null) {
+        query_attribute = query_attribute + " ON UPDATE "+ field.onupdate;
+    }
+
     //If field have alter
     if (query_attribute != null) {
         return {
@@ -190,12 +217,12 @@ function check_attribute(field) {
 
 //create index column 
 function create_index_column(last){
-    index_column.forEach(element => {
+    return index_column.forEach(element => {
         var query_index = "CREATE INDEX "+element.name_index+" ON "+table_name+"("+element.column_index+");";
 
         //set null index_column
         index_column = [];
-        run_query('Index', query_index, 'created', last)
+        return run_query('Index', query_index, 'created', last, element.name_index);
     });
     
 }
@@ -245,19 +272,24 @@ function query_field(field) {
 
 
 //function for run query
-function run_query(type, query, command, last) {
-    con = compile.enviroment();
-    con.query(query, function (err, result) {
-        if (err) {
-            console.log('ERROR!\n' + err.sqlMessage);
-            return process.exit();
-        } else {
-            if (last == true && index_column.length == 0) {
-                console.log(type +' '+ table_name + ' successfully ' + command);
+function run_query(type, query, command, last, table) {
+    
+    return new Promise(resolve => {
+        con = compile.enviroment();
+        con.query(query, function (err, result) {
+            if (err) {
+                console.log('ERROR!\n' + err.sqlMessage);
                 return process.exit();
+            } else {
+                if (last == true && index_column.length == 0) {
+                    console.log(type +' '+ table + ' successfully ' + command);
+                    return process.exit();
+                }
+                console.log(type +' '+ table + ' successfully ' + command);
             }
-            return console.log(type +' '+ table_name + ' successfully ' + command);
-        }
+            resolve();
+        });
+    
     });
 }
 

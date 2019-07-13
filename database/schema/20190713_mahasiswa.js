@@ -1,10 +1,12 @@
 module.exports.up = {
     'table_name' : 'mahasiswa',
-    'engine' : 'MyISAM',
+    'engine' : 'innoDB',
     'blueprint' : function(){
         increment('id');
+        integer('id_prodi_fk');
         varchar('nama', 100),unique();
         bigInteger('NIK'),nullable();
-        index('nik_index',['NIK']);
+        foreign('id_prodi_fk'),references('prodi','id'),onDelete('CASCADE'),onUpdate('RESTRICT');
+        index('nik_index',['NI']);
     }
 };

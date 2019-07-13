@@ -24,7 +24,11 @@ var default_field = {
     unique : false,
     index : null,
     column_index : null,
-    primary : false
+    primary : false,
+    references_table : null,
+    references_id : null,
+    ondelete : null,
+    onupdate : null
 };
 var type_database = null;
 
@@ -46,6 +50,9 @@ function run(type){
 
     //Foreach file to get up value
     files.forEach(function(element,keys) {
+        //Reset Field 
+        field_arr = [];
+
         var schemafile = require('../../../database/schema/'+element);
         
         var json = JSON.stringify(schemafile.up.blueprint, function(key, value) {
@@ -144,6 +151,27 @@ function bigInteger(val,leng){
 }
 
 
+function foreign(val){
+    add_value('name', val, true);
+    add_value('type', 'FOREIGN', false);
+}
+
+function references(table,id){
+    add_value('references_table', table, false);
+    add_value('references_id', id, false);
+}
+
+function onDelete(val){
+    add_value('ondelete', val, false);
+}
+
+function onUpdate(val){
+    add_value('onupdate', val, false);
+}
+
+
+
+
 // function unsigned(){
 //     add_value('unsigned', true, false);
 // }
@@ -175,7 +203,11 @@ function add_value(field, val, newrow){
             unique : false,
             index : null,
             column_index : null,
-            primary : false
+            primary : false,
+            references_table : null,
+            references_id : null,
+            ondelete : null,
+            onupdate : null
             
         };
 
