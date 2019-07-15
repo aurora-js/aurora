@@ -7,6 +7,6 @@ module.exports.up = {
         varchar('nama', 100),unique();
         bigInteger('NIK'),nullable();
         foreign('id_prodi_fk'),references('prodi','id'),onDelete('CASCADE'),onUpdate('RESTRICT');
-        index('nik_index',['NI']);
+        index(['NIK','nama']);
     }
 };

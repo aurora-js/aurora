@@ -22,7 +22,7 @@ var default_field = {
     comment : null,
     useCurrent : false,
     unique : false,
-    index : null,
+    index : false,
     column_index : null,
     primary : false,
     references_table : null,
@@ -80,7 +80,6 @@ function run(type){
         if(keys == files.length-1) {
             last = true;
         }
-
         //Run create to file query
         require('../query/'+type_database).create_table(schemafile.up.table_name,schemafile.up.engine,field_arr,last);
 
@@ -121,8 +120,8 @@ function unique(){
     add_value('unique', true, false);
 }
 
-function index(val,arr){
-    add_value('index', val, true);
+function index(arr){
+    add_value('type', 'INDEX', true);
     add_value('column_index', arr, false);
 }
 
@@ -201,7 +200,7 @@ function add_value(field, val, newrow){
             comment : null,
             useCurrent : false,
             unique : false,
-            index : null,
+            index : false,
             column_index : null,
             primary : false,
             references_table : null,
