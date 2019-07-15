@@ -22,9 +22,13 @@ var default_field = {
     comment : null,
     useCurrent : false,
     unique : false,
-    index : null,
+    index : false,
     column_index : null,
-    primary : false
+    primary : false,
+    references_table : null,
+    references_id : null,
+    ondelete : null,
+    onupdate : null
 };
 var type_database = null;
 
@@ -46,6 +50,9 @@ function run(type){
 
     //Foreach file to get up value
     files.forEach(function(element,keys) {
+        //Reset Field 
+        field_arr = [];
+
         var schemafile = require('../../../database/schema/'+element);
         
         var json = JSON.stringify(schemafile.up.blueprint, function(key, value) {
@@ -73,9 +80,8 @@ function run(type){
         if(keys == files.length-1) {
             last = true;
         }
-
         //Run create to file query
-        require('../query/'+type_database).create_table(schemafile.up.table_name,field_arr,last);
+        require('../query/'+type_database).create_table(schemafile.up.table_name,schemafile.up.engine,field_arr,last);
 
 
 
@@ -110,8 +116,12 @@ function nullable(){
     add_value('notNull', true, false);
 }
 
-function index(val,arr){
-    add_value('index', val, true);
+function unique(){
+    add_value('unique', true, false);
+}
+
+function index(arr){
+    add_value('type', 'INDEX', true);
     add_value('column_index', arr, false);
 }
 
@@ -138,6 +148,27 @@ function bigInteger(val,leng){
     add_value('length', leng || null, false);
     add_value('type', 'BIGINT', false);
 }
+
+
+function foreign(val){
+    add_value('name', val, true);
+    add_value('type', 'FOREIGN', false);
+}
+
+function references(table,id){
+    add_value('references_table', table, false);
+    add_value('references_id', id, false);
+}
+
+function onDelete(val){
+    add_value('ondelete', val, false);
+}
+
+function onUpdate(val){
+    add_value('onupdate', val, false);
+}
+
+
 
 
 // function unsigned(){
@@ -169,9 +200,13 @@ function add_value(field, val, newrow){
             comment : null,
             useCurrent : false,
             unique : false,
-            index : null,
+            index : false,
             column_index : null,
-            primary : false
+            primary : false,
+            references_table : null,
+            references_id : null,
+            ondelete : null,
+            onupdate : null
             
         };
 

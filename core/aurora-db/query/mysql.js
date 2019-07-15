@@ -5,6 +5,7 @@ var query = "";
 var table_name = "";
 var index_column = [];
 
+
 //function for create database
 function create_db(value) {
     con = compile.aurora_enviroment_without_db('mysqlnodb');
@@ -19,12 +20,10 @@ function create_db(value) {
 }
 
 //Function create table
-function create_table(table, field, last) {
+function create_table(table, engine, field, last) {
     table_name = table;
-
     //Open syntax sql to create table
     query = "CREATE TABLE " + table_name + "(";
-
     //Foreach to function in field to syntax
     field.forEach(function (element, index) {
 
@@ -38,14 +37,15 @@ function create_table(table, field, last) {
             }
 
             //For check next field is create index or relation or unique
-            var next_no_comma = "Not Null";
-            if(field[index+1]){
-                next_no_comma = field[index+1].type;
-            }
+            // var next_no_comma = "Not Null";
+            // if(field[index+1]){
+            //     next_no_comma = field[index+1].type;
+            // }
 
             //If last field not have ' , '
-            if(element.type !=null){
-                if (index == field.length - 1 || next_no_comma == null) {
+            // if(element.type !=null){
+                //|| next_no_comma == null
+                if (index == field.length - 1 ) {
                     if (attribute.action == true) {
                         query = query + attribute.data;
                     }
@@ -56,24 +56,21 @@ function create_table(table, field, last) {
                         query = query + attribute.data + ", ";
                     }
                 }
-            }else{
-
-                //unction create index or relation or unique
-                check_relation_module(element);
-            }
+            // }
+            // else{
+            //     //Function create index or relation or unique
+            //     check_relation_module(element);
+            // }
         
     });
 
     //Close sytax sql
-    query = query + " );";
-
+    query = query + " ) ENGINE="+engine+";";
+    // console.log(query);
     //function run query from variable query
-    run_query('Table', query, 'created', last);
+    return run_query('Table', query, 'created', last, table_name);
 
-    //check create INDEX
-    if(index_column.length>0){
-        create_index_column(last);
-    }
+    
 
 }
 
@@ -123,6 +120,9 @@ function grammar_generate(type, name, length) {
         case 'SERIAL':
             grammar = "SERIAL";
             break;
+        case 'FOREIGN':
+            grammar = "FOREIGN KEY";
+            break;
         default:
             return null;
             break;
@@ -131,9 +131,30 @@ function grammar_generate(type, name, length) {
     if (length != null) {
         return name + " " + grammar + "(" + length + ")";
     }
+
+    //check if column relation 
+    if(grammar == 'FOREIGN KEY'){
+        return grammar + " (" + name + ")";
+    }
+
+    //Default syntax alter column
     return name + " " + grammar;
 }
 
+
+//Function for grammar index 
+function grammar_generate_index(field) {
+    var syntax_index = "INDEX(";
+    field.forEach(function (element, index) {
+        if (index == field.length - 1 ) {
+            syntax_index = syntax_index + element;
+        }else{
+            syntax_index = syntax_index + element+",";
+        }
+    });
+    return syntax_index = syntax_index + ")";
+
+}
 
 
 //Function for add alter
@@ -164,6 +185,26 @@ function check_attribute(field) {
         query_attribute = query_attribute + " PRIMARY KEY";
     }
 
+    if (field.unique == true) {
+        query_attribute = query_attribute + " UNIQUE";
+    }
+
+    if (field.references_table != null) {
+        query_attribute = query_attribute + " REFERENCES "+ field.references_table;
+    }
+
+    if (field.references_id != null) {
+        query_attribute = query_attribute + " ("+ field.references_id +")";
+    }
+
+    if (field.ondelete != null) {
+        query_attribute = query_attribute + " ON DELETE "+ field.ondelete;
+    }
+
+    if (field.onupdate != null) {
+        query_attribute = query_attribute + " ON UPDATE "+ field.onupdate;
+    }
+
     //If field have alter
     if (query_attribute != null) {
         return {
@@ -184,43 +225,48 @@ function check_attribute(field) {
 /* ---------------------------------------- CREATE INDEX --------------------------------------*/
 
 //create index column 
-function create_index_column(last){
-    index_column.forEach(element => {
-        var query_index = "CREATE INDEX "+element.name_index+" ON "+table_name+"("+element.column_index+");";
+// function create_index_column(last){
+//     return index_column.forEach(element => {
+//         var query_index = "CREATE INDEX "+element.name_index+" ON "+table_name+"("+element.column_index+");";
 
-        //set null index_column
-        index_column = [];
-        run_query('Index', query_index, 'created', last)
-    });
+//         //set null index_column
+//         index_column = [];
+//         return run_query('Index', query_index, 'created', last, element.name_index);
+//     });
     
-}
+// }
 
 /*
 Function for check create unique, index, and foreign key
 */
-function check_relation_module(field){
-
-    //For run index
-    if (field.index != null) {
-        var columns = "";
-        field.column_index.forEach(function(element,key){
-            if (key == field.column_index.length - 1) {
-                columns = columns+element;
-            }else{
-                columns = columns+element+", ";
-            }
-        });
-        //for add index array
-        index_column.push({
-            name_index : field.index,
-            column_index : columns
-        });
-    }
-}
+// function check_relation_module(field){
+//     //For run index
+//     if (field.index != null) {
+//         var columns = "";
+//         field.column_index.forEach(function(element,key){
+//             if (key == field.column_index.length - 1) {
+//                 columns = columns+element;
+//             }else{
+//                 columns = columns+element+", ";
+//             }
+//         });
+//         //for add index array
+//         index_column.push({
+//             name_index : field.index,
+//             column_index : columns
+//         });
+//     }
+// }
 
 /*---------------------------------------------------------------------------------------------*/
 
 
+
+/* ---------------------------------------- CREATE RELATION --------------------------------------*/
+
+
+
+/*---------------------------------------------------------------------------------------------*/
 
 
 /*-------------------------------------------- QUERY FUNCTION ------------------------------------*/
@@ -228,25 +274,38 @@ function check_relation_module(field){
 //Function for function to syntax sql
 function query_field(field) {
     var sytax_field = "";
+    //if add  index
+    if (field.type == 'INDEX') {
+        return grammar_generate_index(field.column_index);
+    }
     return sytax_field = grammar_generate(field.type, field.name, field.length);
 
 }
 
 
 //function for run query
-function run_query(type, query, command, last) {
-    con = compile.enviroment();
-    con.query(query, function (err, result) {
-        if (err) {
-            console.log('ERROR!\n' + err.sqlMessage);
-            return process.exit();
-        } else {
-            if (last == true && index_column.length == 0) {
-                console.log(type +' '+ table_name + ' successfully ' + command);
+function run_query(type, query, command, last, table) {
+    
+    return new Promise(resolve => {
+        con = compile.enviroment();
+        con.query(query, function (err, result) {
+            if (err) {
+                console.log('ERROR!\n' + err.sqlMessage);
                 return process.exit();
+            } else {
+                if (last == true && index_column.length == 0) {
+                    console.log(type +' '+ table + ' successfully ' + command);
+                    return process.exit();
+                }
+                console.log(type +' '+ table + ' successfully ' + command);
+                //check create INDEX after create TABLE
+                // if(index_column.length>0){
+                //     return console.log('jalan index');
+                // }
             }
-            return console.log(type +' '+ table_name + ' successfully ' + command);
-        }
+            resolve();
+        });
+    
     });
 }
 
