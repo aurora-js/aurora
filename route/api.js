@@ -9,8 +9,20 @@ app.use(express.static('../public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'ejs');
+
+var obj = {};
 app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname+ '/../public/myfile.html'));
+    // var obj = {data : sysaura.index(req,res)};
+    sysaura.index(req,res,function(err,data){
+        if(err){
+            console.log(err);
+        }else{
+            //console.log(data);
+            res.render('test', sysaura.index(req,res));
+        }
+    });
 });
 
 app.post('/simpan', function(req, res) {
