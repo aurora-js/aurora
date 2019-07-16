@@ -9,13 +9,13 @@ try {
         2. You can run this custom enviroment with run command :
             node ./app.js abc
     */
-    module.exports.config_enviroment = process.argv[2] || 'main';
+    module.exports.config_enviroment = process.argv[process.argv.length] || 'main';
 
     //For enviroment
     aurora.enviroment();
 
     //For run serve
-    //aurora.serve();
+    aurora.serve();
 
     //aurora.schema("RUN");
 

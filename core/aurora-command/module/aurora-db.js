@@ -41,6 +41,18 @@ function send_message(value) {
   return process.exit();
 }
 
+/*
+! Program command for run db!
+*/
+program.command('db:run').action(()=>{
+  //If db:run not have config to default config main
+  if (process.argv.length === 2) {
+    process.argv.push('main');
+  }
+
+  //Run schema
+  return compile.schema('RUN');
+});
 
 /*
 ! Program command for create schema file !

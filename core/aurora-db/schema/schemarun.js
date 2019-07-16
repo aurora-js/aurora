@@ -81,7 +81,7 @@ function run(type){
             last = true;
         }
         //Run create to file query
-        require('../query/'+type_database).create_table(schemafile.up.table_name,schemafile.up.engine,field_arr,last);
+        return require('../query/'+type_database).create_table(schemafile.up.table_name,schemafile.up.engine,field_arr,last);
 
 
 

@@ -4,5 +4,6 @@ module.exports.up = {
     'blueprint' : function(){
         increment('id');
         varchar('nama_prodi', 100),unique();
+        decimal('desimal');
     }
 };

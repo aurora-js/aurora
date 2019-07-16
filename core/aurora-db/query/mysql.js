@@ -288,8 +288,7 @@ function query_field(field) {
 
 //function for run query
 function run_query(type, query, command, last, table) {
-    
-    return new Promise(resolve => {
+    // return new Promise(resolve => {
         con = compile.enviroment();
         con.query(query, function (err, result) {
             if (err) {
@@ -300,14 +299,14 @@ function run_query(type, query, command, last, table) {
                     console.log(type +' '+ table + ' successfully ' + command);
                     return process.exit();
                 }
-                console.log(type +' '+ table + ' successfully ' + command);
+                return console.log(type +' '+ table + ' successfully ' + command);
                 //check create INDEX after create TABLE
                 // if(index_column.length>0){
                 //     return console.log('jalan index');
                 // }
             }
-            resolve();
-        });
+        //     resolve();
+        // });
     
     });
 }
