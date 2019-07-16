@@ -8,7 +8,22 @@ var main  = require('../core/aurora-crud/aura/sysaura');
 //declare route for function in sysaura//
 
 function create(req,res){
-    return main.insert(req,res);
+    //contoh 
+    //
+    //
+    //      
+    //      
+    //
+    //            
+    //
+    //endcontoh
+
+    var values = [
+        req.body.name,
+         req.body.age
+    ];
+
+    return main.insert(values);
 }
 
 module.exports.create = create;

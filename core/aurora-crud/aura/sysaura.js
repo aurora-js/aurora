@@ -11,22 +11,11 @@ var enviroment = require('../../compile.js');
 var con = enviroment.enviroment();
 
 //function insert//
-function insert(req, res){
-    console.log(req);
-    //contoh : enviroment.query(){
-    //              if(err){
-    //              "error cuy"
-    //              };
-    //         }
-
-
-    //dibawah ini coba2
-    var values = {
-        name: req.body.name,
-        age: req.body.age
-       }
-
-    con.query('INSERT INTO members (name, age) VALUES ?', [values], function(err,result){
+function insert(values){
+    
+  
+    console.log(values);
+    con.query('INSERT INTO members (name, age) VALUES (?) ', [values], function(err,result){
         if(err) {
             console.log(err);
          }
