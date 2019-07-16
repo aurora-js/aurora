@@ -3,36 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Node delivered HTML</title>
-	<script>
-		var api = require('../../route/api');
-	</script>
 </head>
 <body>
-	<div>
-		<h1>Send JSON to Node</h1>
-		 <button onClick="sendJSON()">Send</button>
-		 <p id ="result">
-		 </p>
-	</div>
-<script>
- var myData = [
-	{
-	    "name": "Bill",
-	    "age": 20
-	},
-	{
-	    "name": "Lisa",
-	    "age": 40
-	},
-	{
-	    "name": "Ant",
-	    "age": 80
-	}
-    ]
+	<form action="/simpan" method="post">
+		name:<br>
+		<input type="text" name="name">
+		<br>umur:<br>
+		<input type="number" name="age"><br>
+	
+		<input type="submit" value="Submit">
+	</form>
 
-function sendJSON(){
-}
-
-</script>
+	<button type='button' onclick='index()'>Get persons!</button>
 </body>
 </html>

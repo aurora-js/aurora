@@ -12,7 +12,6 @@ function main(name_config){
         return connection.connect(require(response_check.data));
     }
     //if error
-    console.log(response_check.data);
     return process.exit();
 }
 
