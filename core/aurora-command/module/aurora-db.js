@@ -1,6 +1,4 @@
-//Require compile module
-var compile = require('../../compile');
-
+#!/usr/bin/env node
 /*
 For command, we use commander and inquirer
 Thank you so much commander and inquirer
@@ -10,6 +8,11 @@ https://www.npmjs.com/package/inquirer
 */
 const program = require('commander');
 const inquirer = require('inquirer');
+
+//Require compile module
+var compile = require('../../compile');
+
+
 
 // Run create database with question
 /*
@@ -37,5 +40,17 @@ function send_message(value) {
   console.log(value);
   return process.exit();
 }
+
+
+/*
+! Program command for create schema file !
+*/
+program.command('schema:create <value>').action((value)=>{
+  //Run create schema file
+  return compile.create_schema(value);
+});
+
+// allow commander to parse `process.argv`
+program.parse(process.argv);
 
 module.exports.create_database = create_database;
