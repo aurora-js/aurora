@@ -168,6 +168,12 @@ function onUpdate(val){
     add_value('onupdate', val, false);
 }
 
+function decimal(val,leng){
+    add_value('name', val, true);
+    add_value('length', leng || null, false);
+    add_value('type', 'DECIMAL', false);
+}
+
 
 
 

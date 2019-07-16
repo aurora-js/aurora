@@ -123,6 +123,9 @@ function grammar_generate(type, name, length) {
         case 'FOREIGN':
             grammar = "FOREIGN KEY";
             break;
+        case 'DECIMAL':
+            grammar = "DECIMAL";
+            break;
         default:
             return null;
             break;
