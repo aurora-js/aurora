@@ -26,5 +26,17 @@ function create(req,res){
     return main.insert(values);
 }
 
+function index(req,res,callback){
+    var datanya = "";
+    return main.read(req,res,callback);
+    console.log(datanya);
+    
+    
+}
+
+
+
+
 module.exports.create = create;
+module.exports.index = index;
 
