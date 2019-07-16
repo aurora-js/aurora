@@ -398,12 +398,7 @@ function query_field(field) {
 
 //function for run query
 function run_query(type, query, command, last, table) {
-<<<<<<< HEAD
     // return new Promise(resolve => {
-=======
-
-    return new Promise(resolve => {
->>>>>>> 7e069cb3e93b6eade743acb6c90ef08b72cf9acd
         con = compile.enviroment();
         con.query(query, function (err, result) {
             if (err) {
@@ -414,25 +409,15 @@ function run_query(type, query, command, last, table) {
                     console.log(type + ' ' + table + ' successfully ' + command);
                     return process.exit();
                 }
-<<<<<<< HEAD
                 return console.log(type +' '+ table + ' successfully ' + command);
-=======
-                console.log(type + ' ' + table + ' successfully ' + command);
->>>>>>> 7e069cb3e93b6eade743acb6c90ef08b72cf9acd
                 //check create INDEX after create TABLE
                 // if(index_column.length>0){
                 //     return console.log('jalan index');
                 // }
             }
-<<<<<<< HEAD
         //     resolve();
         // });
     
-=======
-            resolve();
-        });
-
->>>>>>> 7e069cb3e93b6eade743acb6c90ef08b72cf9acd
     });
 }
 

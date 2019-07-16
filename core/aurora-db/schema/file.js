@@ -17,7 +17,7 @@ function create_file_schema(name){
     1. Add Module Export Update
     2. Add Module Export Drop
     */
-    var syntax = "module.exports.up = { \n\t'table_name' : '"+name+"', \n\t'engine' : 'innoDB', \n\t'blueprint' : function(){\n\n\t}\n};";
+    var syntax = "module.exports.create = { \n\t'table_name' : '"+name+"', \n\t'engine' : 'innoDB', \n\t'blueprint' : function(){\n\n\t}\n};";
     
     //Create file to ./database/schema
     fs.appendFile('./database/schema/'+date_file+'_'+name_file+'.js', syntax, function (err) {

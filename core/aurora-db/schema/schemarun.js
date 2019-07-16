@@ -55,7 +55,7 @@ function run(type) {
 
         var schemafile = require('../../../database/schema/' + element);
 
-        var json = JSON.stringify(schemafile.up.blueprint, function (key, value) {
+        var json = JSON.stringify(schemafile.create.blueprint, function (key, value) {
             if (typeof value === "function") {
                 return "/Function(" + value.toString() + ")/";
             }
@@ -81,7 +81,7 @@ function run(type) {
             last = true;
         }
         //Run create to file query
-        return require('../query/'+type_database).create_table(schemafile.up.table_name,schemafile.up.engine,field_arr,last);
+        return require('../query/'+type_database).create_table(schemafile.create.table_name,schemafile.create.engine,field_arr,last);
 
 
 
