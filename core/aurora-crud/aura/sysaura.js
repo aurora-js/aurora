@@ -34,7 +34,7 @@ function insert(values) {
 function read(req, res){
     //console.log(req, res);
     
-    con.query('SELECT ?? FROM ??' ,[columns, 'keunggulan'], function(err,rows)     {
+    con.query('SELECT * FROM members', function(err,rows)     {
  
         if(err){
          

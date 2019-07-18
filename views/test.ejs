@@ -1,24 +1,4 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <title>Node delivered HTML</title>
-</head>
-
-<body>
-  <form action="/simpan" method="post">
-    name:<br>
-    <input type="text" name="name">
-    <br>umur:<br>
-    <input type="number" name="age"><br>
-
-    <input type="submit" value="Submit">
-  </form>
-
-  <button type='button' onclick='index()'>Get persons!</button>
-=======
 <html>
 <head>
   <title>Keunggulan</title>
@@ -28,6 +8,15 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <body>
+    <form action="/simpan" method="post">
+      name:<br>
+      <input type="text" name="name">
+      <br>umur:<br>
+      <input type="number" name="age"><br>
+  
+      <input type="submit" value="Submit">
+    </form>
+    <hr>
   <div>
     <a href="/" class="btn btn-primary ml-3">Home</a>  
     <a href="/customers/add" class="btn btn-secondary ml-3">New Customer</a> 
@@ -53,8 +42,8 @@
   for(var i = 0; i< data.length; i++) {%>  
   <tr>
     <th scope="row"><%= (i+1) %></th>
-    <td><%= data[i].title%></td>
-    <td><%= data[i].deskripsi%></td>
+    <td><%= data[i].name%></td>
+    <td><%= data[i].age%></td>
     <td>
     <a class="btn btn-success edit" href="../customers/edit/<%=data[i].id%>">Edit</a>                       
     <a class="btn btn-danger delete" onclick="return alert('Are You sure?')" href="../customers/delete/<%=data[i].id%>">Delete</a>                       
@@ -70,7 +59,6 @@
   
 </tbody>
 </table>
->>>>>>> 0d7fd596e95ae7340385558a794059976ea9d893
 </body>
 
 </html>
