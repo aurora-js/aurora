@@ -10,6 +10,7 @@ var data_read = "";
 var enviroment = require('../../compile.js');
 var con = enviroment.enviroment();
 
+
 //function insert///
 function insert(values) {
     
@@ -30,10 +31,21 @@ function insert(values) {
 }
 
 //function read//
-function read(req, res) {
+function read(req, res){
     //console.log(req, res);
-
-
+    
+    con.query('SELECT ?? FROM ??' ,[columns, 'keunggulan'], function(err,rows)     {
+ 
+        if(err){
+         
+         res.render('test',{page_title:"Dummy - Node.js",data:''});   
+        }else{
+            
+            res.render('test',{page_title:"Dummy - Node.js",data:rows});
+        }
+                            
+         });
+    
 };
 
 

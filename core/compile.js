@@ -49,6 +49,12 @@ function aurora_schema(command){
     return aurora_db_module.schema(command,'mysql');
 }
 
+/*
+Run for create schema file
+*/
+function aurora_create_schema(name){
+    return aurora_db_module.create_schema(name);
+}
 
 module.exports.serve = serve;
 module.exports.enviroment = aurora_enviroment;
@@ -56,3 +62,4 @@ module.exports.aurora_enviroment_without_db = aurora_enviroment_without_db;
 module.exports.db = aurora_db;
 module.exports.command = aurora_command;
 module.exports.schema = aurora_schema;
+module.exports.create_schema = aurora_create_schema;

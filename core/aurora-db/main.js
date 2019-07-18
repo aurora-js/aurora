@@ -1,5 +1,6 @@
 const mysql_grammar = require('./query/mysql');
 const schema_run = require('./schema/schemarun');
+const files = require('./schema/file');
 
 var field = '';
 var table = '';
@@ -46,5 +47,11 @@ function mysql(command, value) {
     }
 }
 
+//Function for create file schema
+function create_schema(name){
+    return files.create_file_schema(name);
+}
+
 module.exports.main = main;
 module.exports.schema = schema;
+module.exports.create_schema = create_schema;

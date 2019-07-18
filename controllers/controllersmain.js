@@ -15,10 +15,8 @@ function create(req, res) {
     return main.insert(values, req,res);
 }
 
-function index(req, res) {
-    var datanya = "";
-    return main.read(req, res);
-    console.log(datanya);
+function index(req,res){
+    return main.read(req,res);  
 }
 
 module.exports.create = create;
