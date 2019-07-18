@@ -14,6 +14,6 @@ module.exports.config_enviroment = process.argv[2] || 'main';
 aurora.enviroment();
 
 //For run serve
-//aurora.serve();
+aurora.serve();
 
-aurora.schema("RUN");
+//aurora.schema("RUN");

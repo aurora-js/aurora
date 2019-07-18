@@ -10,6 +10,8 @@ var data_read =  "";
 var enviroment = require('../../compile.js');
 var con = enviroment.enviroment();
 
+
+
 //function insert//
 function insert(req, res){
     console.log(req);
@@ -39,20 +41,20 @@ function insert(req, res){
 }
 
 //function read//
-function read(req, res,callback){
+function read(req, res){
     //console.log(req, res);
     
-    con.connect(function (err) {
-        //console.log("Connected");
-        var sql = "SELECT * FROM keunggulan";
-        con.query(sql, function (err, result) {
-            if (err) {
-                callback(err,null);
-            } else {
-                return callback(null,JSON.parse(JSON.stringify(result[0])));
-            }
-        });
-    });
+    con.query('SELECT ?? FROM ??' ,[columns, 'keunggulan'], function(err,rows)     {
+ 
+        if(err){
+         
+         res.render('test',{page_title:"Dummy - Node.js",data:''});   
+        }else{
+            
+            res.render('test',{page_title:"Dummy - Node.js",data:rows});
+        }
+                            
+         });
     
 };
 

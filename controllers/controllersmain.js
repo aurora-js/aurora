@@ -11,12 +11,8 @@ function create(req,res){
     return main.insert(req,res);
 }
 
-function index(req,res,callback){
-    var datanya = "";
-    return main.read(req,res,callback);
-    console.log(datanya);
-    
-    
+function index(req,res){
+    return main.read(req,res);  
 }
 
 
