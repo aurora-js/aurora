@@ -1,4 +1,4 @@
-module.exports.up = {
+module.exports.create = {
     'table_name' : 'mahasiswa',
     'engine' : 'innoDB',
     'blueprint' : function(){

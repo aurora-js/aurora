@@ -1,9 +1,9 @@
 //create connection
-
-const mysql = require('mysql');
 const express = require('express');
 var app = express();
 const bodyparser = require('body-parser');
+var mysql = require('mysql');
+
 
 app.use(bodyparser.json());
 
@@ -14,62 +14,80 @@ var db = mysql.createConnection({
     database: "aurora"
 });
 
+app.listen(3000, () => console.log('server on port 3000'));
+
 db.connect(function (err) {
     if (err) {
-        res.send("ERROR!, database host not defined!");
+        console.log("ERROR!, database host not defined!");
     } else {
         console.log("CONNECTED");
+
+        //create database
+
+        // var sql = "CREATE TABLE coba (nim INT(10) PRIMARY KEY, nama VARCHAR(50))";
+        // db.query(sql, function (err, result) {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         console.log("Table created");
+        //     }
+        // })
     }
 });
 
-app.listen(3000, () => console.log('server on port 3000'));
-
-
-//get database
-app.get('/auroratest', (req, res) => {
-    mysqlConnection.query('SELECT * FROM aurora_table', (err, rows, fields) => {
-        if (!err)
-            res.send(rows);
-        else
-            console.log(err);
-    })
-});
-
-//create database
-app.get('/auroratest/1', (req, res) => {
-    mysqlConnection.query('SELECT * FROM aurora_table WHERE id_user =?', [req, params.id], (err, result, fields) => {
-        if (!err) {
-            res.send("success,Create database");
-        } else {
-            console.log("ERROR, Create database");
-        }
-    })
-});
-
-//delete database
-app.delete('/auroratest/1', (req, res) => {
-    mysqlConnection.query('SELECT * FROM aurora_table WHERE id_user=?', [req.params.id], (err, result, fields) => {
-        if (!err) {
-            res.send("success deleted");
-        } else {
-            console.log("error deleted");
-        }
-    })
-});
+//delete table
+// var sql = "DROP TABLE aurora_table";
+// db.query(sql, function (err, result) {
+//     if (err) {
+//         console.log("error delete table!");
+//     } else {
+//         console.log("delete success!");
+//     }
+// })
 
 //update database
-app.put('/auroratest', (req, res) => {
-    let keseluruhan = req.body;
-    var datatable = "SET @id_user = ?;SET @Nama = ?;SET @kelas = ?;SET @notlp = ?; \
-    CALL AuroraAddOrEdit(@id_user,@nama,@kelas,@notlp);";
-    mysqlConnection.query(datatable, [keseluruhan.id_user, keseluruhan.nama, keseluruhan.kelas, keseluruhan.notlp],
-        (err, result, fields) => {
-            if (!err)
-                res.send("success update");
-            else
-                console.log("error deleted");
-        })
-});
+//db.query("SELECT * ALTER table FROM coba add code", function (err, result, fields) {
+//  if (err) {
+//    console.log("error get column table database");
+// } else {
+//   console.log("update column database success")
+// }
+//});
+
+//function node js mysql
+// db.query("SELECT * FROM coba", function (err, result, fields) {
+//     if (err) {
+//         console.log("error get function");
+//     } else {
+//         console.log("success get function")
+//     }
+// });
+
+//function create table
+function create_table(name) {
+    var sql = "CREATE TABLE " + name + " (nim INT(10) PRIMARY KEY, nama VARCHAR(50))";
+    console.log(sql);
+    db.query(sql, function (err, result) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("success create table")
+        }
+    })
+};
+
+create_table('dhoni');
+
+
+
+
+
+
+
+
+
+
+
 
 
 
