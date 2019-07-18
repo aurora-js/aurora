@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <table id="table" >  
-        <thead>  
-            <tr>  
-                <th>Username</th>  
-                <th>Password</th>  
-            </tr>  
-        </thead>  
-         <tbody>  
-         <%= data.forEach(function (dt){ %>
-            <tr>  
-                <td><%= dt.title; %></td>  
-                <td><%= dt.deskripsi; %></td>
-            </tr>                                   
-         <%= }); %>
-         </tbody>
-    </table>   
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Node delivered HTML</title>
+</head>
+
+<body>
+  <form action="/simpan" method="post">
+    name:<br>
+    <input type="text" name="name">
+    <br>umur:<br>
+    <input type="number" name="age"><br>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <button type='button' onclick='index()'>Get persons!</button>
 </body>
+
 </html>

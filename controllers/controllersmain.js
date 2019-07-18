@@ -2,41 +2,24 @@
 var express = require('../core/compile.js');
 //get express module//
 var express = require('express');
-var app     = express();
+var app = express();
 //declare var con from enviroment//
-var main  = require('../core/aurora-crud/aura/sysaura');
+var main = require('../core/aurora-crud/aura/sysaura');
 //declare route for function in sysaura//
 
-function create(req,res){
-    //contoh 
-    //
-    //
-    //      
-    //      
-    //
-    //            
-    //
-    //endcontoh
-
+function create(req, res) {
     var values = [
         req.body.name,
-         req.body.age
+        req.body.age
     ];
-
-    return main.insert(values);
+    return main.insert(values, req,res);
 }
 
-function index(req,res,callback){
+function index(req, res) {
     var datanya = "";
-    return main.read(req,res,callback);
+    return main.read(req, res);
     console.log(datanya);
-    
-    
 }
-
-
-
 
 module.exports.create = create;
 module.exports.index = index;
-
