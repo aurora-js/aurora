@@ -18,7 +18,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/simpan', function(req, res) {
-    res.send(sysaura.create(req,res));
+   res.send(sysaura.create(req,res ));
 });
 
 app.listen(port);
