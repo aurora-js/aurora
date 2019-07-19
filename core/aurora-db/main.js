@@ -25,7 +25,6 @@ function schema(command,type) {
             return schema_run.run(type);
             break;
         case 'UPDATE':
-            console.log('test');
             return schema_update.run(type);
             break;
         default:

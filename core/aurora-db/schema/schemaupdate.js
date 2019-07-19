@@ -87,8 +87,7 @@ function run(type) {
             last = true;
         }
         //Run create to file query
-        return console.log(field_arr);
-       // return require('../query/'+type_database).create_table(schemafile.create.table_name,schemafile.create.engine,field_arr,last);
+        return require('../query/'+type_database).update_table(schemafile.create.table_name,field_arr,last);
 
 
 
@@ -102,16 +101,12 @@ function run(type) {
 /* Function main for update */
 function column(val){
     add_value('from_column', val, true);
+    add_value('change_column',true, false);
 }
 
-function rename(){
+function rename(val){
     add_value('rename_column', true, false);
-    add_value('rename_column_to', true, false);
-}
-
-function rename(){
-    add_value('rename_column', true, false);
-    add_value('rename_column_to', true, false);
+    add_value('rename_column_to', val, false);
 }
 
 function addColumn(){
@@ -159,10 +154,10 @@ function unique() {
     add_value('unique', true, false);
 }
 
-//TODO : Nambah index dengan custom name
-function index(arr) {
-    add_value('type', 'INDEX', false);
-    add_value('column_index', arr, false);
+function index(arr,name) {
+    // add_value('type', 'INDEX', false);
+    add_value('add_index_column', arr, false);
+    add_value('add_index_name', name, false);
 }
 
 function integer(val, leng) {

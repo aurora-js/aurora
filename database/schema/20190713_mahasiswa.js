@@ -17,7 +17,7 @@ TODO :
 */
 module.exports.update = {
     'blueprint' : function(){
-        column('id'),integer('id',50),primary(); //! Just update type column !
+        column('NIK'),integer('NIK',10),unique(); //! Just update type column !
         // column('nama'),rename('NAMA'); //! Just rename column !
         // addColumn(),varchar('no_tlp'),nullable(); //! For add column !
         // addIndex(),index(['no_tlp'],'idx_no_tlp'); //! For add index with custom name index !

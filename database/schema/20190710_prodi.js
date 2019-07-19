@@ -3,18 +3,17 @@ module.exports.create = {
     'engine' : 'innoDB',
     'blueprint' : function(){
         increment('id');
-        varchar('nama_prodi', 100),unique();
+        varchar('nama_prodi', 100);
         decimal('desimal');
     }
 };
 
 module.exports.update = {
     'blueprint' : function(){
-        column('id'),varchar('id',50),primary(); //! Just update type column !
-        // column('nama'),rename('NAMA'); //! Just rename column !
-        // addColumn(),varchar('no_tlp'),nullable(); //! For add column !
-        // addIndex(),index(['no_tlp'],'idx_no_tlp'); //! For add index with custom name index !
-        // addIndex(),index(['no_tlp']); //! For add index without custom name index !
-        // renameIndex('idx_no_tlp','index_no_tlp'); //! For renam index !
+        //column('desimal'),varchar('desimal',50); //! Just update type column / Rename!
+        //addColumn(),varchar('no_tlp2',12),nullable(); //! For add column !
+        //addIndex(),index(['desimal'],'idx_desimal'); //! For add index with custom name index !
+        //addIndex(),index(['nama_prodi']); //! For add index without custom name index !
+        //renameIndex('idx_desimal','index_desimal'); //! For renam index ! ini ga bisa untuk maria DB
     }
 };

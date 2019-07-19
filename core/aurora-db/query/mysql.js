@@ -2,9 +2,10 @@
 const compile = require('../../compile');
 var con = compile.enviroment;
 var query = "";
+var alter = "";
 var table_name = "";
 var index_column = [];
-
+var attribute = null;
 
 //function for create database
 function create_db(value) {
@@ -29,7 +30,7 @@ function create_table(table, engine, field, last) {
 
 
         //Run check alter for column
-        var attribute = check_attribute(element);
+        attribute = check_attribute(element);
 
         //Get syntax sql
         if (query_field(element) != null) {
@@ -73,6 +74,65 @@ function create_table(table, engine, field, last) {
 
 
 }
+
+//Function update table
+function update_table(table, field, last) {
+    table_name = table;
+    query = "";
+    alter = "";
+
+    //Foreach to function in field to syntax
+    field.forEach(function (element, index) {
+        //Generate sql for add column or change column
+        if(element.change_column == true || element.add_column == true || element.rename_index == true){
+            //Open syntax sql to create table
+            alter = "ALTER TABLE " + table_name + " ";
+
+
+            //Syntax for add column     
+            if (element.add_column == true) {
+                alter = alter + "ADD "+ query_field(element);
+                //Run check alter for column
+            }else if(element.rename_index == true){
+                alter = alter + "RENAME INDEX "+element.rename_index_from +" TO "+ element.rename_index_to;
+            }else{
+                alter = alter + "CHANGE COLUMN "+element.from_column+" "+query_field(element);
+            }
+            attribute = check_attribute(element);
+            // if (index == field.length - 1) {
+            if (attribute.action == true) {
+                alter = alter + attribute.data;
+            }
+            // } else {
+            //     if (attribute.action == false) {
+            //         alter = alter + ", ";
+            //     } else {
+            //         alter = alter + attribute.data + ", ";
+            //     }
+            // }
+        }else{
+            var column_index = generate_index_column(element.add_index_column);
+            //It's for add index 
+            alter = "CREATE INDEX ";
+            if(element.add_index_name != null){
+                alter = alter+element.add_index_name +" ON "+ table_name + column_index;
+            }else{
+                alter = alter+element.add_index_column[0]+"_"+"index"+" ON "+ table_name + column_index;
+            }
+        }
+        query = query + alter + ";\n"; 
+    });
+
+    //Close sytax sql
+    // query = query + " );";
+    // console.log(query);
+    //function run query from variable query
+    return run_query('Table', query, 'updated', last, table_name);
+
+
+
+}
+
 
 
 /*---------------------------------------------- GET SYNTAX FOR COLUMNS -------------------------------------*/
@@ -269,6 +329,20 @@ function grammar_generate_index(field) {
 
 }
 
+//for add index in update
+function generate_index_column(field) {
+    var syntax_index = " (";
+    field.forEach(function (element, index) {
+        if (index == field.length - 1) {
+            syntax_index = syntax_index + element;
+        } else {
+            syntax_index = syntax_index + element + ",";
+        }
+    });
+    return syntax_index = syntax_index + ")";
+
+}
+
 
 //Function for add alter
 function check_attribute(field) {
@@ -425,3 +499,4 @@ function run_query(type, query, command, last, table) {
 
 module.exports.create_db = create_db;
 module.exports.create_table = create_table;
+module.exports.update_table = update_table;
