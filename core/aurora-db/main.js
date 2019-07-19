@@ -1,5 +1,6 @@
 const mysql_grammar = require('./query/mysql');
 const schema_run = require('./schema/schemarun');
+const schema_update = require('./schema/schemaupdate');
 const files = require('./schema/file');
 
 var field = '';
@@ -23,7 +24,10 @@ function schema(command,type) {
         case 'RUN':
             return schema_run.run(type);
             break;
-
+        case 'UPDATE':
+            console.log('test');
+            return schema_update.run(type);
+            break;
         default:
             break;
     }
