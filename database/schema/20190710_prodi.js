@@ -21,7 +21,23 @@ module.exports.create = {
         //tinytext('field_tinytext', 2);     //coba lagi
         //text('field_text', 10);            //dapat digunakan tapi tidak terbaca lengthnya atau text tidak terbatas
         //mediumtext('field_mediumtext', 10);  //coba lagi
-        longtext('bisa_longtext');             //dapat digunakan tapi tidak bisa menggunakan lengthnya
+        //longtext('bisa_longtext');             //dapat digunakan tapi tidak bisa menggunakan lengthnya
+        //binary('field_binary', 10);           //bisa digunakan
+        //varbinary('coba_varbinary', 10);        //bisa digunakan
+        //tinyblob('field_tinyblob', 10);          //coba lagi
+        //mediumblob('coba_mediumblob', 6);        //coba lagi
+        //blob('test_blob', 10);                    //bisa digunakan tanpa length
+        //longblob('field_longblob', 2);           //coba lagi
+        //enums('coba_enums', 2);                       //coba lagi
+        //set('coba_set', 2);                           //coba lagi
+        //geometry('coba_geometry', 10);             //bisa digunakan tanpa length
+        //point('coba_point', 8);                      //bisa digunakan tanpa length
+        //linestring('coba_linestring', 10);              //bisa digunakan tanpa length
+        //polygon('tst_polygon', 7);                      //bisa digunakan tanpa length
+        //multipoint('coba_multipoint', 9);               //bisa digunakan tanpa length
+        //multilinestring('coba_multilinestring', 10);     //bisa digunakan tanpa length
+        //multipolygon('tst_multipolygon', 22);              //bisa digunakan tanpa length
+        //geomtrycollection('tst_geometrycollection', 6);      //coba lagi
 
     }
 };
