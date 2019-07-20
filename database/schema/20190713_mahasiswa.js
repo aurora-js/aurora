@@ -11,10 +11,6 @@ module.exports.create = {
     }
 };
 
-/*
-TODO :
- 1. Ngerjain module update 
-*/
 module.exports.update = {
     'blueprint' : function(){
         column('NIK'),integer('NIK',10),unique(); //! Just update type column !
