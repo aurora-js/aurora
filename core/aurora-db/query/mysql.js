@@ -70,8 +70,20 @@ function create_table(table, engine, field, last) {
     //Close sytax sql
     query = query + " ) ENGINE=" + engine + ";";
     // console.log(query);
-    //function run query from variable query
-    return run_query('Table', query, 'created', last, table_name);
+    //function run query from variable query 
+    
+    if(query != "" && field.length != 0){
+        return run_query('Table', query, 'created', last, table_name);
+    }else if(query == "" && last == true){
+
+        //Maximum for 2 second to exit process
+        setTimeout( function() {
+            return process.exit();
+        } , 2000) ;    
+
+    }else{
+        return null;
+    }
 
 
 
@@ -131,7 +143,18 @@ function update_table(table, field, last) {
     // query = query + " );";
     // console.log(query);
     //function run query from variable query
-    return run_query('Table', query, 'updated', last, table_name);
+    if(query != ""){
+        return run_query('Table', query, 'updated', last, table_name);
+    }else if(query == "" && last == true){
+
+        //Maximum for 2 second to exit process
+        setTimeout( function() {
+            return process.exit();
+        } , 2000) ;    
+
+    }else{
+        return null;
+    }
 
 
 
@@ -196,10 +219,18 @@ function delete_table(table, field, last) {
     // query = query + " );";
     // console.log(query);
     //function run query from variable query
-    return run_query('Table', query, 'deleted', last, table_name);
+    if(query != ""){
+        return run_query('Table', query, 'deleted', last, table_name);
+    }else if(query == "" && last == true){
 
+        //Maximum for 2 second to exit process
+        setTimeout( function() {
+            return process.exit();
+        } , 2000) ;    
 
-
+    }else{
+        return null;
+    }
 }
 
 
@@ -549,9 +580,13 @@ function run_query(type, query, command, last, table) {
             } else {
                 if (last == true && index_column.length == 0) {
                     console.log(type + ' ' + table + ' successfully ' + command);
-                    return process.exit();
+                    //Maximum for 2 second to exit process
+                    setTimeout( function() {
+                        return process.exit();
+                    } , 2000) ; 
+                }else{
+                    return console.log(type +' '+ table + ' successfully ' + command);
                 }
-                return console.log(type +' '+ table + ' successfully ' + command);
                 //check create INDEX after create TABLE
                 // if(index_column.length>0){
                 //     return console.log('jalan index');

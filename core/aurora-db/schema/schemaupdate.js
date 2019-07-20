@@ -86,11 +86,9 @@ function run(type) {
         if (keys == files.length - 1) {
             last = true;
         }
-        //Run create to file query
+        
+        //Run update to file query
         return require('../query/'+type_database).update_table(schemafile.create.table_name,field_arr,last);
-
-
-
     });
 
 
