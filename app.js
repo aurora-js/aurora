@@ -17,8 +17,8 @@ try{
     //For run serve
     // aurora.serve();
 
-    aurora.schema("DELETE");
+    //aurora.schema("DELETE");
 
 } catch (error) {
-    //console.log(error);
+    console.log(error);
 }
