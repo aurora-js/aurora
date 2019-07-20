@@ -7,7 +7,7 @@ module.exports.create = {
         varchar('nama', 100),unique();
         bigInteger('NIK'),nullable();
         foreign('id_prodi_fk'),references('prodi','id'),onDelete('CASCADE'),onUpdate('RESTRICT');
-        index(['NIK','nama']);
+        // index(['NIK','nama']);
     }
 };
 
@@ -23,5 +23,12 @@ module.exports.update = {
         // addIndex(),index(['no_tlp'],'idx_no_tlp'); //! For add index with custom name index !
         // addIndex(),index(['no_tlp']); //! For add index without custom name index !
         // renameIndex('idx_no_tlp','index_no_tlp'); //! For renam index !
+    }
+};
+
+module.exports.delete = {
+    'blueprint' : function(){
+        dropForeign('id_prodi_fk');
+        //dropUnique('NIK');
     }
 };

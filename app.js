@@ -17,8 +17,8 @@ try{
     //For run serve
     // aurora.serve();
 
-    //aurora.schema("UPDATE");
+    aurora.schema("DELETE");
 
 } catch (error) {
-    
+    console.log(error);
 }

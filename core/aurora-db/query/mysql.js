@@ -138,6 +138,70 @@ function update_table(table, field, last) {
 }
 
 
+//Function delete table
+function delete_table(table, field, last) {
+    table_name = table;
+    query = "";
+    alter = "";
+
+    field.forEach(function (element, index) {
+        //Generate sql for delete column, index, foreign , primary
+        if(element.drop_column == true || element.drop_index == true || element.drop_unique == true || element.drop_foreign == true || element.drop_primary == true){
+            //Open syntax sql to create table
+            alter = "ALTER TABLE " + table_name + " DROP ";
+
+            //Syntax for add column     
+            if (element.drop_column == true) {
+                alter = alter + "COLUMN "+ element.drop_column_from;     
+            }else if(element.drop_index == true){
+                alter = alter + "INDEX "+ element.drop_index_from;     
+            }else if(element.drop_unique== true){
+                alter = alter + "INDEX "+ element.drop_unique_from;     
+            }else if(element.drop_foreign == true){
+                alter = alter + "FOREIGN KEY "+ element.drop_foreign_from;     
+            }else if(element.drop_primary == true){
+                alter = alter + "PRIMARY KEY";     
+            }
+
+            //Check attribute
+            attribute = check_attribute(element);
+
+            // if (index == field.length - 1) {
+            if (attribute.action == true) {
+                alter = alter + attribute.data;
+            }
+            // } else {
+            //     if (attribute.action == false) {
+            //         alter = alter + ", ";
+            //     } else {
+            //         alter = alter + attribute.data + ", ";
+            //     }
+            // }
+        }else{
+            //It's for delete table
+            
+            if(element.drop_table == true){
+                alter = "DROP TABLE ";
+            }else if(element.drop_table_exists == true){
+                alter = "DROP TABLE IF EXISTS ";
+            }
+
+            alter = alter + table_name;
+        }
+        
+        query = query + alter + ";\n"; 
+    });
+
+    //Close sytax sql
+    // query = query + " );";
+    // console.log(query);
+    //function run query from variable query
+    return run_query('Table', query, 'deleted', last, table_name);
+
+
+
+}
+
 
 /*---------------------------------------------- GET SYNTAX FOR COLUMNS -------------------------------------*/
 
@@ -504,3 +568,4 @@ function run_query(type, query, command, last, table) {
 module.exports.create_db = create_db;
 module.exports.create_table = create_table;
 module.exports.update_table = update_table;
+module.exports.delete_table = delete_table;

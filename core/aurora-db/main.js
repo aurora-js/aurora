@@ -1,6 +1,7 @@
 const mysql_grammar = require('./query/mysql');
 const schema_run = require('./schema/schemarun');
 const schema_update = require('./schema/schemaupdate');
+const schema_delete = require('./schema/schemadelete');
 const files = require('./schema/file');
 
 var field = '';
@@ -26,6 +27,9 @@ function schema(command,type) {
             break;
         case 'UPDATE':
             return schema_update.run(type);
+            break;
+        case 'DELETE':
+            return schema_delete.run(type);
             break;
         default:
             break;

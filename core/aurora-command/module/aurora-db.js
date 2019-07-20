@@ -61,7 +61,7 @@ program.command('db:run').action(()=>{
 ! Program command for update db!
 */
 program.command('db:update').action(()=>{
-  //If db:run not have config to default config main
+  //If db:update not have config to default config main
   if (process.argv.length === 2) {
     process.argv.push('main');
   }
@@ -70,7 +70,18 @@ program.command('db:update').action(()=>{
   return compile.schema('UPDATE');
 });
 
+/*
+! Program command for delete db!
+*/
+program.command('db:delete').action(()=>{
+  //If db:delete not have config to default config main
+  if (process.argv.length === 2) {
+    process.argv.push('main');
+  }
 
+  //Update schema for run DB
+  return compile.schema('DELETE');
+});
 
 /*
 ! Program command for create schema file !
