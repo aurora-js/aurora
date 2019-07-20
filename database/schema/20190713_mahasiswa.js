@@ -6,7 +6,7 @@ module.exports.create = {
         integer('id_prodi_fk');
         varchar('nama', 100),unique();
         bigInteger('NIK'),nullable();
-        foreign('id_prodi_fk'),references('prodi','id'),onDelete('CASCADE'),onUpdate('RESTRICT');
+        //foreign('id_prodi_fk'),references('prodi','id'),onDelete('CASCADE'),onUpdate('RESTRICT');
         // index(['NIK','nama']);
     }
 };
@@ -24,7 +24,8 @@ module.exports.update = {
 
 module.exports.delete = {
     'blueprint' : function(){
-        dropForeign('id_prodi_fk');
+        //dropForeign('id_prodi_fk');
         //dropUnique('NIK');
+        dropIfExistsTable('prodi');
     }
 };

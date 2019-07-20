@@ -23,7 +23,7 @@ var default_field = {
     drop_primary : false,
     drop_primary_from : null,
     drop_table : false,
-    drop_table_ifexists : false,
+    drop_table_if_exists : false,
     drop_table_from : null,
 };
 var type_database = null;
@@ -121,7 +121,7 @@ function dropTable(val){
 }
 
 function dropIfExistsTable(val){
-    add_value('drop_table_ifexists',true, true);
+    add_value('drop_table_if_exists',true, true);
     add_value('drop_table_from', val, false);  
 }
 
@@ -156,7 +156,7 @@ function add_value(field, val, newrow) {
             drop_primary : false,
             drop_primary_from : null,
             drop_table : false,
-            drop_table_ifexists : false,
+            drop_table_if_exists : false,
             drop_table_from : null,
         };
 

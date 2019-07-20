@@ -20,8 +20,9 @@ module.exports.update = {
 
 module.exports.delete = {
     'blueprint' : function(){
-        dropColumn('no_tlp');
+        //dropColumn('no_tlp');
         //dropIndex('idx_desimal');
         //dropPrimary();
+        dropTable('prodi');
     }
 };

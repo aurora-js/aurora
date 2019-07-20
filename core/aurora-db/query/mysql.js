@@ -182,7 +182,7 @@ function delete_table(table, field, last) {
             
             if(element.drop_table == true){
                 alter = "DROP TABLE ";
-            }else if(element.drop_table_exists == true){
+            }else if(element.drop_table_if_exists == true){
                 alter = "DROP TABLE IF EXISTS ";
             }
 
