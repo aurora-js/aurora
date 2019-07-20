@@ -17,7 +17,7 @@ try{
     //For run serve
     // aurora.serve();
 
-    aurora.schema("UPDATE");
+    //aurora.schema("UPDATE");
 
 } catch (error) {
     

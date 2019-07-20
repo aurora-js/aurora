@@ -1,3 +1,5 @@
+//TODO : UPDATE LAGI UNTUK JIKA KONEKSI TIDAK ADA ATAU XAMPP TIDAK NYALA GA NGELUARIN ERROR SAAT INI
+//TODO : ERROR PESAN SUCCESSFULLYNYA KADANG2 GA MUNCUL
 //Get connection enviroment
 const compile = require('../../compile');
 var con = compile.enviroment;
@@ -88,17 +90,19 @@ function update_table(table, field, last) {
             //Open syntax sql to create table
             alter = "ALTER TABLE " + table_name + " ";
 
-
             //Syntax for add column     
             if (element.add_column == true) {
                 alter = alter + "ADD "+ query_field(element);
-                //Run check alter for column
-            }else if(element.rename_index == true){
-                alter = alter + "RENAME INDEX "+element.rename_index_from +" TO "+ element.rename_index_to;
+                
             }else{
+
+                //Sytax for change type or rename column with type
                 alter = alter + "CHANGE COLUMN "+element.from_column+" "+query_field(element);
             }
+
+            //Check attribute
             attribute = check_attribute(element);
+
             // if (index == field.length - 1) {
             if (attribute.action == true) {
                 alter = alter + attribute.data;
