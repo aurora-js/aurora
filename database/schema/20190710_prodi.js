@@ -5,11 +5,11 @@ module.exports.create = {
         increment('id');
         varchar('nama_prodi', 100), unique();
         decimal('desimal');
-        //  float('field_float', 10);          //length ga bisa
-        //double('field_double', 2, (6));      //coba lagi
+        float('field_float', 10);          //length ga bisa
+        double('field_double', 10, 22);      //coba lagi
         //real('field_real', 25);              //coba lagi
-        //bit('field_bit', 10);                //table date & length bisa digunakan
-        //boolean('field_boolean', 7);         //coba lagi
+        //bit('field_bit', 6);                //table date & length bisa digunakan
+        //boolean('field_boolean', 1);         //coba lagi
         //serial('field_serial');              //serial harus tanpa length dan serial itu auto increment
         //Date('field_date', 10);              //table date dan length bisa digunakan
         //datetime('field_datetime', 4);      //bisa digunakan
@@ -29,7 +29,7 @@ module.exports.create = {
         //blob('test_blob', 10);                    //bisa digunakan tanpa length
         //longblob('field_longblob', 2);           //coba lagi
         //enums('coba_enums', 2);                       //coba lagi
-        //set('coba_set', 2);                           //coba lagi
+        set('coba_set', 2), unique();                           //coba lagi
         //geometry('coba_geometry', 10);             //bisa digunakan tanpa length
         //point('coba_point', 8);                      //bisa digunakan tanpa length
         //linestring('coba_linestring', 10);              //bisa digunakan tanpa length
