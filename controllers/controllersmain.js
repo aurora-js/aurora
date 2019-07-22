@@ -12,9 +12,13 @@ function create(req, res) {
         req.body.name,
         req.body.age
     ];
+
+    
     main.run({
-        
-    })
+        function(){
+            models().insert(values);
+        }
+    });
 
     return main.insert(values, req,res);
 }

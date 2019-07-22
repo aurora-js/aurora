@@ -15,7 +15,7 @@ try{
     aurora.enviroment();
 
     //For run serve
-    // aurora.serve();
+   aurora.serve();
 
     //aurora.schema("DELETE");
 
