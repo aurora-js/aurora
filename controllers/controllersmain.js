@@ -12,6 +12,10 @@ function create(req, res) {
         req.body.name,
         req.body.age
     ];
+    main.run({
+        
+    })
+
     return main.insert(values, req,res);
 }
 
