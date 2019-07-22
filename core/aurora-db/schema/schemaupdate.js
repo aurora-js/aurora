@@ -12,6 +12,18 @@ const files = fs.readdirSync(schema_folder); // reading files from folders
 var table_name = null;
 var field_arr = [];
 var default_field = {
+    from_column : null,
+    rename_column : false,
+    rename_column_from : null,
+    rename_column_to : null,
+    rename_index : false,
+    rename_index_from : null,
+    rename_index_to : null,
+    add_index : false,
+    add_index_name : null,
+    add_index_column : null,
+    add_column : false,
+    change_column : false,
     name: null,
     type: null,
     unsigned: false,
@@ -22,13 +34,7 @@ var default_field = {
     comment: null,
     useCurrent: false,
     unique: false,
-    index: false,
-    column_index: null,
     primary: false,
-    references_table: null,
-    references_id: null,
-    ondelete: null,
-    onupdate: null
 };
 var type_database = null;
 
@@ -55,7 +61,7 @@ function run(type) {
 
         var schemafile = require('../../../database/schema/' + element);
 
-        var json = JSON.stringify(schemafile.create.blueprint, function (key, value) {
+        var json = JSON.stringify(schemafile.update.blueprint, function (key, value) {
             if (typeof value === "function") {
                 return "/Function(" + value.toString() + ")/";
             }
@@ -80,11 +86,9 @@ function run(type) {
         if (keys == files.length - 1) {
             last = true;
         }
-        //Run create to file query
-        return require('../query/'+type_database).create_table(schemafile.create.table_name,schemafile.create.engine,field_arr,last);
-
-
-
+        
+        //Run update to file query
+        return require('../query/'+type_database).update_table(schemafile.create.table_name,field_arr,last);
     });
 
 
@@ -92,6 +96,30 @@ function run(type) {
     //console.log(files);
 }
 
+/* Function main for update */
+function column(val){
+    add_value('from_column', val, true);
+    add_value('change_column',true, false);
+}
+
+function rename(val){
+    add_value('rename_column', true, false);
+    add_value('rename_column_to', val, false);
+}
+
+function addColumn(){
+    add_value('add_column',true,true);
+}
+
+function addIndex(){
+    add_value('add_index',true,true);
+}
+
+function renameIndex(from,to){
+    add_value('rename_index',true,true);
+    add_value('rename_index_from', from,false);
+    add_value('rename_index_to', to,false);
+}
 /*Function for create increment field
     Add value have parameter :
         1. Name Field
@@ -99,7 +127,7 @@ function run(type) {
         3. True/False add row in field_arr
 */
 function increment(val) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('type', 'INT', false);
     add_value('notNull', true, false);
     add_value('autoIncrement', true, false);
@@ -111,7 +139,7 @@ function primary(val) {
 }
 
 function varchar(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'VARCHAR', false);
 }
@@ -124,38 +152,39 @@ function unique() {
     add_value('unique', true, false);
 }
 
-function index(arr) {
-    add_value('type', 'INDEX', true);
-    add_value('column_index', arr, false);
+function index(arr,name) {
+    // add_value('type', 'INDEX', false);
+    add_value('add_index_column', arr, false);
+    add_value('add_index_name', name, false);
 }
 
 function integer(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'INT', false);
 }
 
 function smallInteger(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'SMALLINT', false);
 }
 
 function mediumInteger(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'MEDIUMINT', false);
 }
 
 function bigInteger(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'BIGINT', false);
 }
 
 
 function foreign(val) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('type', 'FOREIGN', false);
 }
 
@@ -173,208 +202,208 @@ function onUpdate(val) {
 }
 
 function decimal(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'DECIMAL', false);
 }
 
 //DHONI
 function float(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'FLOAT', false);
 }
 
 function double(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'DOUBLE', false);
 }
 
 function real(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'REAL', false);
 }
 
 function bit(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'BIT', false);
 }
 
 function boolean(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'BOOLEAN', false);
 }
 
 function serial(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'SERIAL', false);
 }
 
 //date & time
 function date(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'DATE', false);
 }
 
 function datetime(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'DATETIME', false);
 }
 
 function timestamp(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'TIMESTAMP', false);
 }
 
 function time(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'TIME', false);
 }
 
 function year(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'YEAR', false);
 }
 
 //string
 function char(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'CHAR', false);
 }
 
 function varchar(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'VARCHAR', false);
 }
 
 function tinytext(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'TINYTEXT', false);
 }
 
 function text(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'TEXT', false);
 }
 
 function mediumtext(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'MEDIUMTEXT', false);
 }
 
 function longtext(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'LONGTEXT', false);
 }
 
 function binary(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'BINARY', false);
 }
 
 function varbinary(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'VARBINARY', false);
 }
 
 function tinyblob(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'TINYBLOB', false);
 }
 
 function mediumblob(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'MEDIUMBLOB', false);
 }
 
 function blob(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'BLOB', false);
 }
 
 function longblob(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'LONGBLOB', false);
 }
 
 function enums(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'ENUM', false);
 }
 
 function set(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'SET', false);
 }
 
 function geometry(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'GEOMETRY', false);
 }
 
 function point(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'POINT', false);
 }
 
 function linestring(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'LINESTRING', false);
 }
 
 function polygon(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'POLYGON', false);
 }
 
 function multipoint(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'MULTIPOINT', false);
 }
 
 function multilinestring(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'MULTILINESTRING', false);
 }
 
 function multipolygon(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'MULTIPOLYGON', false);
 }
 
 function geometrycollection(val, leng) {
-    add_value('name', val, true);
+    add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'GEOMETRYCOLLECTION', false);
 }
@@ -412,6 +441,18 @@ function add_value(field, val, newrow) {
         default_field[field] = val;
         field_arr.push(default_field);
         default_field = {
+            from_column : null,
+            rename_column : false,
+            rename_column_from : null,
+            rename_column_to : null,
+            rename_index : false,
+            rename_index_from : null,
+            rename_index_to : null,
+            add_index : false,
+            add_index_name : null,
+            add_index_column : null,
+            add_column : false,
+            change_column : false,
             name: null,
             type: null,
             unsigned: false,
@@ -422,14 +463,7 @@ function add_value(field, val, newrow) {
             comment: null,
             useCurrent: false,
             unique: false,
-            index: false,
-            column_index: null,
             primary: false,
-            references_table: null,
-            references_id: null,
-            ondelete: null,
-            onupdate: null
-
         };
 
         //If not add row to array field_arr

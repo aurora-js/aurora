@@ -1,4 +1,4 @@
-try {
+try{
     //For run module 
     aurora = require('./core/compile');
 
@@ -15,10 +15,10 @@ try {
     aurora.enviroment();
 
     //For run serve
-    aurora.serve();
+    // aurora.serve();
 
-    //aurora.schema("RUN");
+    //aurora.schema("DELETE");
 
 } catch (error) {
-    
+    console.log(error);
 }
