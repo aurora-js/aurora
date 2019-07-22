@@ -84,6 +84,20 @@ program.command('db:delete').action(()=>{
 });
 
 /*
+! Program command for refresh db!
+*/
+program.command('db:refresh').action(()=>{
+  //If db:delete not have config to default config main
+  if (process.argv.length === 2) {
+    process.argv.push('main');
+  }
+
+  //Update schema for run DB
+  return compile.schema('REFRESH');
+});
+
+
+/*
 ! Program command for create schema file !
 */
 program.command('schema:create <value>').action((value)=>{

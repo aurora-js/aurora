@@ -50,7 +50,7 @@ function check_db_type(type) {
 }
 
 //Function for run schema 
-function run(type) {
+function run(type,exitsuccess) {
     check_db_type(type);
     type_database = type;
 
@@ -88,7 +88,7 @@ function run(type) {
         }
         
         //Run update to file query
-        return require('../query/'+type_database).update_table(schemafile.create.table_name,field_arr,last);
+        return require('../query/'+type_database).update_table(schemafile.create.table_name,field_arr,last,exitsuccess);
     });
 
 

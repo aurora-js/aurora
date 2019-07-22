@@ -1,5 +1,3 @@
-//TODO : UPDATE LAGI UNTUK JIKA KONEKSI TIDAK ADA ATAU XAMPP TIDAK NYALA GA NGELUARIN ERROR SAAT INI
-//TODO : ERROR PESAN SUCCESSFULLYNYA KADANG2 GA MUNCUL
 //Get connection enviroment
 const compile = require('../../compile');
 var con = compile.enviroment;
@@ -23,7 +21,7 @@ function create_db(value) {
 }
 
 //Function create table
-function create_table(table, engine, field, last) {
+function create_table(table, engine, field, last, exitsuccess) {
     table_name = table;
     //Open syntax sql to create table
     query = "CREATE TABLE " + table_name + "(";
@@ -73,8 +71,8 @@ function create_table(table, engine, field, last) {
     //function run query from variable query 
     
     if(query != "" && field.length != 0){
-        return run_query('Table', query, 'created', last, table_name);
-    }else if(query == "" && last == true){
+        return run_query('Table', query, 'created', last, table_name, exitsuccess);
+    }else if(query == "" && last == true && exitsuccess != false){
 
         //Maximum for 2 second to exit process
         setTimeout( function() {
@@ -90,7 +88,7 @@ function create_table(table, engine, field, last) {
 }
 
 //Function update table
-function update_table(table, field, last) {
+function update_table(table, field, last, exitsuccess) {
     table_name = table;
     query = "";
     alter = "";
@@ -144,8 +142,8 @@ function update_table(table, field, last) {
     // console.log(query);
     //function run query from variable query
     if(query != ""){
-        return run_query('Table', query, 'updated', last, table_name);
-    }else if(query == "" && last == true){
+        return run_query('Table', query, 'updated', last, table_name, exitsuccess);
+    }else if(query == "" && last == true && exitsuccess != false){
 
         //Maximum for 2 second to exit process
         setTimeout( function() {
@@ -162,7 +160,7 @@ function update_table(table, field, last) {
 
 
 //Function delete table
-function delete_table(table, field, last) {
+function delete_table(table, field, last, exitsuccess) {
     table_name = table;
     query = "";
     alter = "";
@@ -220,8 +218,8 @@ function delete_table(table, field, last) {
     // console.log(query);
     //function run query from variable query
     if(query != ""){
-        return run_query('Table', query, 'deleted', last, table_name);
-    }else if(query == "" && last == true){
+        return run_query('Table', query, 'deleted', last, table_name, exitsuccess);
+    }else if(query == "" && last == true && exitsuccess != false){
 
         //Maximum for 2 second to exit process
         setTimeout( function() {
@@ -570,7 +568,7 @@ function query_field(field) {
 
 
 //function for run query
-function run_query(type, query, command, last, table) {
+function run_query(type, query, command, last, table, exitsuccess) {
     // return new Promise(resolve => {
         con = compile.enviroment();
         con.query(query, function (err, result) {
@@ -580,10 +578,12 @@ function run_query(type, query, command, last, table) {
             } else {
                 if (last == true && index_column.length == 0) {
                     console.log(type + ' ' + table + ' successfully ' + command);
-                    //Maximum for 2 second to exit process
-                    setTimeout( function() {
-                        return process.exit();
-                    } , 2000) ; 
+                    if(exitsuccess != false){
+                        //Maximum for 2 second to exit process
+                        setTimeout( function() {
+                            return process.exit();
+                        } , 2000) ; 
+                    } 
                 }else{
                     return console.log(type +' '+ table + ' successfully ' + command);
                 }

@@ -31,6 +31,18 @@ function schema(command,type) {
         case 'DELETE':
             return schema_delete.run(type);
             break;
+        case 'REFRESH':
+            //For delete table
+            schema_delete.delete_table(type,false);
+            setTimeout(function(){
+                //For create table
+                schema_run.run(type,false);
+                setTimeout(function(){
+                    //For update table
+                    schema_update.run(type);
+                }, 2000);
+            }, 2000);
+            break;
         default:
             break;
     }
