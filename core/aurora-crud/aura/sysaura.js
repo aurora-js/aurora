@@ -41,21 +41,24 @@ function insert(req, res){
 }
 
 //function read//
-function read(req, res){
-    //console.log(req, res);
+function read(val){
+    console.log(req, res);
     
-    con.query('SELECT ?? FROM ??' ,[columns, 'keunggulan'], function(err,rows)     {
- 
-        if(err){
-         
+   // con.query('SELECT * FROM keunggulan' ,  [columns, 'users'], function(err,rows)     {
+   //     if(err){ 
+       //  res.render('test',{page_title:"Dummy - Node.js",data:''});   
+        //}else{     
+          //  res.render('test',{page_title:"Dummy - Node.js",data:rows});
+        //}                   
+     //});
+    
+     con.query('select ?? from ??' , [select ,table_name], function(err,rows){
+     if(err){ 
          res.render('test',{page_title:"Dummy - Node.js",data:''});   
-        }else{
-            
+         }else{     
             res.render('test',{page_title:"Dummy - Node.js",data:rows});
-        }
-                            
-         });
-    
+         }                   
+      });
 };
 
 

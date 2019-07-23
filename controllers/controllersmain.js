@@ -11,10 +11,20 @@ function create(req,res){
     return main.insert(req,res);
 }
 
-function index(req,res){
-    return main.read(req,res);  
-}
+//function index(req,res){
+    //return main.read(req,res);  
+    
+//}
 
+//get read function from sysaura
+function index(val) {
+    return main.read({
+        select = '*',  
+        table_name = 'keunggulan'
+    });
+    
+    
+}
 
 
 
