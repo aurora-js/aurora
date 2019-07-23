@@ -25,17 +25,19 @@ Value is {
 }
 */
 function create_database(command, value) {
-  return inquirer.prompt([{
-    name: 'db',
-    type: 'confirm',
-    message: 'Do you want make ' + value.database + ' database ?',
-  }]).then((answers) => {
-    if (answers.db == true) {
-      return compile.db(command, value.type, value.database);
-    } else {
-      return process.exit();
-    }
-  });
+  return setTimeout(function(){
+    inquirer.prompt([{
+      name: 'db',
+      type: 'confirm',
+      message: 'Do you want make ' + value.database + ' database ?',
+    }]).then((answers) => {
+      if (answers.db == true) {
+        return compile.db(command, value.type, value.database);
+      } else {
+        return process.exit();
+      }
+    });
+  },200)
 }
 
 //Universal function for give message to user in command
