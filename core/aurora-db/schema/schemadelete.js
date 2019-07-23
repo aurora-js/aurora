@@ -39,6 +39,9 @@ function check_db_type(type) {
     }
 }
 
+/*
+@param exitsuccess for check if success run process.exit() or not
+*/
 //Function for run schema 
 function run(type,exitsuccess) {
     
@@ -89,6 +92,9 @@ function run(type,exitsuccess) {
     //console.log(files);
 }
 
+/*
+@param exitsuccess for check if success run process.exit() or not
+*/
 //Function for delete table
 function delete_table(type,exitsuccess) {
     check_db_type(type);

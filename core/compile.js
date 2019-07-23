@@ -45,6 +45,7 @@ function aurora_command(module,command,value){
 /*
 Run aurora schema
 ! Change mysql from enviroment !
+TODO : Tambah fungsi mysql bisa dari enviroment
 */
 function aurora_schema(command){
     return aurora_db_module.schema(command,'mysql');

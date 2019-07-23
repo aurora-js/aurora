@@ -49,6 +49,9 @@ function check_db_type(type) {
     }
 }
 
+/*
+@param exitsuccess for check if success run process.exit() or not
+*/
 //Function for run schema 
 function run(type,exitsuccess) {
     check_db_type(type);
