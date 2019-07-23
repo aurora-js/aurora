@@ -31,7 +31,8 @@ function connection_mysql(config){
         user: config.user,
         password: config.password,
         port: config.port,
-        database: config.database
+        database: config.database,
+        multipleStatements: true
     });
     
     db.connect(function (err) {
@@ -74,6 +75,7 @@ function connection_mysql_without_db(config){
         user: config.user,
         password: config.password,
         port: config.port,
+        multipleStatements: true
     });
     
     db.connect(function (err) {
