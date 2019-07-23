@@ -40,7 +40,7 @@ function check_db_type(type) {
 }
 
 //Function for run schema 
-function run(type) {
+function run(type,exitsuccess) {
     
     check_db_type(type);
     type_database = type;
@@ -78,9 +78,38 @@ function run(type) {
             last = true;
         }
         //Run create to file query
-        return require('../query/'+type_database).delete_table(schemafile.create.table_name,field_arr,last);
+        return require('../query/'+type_database).delete_table(schemafile.create.table_name,field_arr,last,exitsuccess);
 
 
+
+    });
+
+
+
+    //console.log(files);
+}
+
+//Function for delete table
+function delete_table(type,exitsuccess) {
+    check_db_type(type);
+    type_database = type;
+    
+    //Foreach file to get up value
+    files.forEach(function (element, keys) {
+        //Reset Field 
+        field_arr = [];
+
+        var schemafile = require('../../../database/schema/' + element);
+        //For add comman delete
+        dropIfExistsTable(schemafile.create.table_name); 
+
+        //Check last file
+        var last = false;
+        if (keys == files.length - 1) {
+            last = true;
+        }
+        //Run create to file query
+        return require('../query/'+type_database).delete_table(schemafile.create.table_name,field_arr,last,exitsuccess);
 
     });
 
@@ -169,3 +198,4 @@ function add_value(field, val, newrow) {
 
 
 module.exports.run = run;
+module.exports.delete_table = delete_table;

@@ -12,6 +12,7 @@ function main(name_config){
         return connection.connect(require(response_check.data));
     }
     //if error
+    console.log(response_check.data);
     return process.exit();
 }
 
@@ -39,7 +40,7 @@ Retrun true or false with response
 */
 function check_config(name_config){
     //get name config
-    if(name_config == null || name_config == 'main'){
+    if(name_config == null || name_config == 'main' || (name_config.includes(".") || name_config.includes(":") || name_config.includes("/"))){
         name_file_config = '../../config';
     }else{
         name_file_config = '../../'+name_config+'.config.js'; 

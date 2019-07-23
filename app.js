@@ -1,6 +1,6 @@
 try{
     //For run module 
-    aurora = require('./core/compile');
+    var aurora = require('./core/compile');
 
     //Config for use config.js
     /* If you want custom config, you must run command "node ./app.js name_config"
@@ -15,7 +15,7 @@ try{
     aurora.enviroment();
 
     //For run serve
-    // aurora.serve();
+   aurora.serve();
 
     //aurora.schema("DELETE");
 
