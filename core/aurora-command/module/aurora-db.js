@@ -37,7 +37,7 @@ function create_database(command, value) {
         return process.exit();
       }
     });
-  },200)
+  },200);
 }
 
 //Universal function for give message to user in command
