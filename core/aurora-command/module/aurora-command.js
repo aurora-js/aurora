@@ -50,7 +50,7 @@ function send_message(value) {
 /*
 ! Program command for run db!
 */
-program.command('db:run', 'Run Schema For Create Table To Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
+program.command('db:run').description('Run Schema For Create Table To Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
   //If db:run not have config to default config main
   if (process.argv.length === 2) {
     process.argv.push('main');
@@ -67,7 +67,7 @@ program.command('db:run', 'Run Schema For Create Table To Database').option('-s 
 /*
 ! Program command for update db!
 */
-program.command('db:update', 'Run Schema For Update Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
+program.command('db:update').description('Run Schema For Update Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
   //If db:update not have config to default config main
   if (process.argv.length === 2) {
     process.argv.push('main');
@@ -83,7 +83,7 @@ program.command('db:update', 'Run Schema For Update Table On Database').option('
 /*
 ! Program command for delete db!
 */
-program.command('db:delete', 'Run Schema For Delete Some Field or Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
+program.command('db:delete').description('Run Schema For Delete Some Field or Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
   //If db:delete not have config to default config main
   if (process.argv.length === 2) {
     process.argv.push('main');
@@ -99,7 +99,7 @@ program.command('db:delete', 'Run Schema For Delete Some Field or Table On Datab
 /*
 ! Program command for refresh db!
 */
-program.command('db:refresh', 'Run Schema For Refresh Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
+program.command('db:refresh').description('Run Schema For Refresh Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
   //If db:delete not have config to default config main
   if (process.argv.length === 2) {
     process.argv.push('main');
@@ -117,7 +117,7 @@ program.command('db:refresh', 'Run Schema For Refresh Table On Database').option
 ! Program command for create schema file !
 ! Value Required No Space !
 */
-program.command('schema:create <value>', 'Create a New Schema File').action((value)=>{
+program.command('schema:create <value>').description('Create a New Schema File').action((value)=>{
   //Run create schema file
   return compile.create_schema(value);
 });
