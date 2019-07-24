@@ -9,6 +9,9 @@ https://www.npmjs.com/package/inquirer
 const program = require('commander');
 const inquirer = require('inquirer');
 
+//Version Command Auora DB
+program.version('Aurora DB - 0.0.1');
+
 //Require compile module
 var compile = require('../../compile');
 
@@ -53,6 +56,46 @@ program.command('db:run').action(()=>{
   //Run schema
   return compile.schema('RUN');
 });
+
+/*
+! Program command for update db!
+*/
+program.command('db:update').action(()=>{
+  //If db:update not have config to default config main
+  if (process.argv.length === 2) {
+    process.argv.push('main');
+  }
+
+  //Update schema for run DB
+  return compile.schema('UPDATE');
+});
+
+/*
+! Program command for delete db!
+*/
+program.command('db:delete').action(()=>{
+  //If db:delete not have config to default config main
+  if (process.argv.length === 2) {
+    process.argv.push('main');
+  }
+
+  //Update schema for run DB
+  return compile.schema('DELETE');
+});
+
+/*
+! Program command for refresh db!
+*/
+program.command('db:refresh').action(()=>{
+  //If db:delete not have config to default config main
+  if (process.argv.length === 2) {
+    process.argv.push('main');
+  }
+
+  //Update schema for run DB
+  return compile.schema('REFRESH');
+});
+
 
 /*
 ! Program command for create schema file !

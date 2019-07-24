@@ -4,6 +4,6 @@ module.exports.config = {
     'port' : '3306',
     'user' : 'root',
     'password' : '',
-    'database' : 'auror',
+    'database' : 'auro',
     'db_type' : 'mysql'
 };

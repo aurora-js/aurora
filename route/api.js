@@ -14,11 +14,11 @@ app.set('view engine', 'ejs');
 
 
 app.get('/', function(req, res) {
-    sysaura.index(req,res)
+    sysaura.index(req,res);
 });
 
 app.post('/simpan', function(req, res) {
-    res.send(sysaura.create(req,res));
+   res.send(sysaura.create(req,res ));
 });
 
 app.listen(port);
