@@ -9,13 +9,14 @@ https://www.npmjs.com/package/inquirer
 const program = require('commander');
 const inquirer = require('inquirer');
 
-//Version Command Auora DB
-program.version('Aurora DB - 0.0.1');
+//Version Auora 
+program.version('Aurora - 0.1 Dev\nAurora Command - 0.0.1', '-v, --version');
 
 //Require compile module
 var compile = require('../../compile');
 
 
+// ! ------------------------------------------ For Aurora DB ----------------------------------- !
 
 // Run create database with question
 /*
@@ -49,7 +50,7 @@ function send_message(value) {
 /*
 ! Program command for run db!
 */
-program.command('db:run').option('-s --schema <schema>', 'Schema is required').action(()=>{
+program.command('db:run', 'Run Schema For Create Table To Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
   //If db:run not have config to default config main
   if (process.argv.length === 2) {
     process.argv.push('main');
@@ -66,7 +67,7 @@ program.command('db:run').option('-s --schema <schema>', 'Schema is required').a
 /*
 ! Program command for update db!
 */
-program.command('db:update').option('-s --schema <schema>', 'Schema is required').action(()=>{
+program.command('db:update', 'Run Schema For Update Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
   //If db:update not have config to default config main
   if (process.argv.length === 2) {
     process.argv.push('main');
@@ -82,7 +83,7 @@ program.command('db:update').option('-s --schema <schema>', 'Schema is required'
 /*
 ! Program command for delete db!
 */
-program.command('db:delete').option('-s --schema <schema>', 'Schema is required').action(()=>{
+program.command('db:delete', 'Run Schema For Delete Some Field or Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
   //If db:delete not have config to default config main
   if (process.argv.length === 2) {
     process.argv.push('main');
@@ -98,7 +99,7 @@ program.command('db:delete').option('-s --schema <schema>', 'Schema is required'
 /*
 ! Program command for refresh db!
 */
-program.command('db:refresh').option('-s --schema <schema>', 'Schema is required').action(()=>{
+program.command('db:refresh', 'Run Schema For Refresh Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
   //If db:delete not have config to default config main
   if (process.argv.length === 2) {
     process.argv.push('main');
@@ -116,13 +117,10 @@ program.command('db:refresh').option('-s --schema <schema>', 'Schema is required
 ! Program command for create schema file !
 ! Value Required No Space !
 */
-program.command('schema:create <value>').action((value)=>{
+program.command('schema:create <value>', 'Create a New Schema File').action((value)=>{
   //Run create schema file
   return compile.create_schema(value);
 });
-
-// allow commander to parse `process.argv`
-program.parse(process.argv);
 
 //Function for check  have command detail schema for run or not
 function check_detail_schema(){
@@ -134,4 +132,11 @@ function check_detail_schema(){
     return process.argv[4];
   }
 }
+
+//! ------------------------------------------------------------------------------------------------------- !
+
+// allow commander to parse `process.argv`
+program.parse(process.argv);
+
+
 module.exports.create_database = create_database;

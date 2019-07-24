@@ -1,5 +1,5 @@
 //include module command
-let command_auroradb = require('./module/aurora-db');
+let command_aurora = require('./module/aurora-command');
 
 //Function for run command module to module
 function modules(module,command,value){
@@ -17,7 +17,7 @@ function modules(module,command,value){
 function database(command,value){
     switch (command) {
         case 'CREATE DATABASE':
-                return command_auroradb.create_database(command,value);
+                return command_aurora.create_database(command,value);
             break;
     
         default:
