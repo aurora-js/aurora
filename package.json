@@ -31,6 +31,6 @@
   "homepage": "https://github.com/aurora-js/aurora#readme",
   "preferGlobal": true,
   "bin": {
-    "aurora": "./core/aurora-command/module/aurora-db.js"
+    "aurora": "./core/aurora-command/module/aurora-command.js"
   }
 }

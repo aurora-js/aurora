@@ -13,23 +13,32 @@ var con = enviroment.enviroment();
 
 
 function run(val){
-    var json = JSON.stringify(val, function (key, value) {
-        if (typeof value === "function") {
-            return "/Function(" + value.toString() + ")/";
-        }
-        return value;
-    });
+     if(val.models != ""){
+        models(val.models);
+    }
+    if (val.insert != ""){
+        insert(val.insert);
+    }
+    // var json = JSON.stringify(val.query, function (key, value) {
+    //     if (typeof value === "function") {
+    //         return "/Function(" + value.toString() + ")/";
+    //     }
+    //     return value;
+    // });
 
-    var obj2 = JSON.parse(json, function (key, value) {
-        if (typeof value === "string" &&
-            value.startsWith("/Function(") &&
-            value.endsWith(")/")) {
-            value = value.substring(10, value.length - 2);
-            return eval("(" + value + ")");
-        }
-        return value;
-    });
-    
+    // var obj2 = JSON.parse(json, function (key, value) {
+    //     if (typeof value === "string" &&
+    //         value.startsWith("/Function(") &&
+    //         value.endsWith(")/")) {
+    //         value = value.substring(10, value.length - 2);
+    //         console.log(value);
+    //         return eval("(" + value + ")");
+    //     }
+    //     return value;
+    // });
+    // console.log(obj2);
+    //obj2();
+
 }
 
 

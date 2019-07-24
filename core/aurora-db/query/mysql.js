@@ -69,17 +69,16 @@ function create_table(table, engine, field, last, exitsuccess) {
     query = query + " ) ENGINE=" + engine + ";";
     // console.log(query);
     //function run query from variable query 
-    
-    if(query != "" && field.length != 0){
+
+    if (query != "" && field.length != 0) {
         return run_query('Table', query, 'created', last, table_name, exitsuccess);
-    }else if(query == "" && last == true && exitsuccess != false){
-
+    } else if (query == "" && last == true && exitsuccess != false) {
         //Maximum for 2 second to exit process
-        setTimeout( function() {
+        setTimeout(function () {
             return process.exit();
-        } , 2000) ;    
+        }, 2000);
 
-    }else{
+    } else {
         return null;
     }
 
@@ -96,18 +95,18 @@ function update_table(table, field, last, exitsuccess) {
     //Foreach to function in field to syntax
     field.forEach(function (element, index) {
         //Generate sql for add column or change column
-        if(element.change_column == true || element.add_column == true || element.rename_index == true){
+        if (element.change_column == true || element.add_column == true || element.rename_index == true) {
             //Open syntax sql to create table
             alter = "ALTER TABLE " + table_name + " ";
 
             //Syntax for add column     
             if (element.add_column == true) {
-                alter = alter + "ADD "+ query_field(element);
-                
-            }else{
+                alter = alter + "ADD " + query_field(element);
+
+            } else {
 
                 //Sytax for change type or rename column with type
-                alter = alter + "CHANGE COLUMN "+element.from_column+" "+query_field(element);
+                alter = alter + "CHANGE COLUMN " + element.from_column + " " + query_field(element);
             }
 
             //Check attribute
@@ -124,33 +123,33 @@ function update_table(table, field, last, exitsuccess) {
             //         alter = alter + attribute.data + ", ";
             //     }
             // }
-        }else{
+        } else {
             var column_index = generate_index_column(element.add_index_column);
             //It's for add index 
             alter = "CREATE INDEX ";
-            if(element.add_index_name != null){
-                alter = alter+element.add_index_name +" ON "+ table_name + column_index;
-            }else{
-                alter = alter+element.add_index_column[0]+"_"+"index"+" ON "+ table_name + column_index;
+            if (element.add_index_name != null) {
+                alter = alter + element.add_index_name + " ON " + table_name + column_index;
+            } else {
+                alter = alter + element.add_index_column[0] + "_" + "index" + " ON " + table_name + column_index;
             }
         }
-        query = query + alter + ";\n"; 
+        query = query + alter + ";\n";
     });
 
     //Close sytax sql
     // query = query + " );";
     // console.log(query);
     //function run query from variable query
-    if(query != ""){
+    if (query != "") {
         return run_query('Table', query, 'updated', last, table_name, exitsuccess);
-    }else if(query == "" && last == true && exitsuccess != false){
+    } else if (query == "" && last == true && exitsuccess != false) {
 
         //Maximum for 2 second to exit process
-        setTimeout( function() {
+        setTimeout(function () {
             return process.exit();
-        } , 2000) ;    
+        }, 2000);
 
-    }else{
+    } else {
         return null;
     }
 
@@ -167,21 +166,21 @@ function delete_table(table, field, last, exitsuccess) {
 
     field.forEach(function (element, index) {
         //Generate sql for delete column, index, foreign , primary
-        if(element.drop_column == true || element.drop_index == true || element.drop_unique == true || element.drop_foreign == true || element.drop_primary == true){
+        if (element.drop_column == true || element.drop_index == true || element.drop_unique == true || element.drop_foreign == true || element.drop_primary == true) {
             //Open syntax sql to create table
             alter = "ALTER TABLE " + table_name + " DROP ";
 
             //Syntax for add column     
             if (element.drop_column == true) {
-                alter = alter + "COLUMN "+ element.drop_column_from;     
-            }else if(element.drop_index == true){
-                alter = alter + "INDEX "+ element.drop_index_from;     
-            }else if(element.drop_unique== true){
-                alter = alter + "INDEX "+ element.drop_unique_from;     
-            }else if(element.drop_foreign == true){
-                alter = alter + "FOREIGN KEY "+ element.drop_foreign_from;     
-            }else if(element.drop_primary == true){
-                alter = alter + "PRIMARY KEY";     
+                alter = alter + "COLUMN " + element.drop_column_from;
+            } else if (element.drop_index == true) {
+                alter = alter + "INDEX " + element.drop_index_from;
+            } else if (element.drop_unique == true) {
+                alter = alter + "INDEX " + element.drop_unique_from;
+            } else if (element.drop_foreign == true) {
+                alter = alter + "FOREIGN KEY " + element.drop_foreign_from;
+            } else if (element.drop_primary == true) {
+                alter = alter + "PRIMARY KEY";
             }
 
             //Check attribute
@@ -198,35 +197,35 @@ function delete_table(table, field, last, exitsuccess) {
             //         alter = alter + attribute.data + ", ";
             //     }
             // }
-        }else{
+        } else {
             //It's for delete table
-            
-            if(element.drop_table == true){
+
+            if (element.drop_table == true) {
                 alter = "DROP TABLE ";
-            }else if(element.drop_table_if_exists == true){
+            } else if (element.drop_table_if_exists == true) {
                 alter = "DROP TABLE IF EXISTS ";
             }
 
             alter = alter + table_name;
         }
-        
-        query = query + alter + ";\n"; 
+
+        query = query + alter + ";\n";
     });
 
     //Close sytax sql
     // query = query + " );";
     // console.log(query);
     //function run query from variable query
-    if(query != ""){
+    if (query != "") {
         return run_query('Table', query, 'deleted', last, table_name, exitsuccess);
-    }else if(query == "" && last == true && exitsuccess != false){
+    } else if (query == "" && last == true && exitsuccess != false) {
 
         //Maximum for 2 second to exit process
-        setTimeout( function() {
+        setTimeout(function () {
             return process.exit();
-        } , 2000) ;    
+        }, 2000);
 
-    }else{
+    } else {
         return null;
     }
 }
