@@ -4,6 +4,7 @@ var port    = process.env.PORT || 3000;
 var path    = require('path');
 var bodyParser = require('body-parser');
 var sysaura  = require('../controllers/controllersmain');
+var create = sysaura.create;
 
 app.use(express.static('../public'));
 app.use(bodyParser.json());
@@ -18,7 +19,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/simpan', function(req, res) {
-   res.send(sysaura.create(req,res ));
+   res.send(create(req,res));
 });
 
 app.listen(port);

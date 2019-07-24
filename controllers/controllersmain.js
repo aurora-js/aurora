@@ -8,20 +8,18 @@ var main = require('../core/aurora-crud/aura/sysaura');
 //declare route for function in sysaura//
 
 function create(req, res) {
-    var values = [
-        req.body.name,
-        req.body.age
-    ];
-
     
     main.run({
-        function(){
-            models().insert(values);
-        }
-    });
-
-    return main.insert(values, req,res);
-}
+        models : "adaisi",
+        insert : [
+            req.body.name,
+             req.body.age
+        ],
+        req : req,
+        res : res
+     });
+ 
+ }
 
 function index(req,res){
     return main.read(req,res);  
