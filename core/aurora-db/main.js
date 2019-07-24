@@ -20,16 +20,28 @@ function main(command, type, value) {
 }
 
 //Function for run schema
-function schema(command,type) {
+function schema(command,type,schema) {
     switch (command) {
         case 'RUN':
-            return schema_run.run(type);
+            return schema_run.run(type,true,schema);
             break;
         case 'UPDATE':
-            return schema_update.run(type);
+            return schema_update.run(type,true,schema);
             break;
         case 'DELETE':
-            return schema_delete.run(type);
+            return schema_delete.run(type,true,schema);
+            break;
+        case 'REFRESH':
+            //For delete table
+            schema_delete.delete_table(type,false,schema);
+            setTimeout(function(){
+                //For create table
+                schema_run.run(type,false,schema);
+                setTimeout(function(){
+                    //For update table
+                    schema_update.run(type,true,schema);
+                }, 2000);
+            }, 2000);
             break;
         default:
             break;

@@ -1,4 +1,4 @@
-try{
+
     //For run module 
     var aurora = require('./core/compile');
 
@@ -10,15 +10,11 @@ try{
             node ./app.js abc
     */
     module.exports.config_enviroment = process.argv[process.argv.length-1] || 'main';
-    
-    //For enviroment
-    aurora.enviroment();
 
-    //For run serve
-   aurora.serve();
-
-    //aurora.schema("DELETE");
-
-} catch (error) {
-    console.log(error);
-}
+    //For Run Function In Call App.js
+    try{
+        //For run serve
+        aurora.serve();
+    } catch (error) {
+        return null;
+    }

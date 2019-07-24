@@ -6,7 +6,7 @@ const async = require('async');
 const schema_folder = './database/schema/';
 
 //Name file from foreach in folder ./database/schema 
-const files = fs.readdirSync(schema_folder); // reading files from folders
+var files = fs.readdirSync(schema_folder); // reading files from folders
 
 //Main variable
 var table_name = null;
@@ -39,12 +39,46 @@ function check_db_type(type) {
     }
 }
 
+/*
+@param exitsuccess for check if success run process.exit() or not
+*/
 //Function for run schema 
-function run(type) {
+function run(type,exitsuccess,schema) {
     
     check_db_type(type);
     type_database = type;
     
+    //Check Run Schema In Certain File Or Not 
+    if(schema != null){
+        /*
+            ! Important !
+            Name file can not use '.js',
+            but if user have schema like :
+            1. 2019......_person_one.js
+            2. 2019......_person_two.js
+            user must use '.js', example user want run schema person_one, user must run command :
+            aurora db:run -s person_one or person_one.js
+        */
+        var no_file = true;
+        //For UpperCase to Lowercase
+        var name_file = schema.toLowerCase().split(' ').join('_');
+
+        //For search file
+        files.forEach(element => {
+            var get = element.includes(name_file);
+            if(get == true){
+                files = [];
+                files.push(element);
+                no_file = false;
+            }
+        });
+
+        //If no file
+        if(no_file == true){
+            return console.log('Schema '+name_file+' Not Found');
+        }
+    }
+
     //Foreach file to get up value
     files.forEach(function (element, keys) {
         //Reset Field 
@@ -78,9 +112,72 @@ function run(type) {
             last = true;
         }
         //Run create to file query
-        return require('../query/'+type_database).delete_table(schemafile.create.table_name,field_arr,last);
+        return require('../query/'+type_database).delete_table(schemafile.create.table_name,field_arr,last,exitsuccess);
 
 
+
+    });
+
+
+
+    //console.log(files);
+}
+
+/*
+@param exitsuccess for check if success run process.exit() or not
+*/
+//Function for delete table
+function delete_table(type,exitsuccess,schema) {
+    check_db_type(type);
+    type_database = type;
+    
+    //Check Run Schema In Certain File Or Not 
+    if(schema != null){
+        /*
+            ! Important !
+            Name file can not use '.js',
+            but if user have schema like :
+            1. 2019......_person_one.js
+            2. 2019......_person_two.js
+            user must use '.js', example user want run schema person_one, user must run command :
+            aurora db:run -s person_one or person_one.js
+        */
+        var no_file = true;
+        //For UpperCase to Lowercase
+        var name_file = schema.toLowerCase().split(' ').join('_');
+
+        //For search file
+        files.forEach(element => {
+            var get = element.includes(name_file);
+            if(get == true){
+                files = [];
+                files.push(element);
+                no_file = false;
+            }
+        });
+
+        //If no file
+        if(no_file == true){
+            return console.log('Schema '+name_file+' Not Found');
+        }
+    }
+
+    //Foreach file to get up value
+    files.forEach(function (element, keys) {
+        //Reset Field 
+        field_arr = [];
+
+        var schemafile = require('../../../database/schema/' + element);
+        //For add comman delete
+        dropIfExistsTable(schemafile.create.table_name); 
+
+        //Check last file
+        var last = false;
+        if (keys == files.length - 1) {
+            last = true;
+        }
+        //Run create to file query
+        return require('../query/'+type_database).delete_table(schemafile.create.table_name,field_arr,last,exitsuccess);
 
     });
 
@@ -169,3 +266,4 @@ function add_value(field, val, newrow) {
 
 
 module.exports.run = run;
+module.exports.delete_table = delete_table;
