@@ -10,7 +10,7 @@ var main = require('../core/aurora-crud/aura/sysaura');
 function create(req, res) {
     
     main.run({
-        models : "adaisi",
+        models : "members",
         insert : [
             req.body.name,
              req.body.age
