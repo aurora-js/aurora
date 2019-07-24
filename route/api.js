@@ -15,7 +15,7 @@ app.set('view engine', 'ejs');
 
 
 app.get('/', function(req, res) {
-    sysaura.index(req,res)
+    sysaura.index(req,res);
 });
 
 app.post('/simpan', function(req, res) {

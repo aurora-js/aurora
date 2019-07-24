@@ -63,21 +63,23 @@ function insert(values) {
 
 
 //function read//
-function read(req, res){
-    //console.log(req, res);
+function read(val,callback){
     
-    con.query('SELECT * FROM members', function(err,rows)     {
- 
-        if(err){
-         
-         res.render('test',{page_title:"Dummy - Node.js",data:''});   
-        }else{
-            
-            res.render('test',{page_title:"Dummy - Node.js",data:rows});
-        }
-                            
-         });
+ //con.query('SELECT * FROM keunggulan', function(err,rows)     {
+   //    if(err){ 
+     //   res.render('test',{page_title:"Dummy - Node.js",data:''});   
+    //}else{     
+      //    res.render('test',{page_title:"Dummy - Node.js",data:rows});
+       // }                   
+     //});
     
+     con.query('SELECT ?? FROM ??', [val.select , val.table_name], function(err,result){
+     if(err){ 
+            callback(err,null);  
+         }else{    
+            callback(null,result);
+         }                   
+      });
 };
 
 
