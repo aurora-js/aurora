@@ -10,7 +10,6 @@
             node ./app.js abc
     */
     module.exports.config_enviroment = process.argv[process.argv.length-1] || 'main';
-    
 
     //For Run Function In Call App.js
     try{

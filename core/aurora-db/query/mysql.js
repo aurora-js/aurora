@@ -73,7 +73,6 @@ function create_table(table, engine, field, last, exitsuccess) {
     if (query != "" && field.length != 0) {
         return run_query('Table', query, 'created', last, table_name, exitsuccess);
     } else if (query == "" && last == true && exitsuccess != false) {
-
         //Maximum for 2 second to exit process
         setTimeout(function () {
             return process.exit();
@@ -570,43 +569,31 @@ function query_field(field) {
 //function for run query
 function run_query(type, query, command, last, table, exitsuccess) {
     // return new Promise(resolve => {
-    con = compile.enviroment();
-    con.query(query, function (err, result) {
-        if (err) {
-            console.log('ERROR!\n' + err.sqlMessage);
-            return process.exit();
-        } else {
-            if (last == true && index_column.length == 0) {
-                console.log(type + ' ' + table + ' successfully ' + command);
-                //Maximum for 2 second to exit process
-                setTimeout(function () {
-                    return process.exit();
-                }, 2000);
+        con = compile.enviroment();
+        con.query(query, function (err, result) {
+            if (err) {
+                console.log('ERROR!\n' + err.sqlMessage);
+                return process.exit();
             } else {
                 if (last == true && index_column.length == 0) {
                     console.log(type + ' ' + table + ' successfully ' + command);
-                    if (exitsuccess != false) {
+                    if(exitsuccess != false){
                         //Maximum for 2 second to exit process
-                        setTimeout(function () {
+                        setTimeout( function() {
                             return process.exit();
-                        }, 2000);
-                    }
-                } else {
-                    return console.log(type + ' ' + table + ' successfully ' + command);
+                        } , 2000) ; 
+                    } 
+                }else{
+                    return console.log(type +' '+ table + ' successfully ' + command);
                 }
                 //check create INDEX after create TABLE
                 // if(index_column.length>0){
                 //     return console.log('jalan index');
                 // }
             }
-            //check create INDEX after create TABLE
-            // if(index_column.length>0){
-            //     return console.log('jalan index');
-            // }
-        }
         //     resolve();
         // });
-
+    
     });
 }
 
