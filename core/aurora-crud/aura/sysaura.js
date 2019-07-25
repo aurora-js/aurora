@@ -13,9 +13,7 @@ var con = enviroment.enviroment();
 
 
 function run(val){
-     if(val.models != ""){
-        models(val.models);
-    }
+     
     if (val.insert != ""){
         insert(val.insert);
     }
@@ -44,18 +42,27 @@ function run(val){
 
 
 //function insert///
-function insert(values) {
-    console.log(values);
+function insert(val) {
+    if(val.models != ""){
+        models(val.models);
+    }
+    //console.log(values);
     //basic insert code without relation//
     // "con" get from variable then use .query() for setting code query for store data to mysql
     // use parameter values as aurora parameter default
     // the the values can be use in .query setting code
 
-    con.query('INSERT INTO members (name, age) VALUES (?) ', [values], function (err, result) {
+    con.query('INSERT INTO ?? (??) VALUES (?) ', [val.table, val.field, val.result], function (err, result) {
         if (err) {
-            console.log(err);
+            console.log("your insert code stucture not match, please check your main.insert");
         } else {
-            console.log('Success');
+            con.query('INSERT INTO ?? (??) VALUES (?) ', [val.secondtable, val.secondfield, val.secondresult], function (err, result) {
+                if (err) {
+                    console.log("your insert code stucture not match, please check your main.insert");
+                } else {
+                    console.log('Success');
+                }
+            });
         }
     });
 }
