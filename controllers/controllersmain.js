@@ -10,11 +10,12 @@ var main = require('../core/aurora-crud/aura/sysaura');
 function create(req, res) {
     
     return main.insert({
-        models : "members",
-        "table" : ['members'],
-        "field" : ['name'],
+        models : "keunggulan",
+        "table" : ['keunggulan'],
+        "field" : ['id' ,'title ,deskripsi'],
         "result" : [
-            req.body.name
+            req.body.title,
+            req.body.deskripsi
         ]
      });
  
@@ -27,8 +28,8 @@ function create(req, res) {
 //get read function from sysaura
 function index(req, res) {
     return  main.read({
-        "select" : ['name','age'] , 
-        "table_name" : ['members']
+        "select" : ['title','deskripsi'] , 
+        "table_name" : ['keunggulan']
     }, function(err, data){
         if (err) {
             // error handling code goes here
