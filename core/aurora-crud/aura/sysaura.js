@@ -56,13 +56,7 @@ function insert(val) {
         if (err) {
             console.log("your insert code stucture not match, please check your main.insert");
         } else {
-            con.query('INSERT INTO ?? (??) VALUES (?) ', [val.secondtable, val.secondfield, val.secondresult], function (err, result) {
-                if (err) {
-                    console.log("your insert code stucture not match, please check your main.insert");
-                } else {
-                    console.log('Success');
-                }
-            });
+           console.log("success");
         }
     });
 }
