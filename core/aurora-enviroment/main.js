@@ -55,6 +55,19 @@ function check_config(name_config){
     }
 }
 
+//Function get value config user 
+function get_config(name_config){
+    var response_check = check_config(name_config);
+    //if no error
+    if(response_check.action == true){
+        var data_config  = require(response_check.data);
+        return data_config;
+    }
+    //if error
+    console.log(response_check.data);
+    return process.exit();
+}
 
 module.exports.main = main;
 module.exports.main_without_db = main_without_db;
+module.exports.get_config = get_config;
