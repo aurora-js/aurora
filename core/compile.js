@@ -46,11 +46,10 @@ function aurora_command(module, command, value) {
 
 /*
 Run aurora schema
-! Change mysql from enviroment !
-TODO : Tambah fungsi mysql bisa dari enviroment
 */
 function aurora_schema(command,schema) {    
-    return aurora_db_module.schema(command, 'mysql',schema);
+    var config = aurora_get_config();
+    return aurora_db_module.schema(command, config.config.db_type, schema);
 }
 
 /*
@@ -60,6 +59,13 @@ function aurora_create_schema(name) {
     return aurora_db_module.create_schema(name);
 }
 
+
+//Function For Get Config Value From User
+function aurora_get_config() {
+    app = require('../app');
+    return aurora_enviroment_module.get_config(app.config_enviroment);
+}
+
 module.exports.serve = serve;
 module.exports.enviroment = aurora_enviroment;
 module.exports.aurora_enviroment_without_db = aurora_enviroment_without_db;
@@ -67,3 +73,4 @@ module.exports.db = aurora_db;
 module.exports.command = aurora_command;
 module.exports.schema = aurora_schema;
 module.exports.create_schema = aurora_create_schema;
+module.exports.get_config = aurora_get_config;
