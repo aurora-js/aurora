@@ -12,7 +12,7 @@ function create(req, res) {
     return main.insert({
         models : "keunggulan",
         "table" : ['keunggulan'],
-        "field" : ['id' ,'title ,deskripsi'],
+        "field" : ['title' ,'deskripsi'],
         "result" : [
             req.body.title,
             req.body.deskripsi
@@ -28,8 +28,10 @@ function create(req, res) {
 //get read function from sysaura
 function index(req, res) {
     return  main.read({
-        "select" : ['title','deskripsi'] , 
-        "table_name" : ['keunggulan']
+        "select" : ['deskripsi'] , 
+        "table_name" : ['keunggulan'] ,
+        "where" : ['deskripsi'] ,
+        "any" : ['ini deskripsi']
     }, function(err, data){
         if (err) {
             // error handling code goes here
