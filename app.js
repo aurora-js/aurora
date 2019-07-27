@@ -15,6 +15,7 @@
     try{
         //For run serve
         aurora.serve();
+        // console.log(aurora.model('mahasiswa','create',{field : 'user mail.com', password_confirmation : 'user mail.com'}));
     } catch (error) {
-        return null;
+        return console.log(error);
     }
