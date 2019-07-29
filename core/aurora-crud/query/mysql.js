@@ -4,9 +4,6 @@ const enviroment = require('../../compile.js');
 const express = require('express');
 var app     = express();
 
-
-//declare var con from enviroment//
-var enviroment = require('../../compile.js');
 var con = enviroment.enviroment();
 
 //For run query (It's universal)

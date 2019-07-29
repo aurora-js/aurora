@@ -65,25 +65,22 @@ function generate_rules(table){
 
 function generate_rules_data(data){
     var field = [];
+    var rules = [];
     //Foreach field and check type and nullable field
     if(data.length > 0){
         var generate_rules = "";
         generate_rules = generate_rules + "{\n\t";
         data.forEach(function (element, index){
             field.push(element.Field);
-            console.log(field);
-            console.log(field['id']);
             var another = false;
             //If have integer add to number rules
             if(element.Type.includes('int')){
-                another = true;
-                generate_rules = generate_rules + "\n\"" + element.Field + "\" : ";
-                generate_rules = generate_rules + "\"number";
+                rules[index].push('number');
             }
         });
         generate_rules = generate_rules + "\n\n};\n";
         // var obj = JSON.parse(generate_rules);
-        // console.log(generate_rules);
+        console.log(rules);
     }else{
         return null;
     }
