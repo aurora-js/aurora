@@ -1,11 +1,18 @@
 //get connection function from file compile.js with name aurora_enviroment//
-var express = require('../compile.js');
+const enviroment = require('../../compile.js');
 //get express module//
-var express = require('express');
+const express = require('express');
 var app     = express();
-
-function query(){
-        // bingung nih problem harus tulis di clickup
+var con = enviroment.enviroment();
+function query(val){
+    console.log(val);
+        con.query('INSERT INTO ?? (??) VALUES (?) ', [val.table, val.field, val.result], function (err, result) {
+                if (err) {
+                    console.log("your insert code stucture not match, please check your main.insert");
+                } else {
+                   console.log("success");
+                }
+            });
 }
 
 module.exports.query = query;
