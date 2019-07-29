@@ -46,11 +46,11 @@ function insert(val) {
     if(val.models != ""){
         models(val.models);
     }
-    //console.log(values);
+    //console.log(val);
     //basic insert code without relation//
     // "con" get from variable then use .query() for setting code query for store data to mysql
-    // use parameter values as aurora parameter default
-    // the the values can be use in .query setting code
+    // use parameter "val" as aurora parameter default
+    // val can be use in .query setting code
     aura.query(val);
    
 }
