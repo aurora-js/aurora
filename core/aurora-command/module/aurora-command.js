@@ -135,6 +135,32 @@ function check_detail_schema(){
 
 //! ------------------------------------------------------------------------------------------------------- !
 
+
+// ! ------------------------------------------ For Aurora CRUD ----------------------------------- !
+
+/*
+! Program command for create model file!
+! Value Required No Space !
+*/
+program.command('model:create <value>').description('Create a New Model File').option('-t --table <schema>', 'Add Value Table Name on Create Model File').action((value)=>{
+  var table_name = "";
+  //Check have value table name or not
+  if(process.argv[4] == '-t' || process.argv[4] == '--table'){
+    //If no custom config
+    if(process.argv[5] == undefined){
+      process.argv.push('main');
+    }  
+    table_name = process.argv[5];
+  }
+
+  //Run create model file
+  return compile.create_model(value,table_name);
+
+});
+
+//! ------------------------------------------------------------------------------------------------------- !
+
+
 // allow commander to parse `process.argv`
 program.parse(process.argv);
 
