@@ -1,11 +1,13 @@
+//get connection function from file compile.js with name aurora_enviroment//
+const enviroment = require('../../compile.js');
 //get express module//
-var express = require('express');
+const express = require('express');
 var app     = express();
+
 
 //declare var con from enviroment//
 var enviroment = require('../../compile.js');
 var con = enviroment.enviroment();
-
 
 //For run query (It's universal)
 //Function query must have parameter sytax query and callback for return response after run query
@@ -31,6 +33,17 @@ function query(syntax,value,callback){
                         }                   
                 });   
         }
+}
+
+function insertt_query(val){
+    console.log(val);
+        con.query('INSERT INTO ?? (??) VALUES (?) ', [val.table, val.field, val.result], function (err, result) {
+                if (err) {
+                    console.log("your insert code stucture not match, please check your main.insert");
+                } else {
+                   console.log("success");
+                }
+            });
 }
 
 module.exports.query = query;

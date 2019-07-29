@@ -9,7 +9,7 @@ var data_read = "";
 //declare var con from enviroment//
 var enviroment = require('../../compile.js');
 var con = enviroment.enviroment();
-
+var aura = require('../query/mysql.js');
 
 
 function run(val){
@@ -51,14 +51,8 @@ function insert(val) {
     // "con" get from variable then use .query() for setting code query for store data to mysql
     // use parameter values as aurora parameter default
     // the the values can be use in .query setting code
-
-    con.query('INSERT INTO ?? (??) VALUES (?) ', [val.table, val.field, val.result], function (err, result) {
-        if (err) {
-            console.log("your insert code stucture not match, please check your main.insert");
-        } else {
-           console.log("success");
-        }
-    });
+    aura.insert_query(val);
+   
 }
 
 

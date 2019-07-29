@@ -12,9 +12,10 @@ function create(req, res) {
     return main.insert({
         models : "members",
         "table" : ['members'],
-        "field" : ['name'],
+        "field" : ['name','age'],
         "result" : [
-            req.body.name
+            req.body.name,
+            req.body.age
         ]
      });
  
