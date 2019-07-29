@@ -54,12 +54,12 @@ function generate_rules_data(data){
     //Foreach field and check type and nullable field
     if(data.length > 0){
         var generate_rules = "";
-
+        
         data.forEach(function (element, index){
             field.push(element.Field);
             var another = false;
             //If have integer add to number rules
-            if(element.Type.includes('int')){
+            if(element.Type.includes('int') && element.Extra != "auto_increment"){
                 if(rules[index] != undefined && rules[index] != null && rules[index] != ""){
                     rules[index][rules[index].length] = 'number';
                 }else{
@@ -86,7 +86,7 @@ function generate_rules_data(data){
             }
 
             //If not nullable add required in rules
-            if(element.Null == "YES"){
+            if(element.Null == "YES" && element.Extra != "auto_increment"){
                 if(rules[index] != undefined && rules[index] != null && rules[index] != ""){
                     rules[index][rules[index].length] = 'required';
                 }else{
@@ -116,7 +116,6 @@ function generate_rules_data(data){
             }
 
             //!------------------------------------------------------------------------------------------!
-            
         });
 
         //Generate sytax for model
