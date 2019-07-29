@@ -18,11 +18,11 @@ module.exports.create = {
         //time('time', 6);                   //bisa digunakan
         //year('field_year', 10);            //length tidak dapat digunakan dan auto increment
         //Char('field_char', 10);            //coba lagi
-        //varchar('field_varchar', 10);      //bisa digunakan
+        varchar('field_varchar', 10);      //bisa digunakan
         //tinytext('field_tinytext', 2);     //coba lagi
         //text('field_text', 10);            //dapat digunakan tapi tidak terbaca lengthnya atau text tidak terbatas
         //mediumtext('field_mediumtext', 10);  //coba lagi
-        //longtext('bisa_longtext');             //dapat digunakan tapi tidak bisa menggunakan lengthnya
+        longtext('bisa_longtext');             //dapat digunakan tapi tidak bisa menggunakan lengthnya
         //binary('field_binary', 10);           //bisa digunakan
         //varbinary('coba_varbinary', 10);        //bisa digunakan
         //tinyblob('field_tinyblob', 10);          //coba lagi
