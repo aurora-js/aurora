@@ -35,7 +35,7 @@ function query(syntax,value,callback){
         }
 }
 
-function insertt_query(val){
+function insert_query(val){
     console.log(val);
         con.query('INSERT INTO ?? (??) VALUES (?) ', [val.table, val.field, val.result], function (err, result) {
                 if (err) {
