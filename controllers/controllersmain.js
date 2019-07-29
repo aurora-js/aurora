@@ -27,12 +27,24 @@ function create(req, res) {
 
 //get read function from sysaura
 function index(req, res) {
-    return  main.read({
-        "select" : ['deskripsi'] , 
-        "table_name" : ['keunggulan'] ,
-        "where" : ['deskripsi'] ,
-        "any" : ['ini deskripsi']
-    }, function(err, data){
+    switch (read) {
+        case 'where ':
+            return  main.read({
+                "select" : ['deskripsi'] , 
+                "table_name" : ['keunggulan'] ,
+                "where" : ['deskripsi'] ,
+                "any" : ['ini deskripsi']};
+            break;
+        default;
+            break;
+    }
+    // return  main.read({
+    //     "select" : ['deskripsi'] , 
+    //     "table_name" : ['keunggulan'] ,
+    //     "where" : ['deskripsi'] ,
+    //     "any" : ['ini deskripsi']
+    //},
+     function(err, data){
         if (err) {
             // error handling code goes here
             console.log("ERROR : ",err);            
