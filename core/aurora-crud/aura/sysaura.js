@@ -76,15 +76,7 @@ function insert(val) {
 function read(val,callback){
     if(val.models != ""){
         // models(val.models);
-    }
- //con.query('SELECT * FROM keunggulan', function(err,rows)     {
-   //    if(err){ 
-     //   res.render('test',{page_title:"Dummy - Node.js",data:''});   
-    //}else{     
-      //    res.render('test',{page_title:"Dummy - Node.js",data:rows});
-       // }                   
-     //});
-    
+    }   
      aura.read_query(val,callback);
 };
 

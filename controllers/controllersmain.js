@@ -20,10 +20,6 @@ function create(req, res) {
  
  }
 
-//function index(req,res){
-  //  return main.read(req,res);    
-//}
-
 //get read function from sysaura
 function index(req, res) {
     return  main.read({
