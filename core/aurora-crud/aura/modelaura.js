@@ -85,7 +85,7 @@ function rules(condition,value){
         }else{
             //If no field and rules required
             if(get_rules_field.includes('required') || get_rules_field.includes(' required')){
-                required_attr(element, null);
+                required_attr(element, null, []);
             }
         }
     });

@@ -4,7 +4,8 @@ module.exports.create = {
     'blueprint' : function(){
         increment('id');
         integer('id_prodi_fk');
-        varchar('nama', 100),unique();
+        varchar('Email', 100),unique();
+        varchar('PASSWORD', 100);
         bigInteger('NIK'),nullable();
         //foreign('id_prodi_fk'),references('prodi','id'),onDelete('CASCADE'),onUpdate('RESTRICT');
         // index(['NIK','nama']);

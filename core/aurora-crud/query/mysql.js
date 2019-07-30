@@ -43,4 +43,28 @@ function insert_query(val){
             });
 }
 
+function update_query(val) { 
+        console.log(val);
+          con.query('UPDATE INTO ?? SET ?? = VALUES(?)' [Val.table, val.field, val.result], function (err,result) {
+                if (err) {
+                        console.log("your insert code stucture not match, please check your main.insert");
+                    } else {
+                       console.log("success");
+                    }   
+          });
+        
+}
+
+function read_query(val,callback){
+        con.query('SELECT ?? FROM ?? ', [val.select , val.table_name ], function(err,result){
+                if(err){ 
+                       callback(err,null);  
+                    }else{    
+                        callback(null,result);
+                    }                   
+                 });
+}
 module.exports.query = query;
+module.exports.read_query = read_query;
+module.exports.insert_query = insert_query;
+module.exports.update_query = update_query;

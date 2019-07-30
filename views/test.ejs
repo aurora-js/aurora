@@ -10,9 +10,9 @@
 <body>
     <form action="/simpan" method="post">
       name:<br>
-      <input type="text" name="name">
+      <input type="text" name="title">
       <br>umur:<br>
-      <input type="number" name="age"><br>
+      <input type="number" name="deskripsi"><br>
   
       <input type="submit" value="Submit">
     </form>
@@ -42,8 +42,8 @@
   for(var i = 0; i< data.length; i++) {%>  
   <tr>
     <th scope="row"><%= (i+1) %></th>
-    <td><%= data[i].title%></td>
-    <td><%= data[i].deskripsi%></td>
+    <td><%= data[i].name%></td>
+    <td><%= data[i].age%></td>
     <td>
     <a class="btn btn-success edit" href="../customers/edit/<%=data[i].id%>">Edit</a>                       
     <a class="btn btn-danger delete" onclick="return alert('Are You sure?')" href="../customers/delete/<%=data[i].id%>">Delete</a>                       
