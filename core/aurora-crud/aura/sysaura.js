@@ -3,13 +3,13 @@ var express = require('../../compile.js');
 //get express module//
 var express = require('express');
 var app = express();
-var table = "";
-var data_read = "";
+var DB = "";
 
 //declare var con from enviroment//
 var enviroment = require('../../compile.js');
 var con = enviroment.enviroment();
 var aura = require('../query/mysql.js');
+var get_config = enviroment.get_config();
 
 function fetch_json_models(field,value){
     var json = "{";
@@ -52,7 +52,6 @@ function run(val){
 }
 
 
-
 //function insert///
 function insert(val) {
     
@@ -61,13 +60,22 @@ function insert(val) {
         var response_model = enviroment.model(val.models,'create',json_model);
         console.log(response_model);
     }
-    //console.log(values);
+    //console.log(val);
     //basic insert code without relation//
     // "con" get from variable then use .query() for setting code query for store data to mysql
     // use parameter values as aurora parameter default
     // the the values can be use in .query setting code
-    // aura.insert_query(val);
-   
+    switch (get_config.config.db_type) {
+        case 'mysql':
+    
+            require('../query/mysql').insert_query(val);
+    
+            break;
+    
+        default:
+            break;
+    }
+    
 }
 
 
