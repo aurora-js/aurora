@@ -1,11 +1,56 @@
 //get connection function from file compile.js with name aurora_enviroment//
-var express = require('../compile.js');
+const enviroment = require('../../compile.js');
 //get express module//
-var express = require('express');
+const express = require('express');
 var app     = express();
 
-function query(){
-        // bingung nih problem harus tulis di clickup
+var con = enviroment.enviroment();
+
+//For run query (It's universal)
+//Function query must have parameter sytax query and callback for return response after run query
+//If parameter value have some value, then query run with value
+function query(syntax,value,callback){
+        //If parameter value have some value
+        if(value != null && value != "" && value != " " && value != undefined){
+                con.query(syntax, value, function(err,result){
+                        if(err){
+                                console.log(err); 
+                                return callback(err,null);  
+                        }else{    
+                                return callback(null,result);
+                        }                   
+                });
+        }else{
+                con.query(syntax, function(err,result){
+                        if(err){
+                                console.log(err); 
+                                return callback(err,null);  
+                        }else{    
+                                return callback(null,result);
+                        }                   
+                });   
+        }
 }
 
+function insert_query(val){
+    console.log(val);
+        con.query('INSERT INTO ?? (??) VALUES (?) ', [val.table, val.field, val.result], function (err, result) {
+                if (err) {
+                    console.log("your insert code stucture not match, please check your main.insert");
+                } else {
+                   console.log("success");
+                }
+            });
+}
+
+function read_query(val,callback){
+        con.query('SELECT ?? FROM ?? WHERE ?? = ?', [val.select , val.table_name , val.where , val.any], function(err,result){
+                if(err){ 
+                       callback(err,null);  
+                    }else{    
+                        callback(null,result);
+                    }                   
+                 });
+}
 module.exports.query = query;
+module.exports.read_query = read_query;
