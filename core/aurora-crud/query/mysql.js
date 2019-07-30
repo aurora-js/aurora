@@ -54,3 +54,4 @@ function read_query(val,callback){
 }
 module.exports.query = query;
 module.exports.read_query = read_query;
+module.exports.insert_query = insert_query;

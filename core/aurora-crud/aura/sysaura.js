@@ -11,7 +11,19 @@ var enviroment = require('../../compile.js');
 var con = enviroment.enviroment();
 var aura = require('../query/mysql.js');
 
+function fetch_json_models(field,value){
+    var json = "{";
 
+    field.forEach(function(element,index){
+        json = json + "\""+element+"\""+":"+"\""+value[index]+"\"";
+        if(value[index+1] != undefined){
+            json = json + ',';
+        }
+    });
+    json = json + '}';
+
+    return JSON.parse(json);
+}
 function run(val){
      
     if (val.insert != ""){
@@ -43,15 +55,18 @@ function run(val){
 
 //function insert///
 function insert(val) {
+    
     if(val.models != ""){
-        models(val.models);
+        var json_model = fetch_json_models(val.field,val.result);
+        var response_model = enviroment.model(val.models,'create',json_model);
+        console.log(response_model);
     }
     //console.log(values);
     //basic insert code without relation//
     // "con" get from variable then use .query() for setting code query for store data to mysql
     // use parameter values as aurora parameter default
     // the the values can be use in .query setting code
-    aura.insert_query(val);
+    // aura.insert_query(val);
    
 }
 
@@ -60,7 +75,7 @@ function insert(val) {
 //function read//
 function read(val,callback){
     if(val.models != ""){
-        models(val.models);
+        // models(val.models);
     }
  //con.query('SELECT * FROM keunggulan', function(err,rows)     {
    //    if(err){ 
@@ -75,12 +90,12 @@ function read(val,callback){
 
 
 
-function models() {
-    //sementara function model kosong dulu
-    console.log("bisadong");
-}
+// function models() {
+//     //sementara function model kosong dulu
+//     console.log("bisadong");
+// }
 
 module.exports.insert = insert;
 module.exports.read = read;
-module.exports.models = models;
+// module.exports.models = models;
 module.exports.run = run;
