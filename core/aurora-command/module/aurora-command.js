@@ -142,19 +142,36 @@ function check_detail_schema(){
 ! Program command for create model file!
 ! Value Required No Space !
 */
-program.command('model:create <value>').description('Create a New Model File').option('-t --table <schema>', 'Add Value Table Name on Create Model File').action((value)=>{
+program.command('model:create <value>').description('Create a New Model File').option('-t --table <table_name>', 'Add Value Table Name on Create Model File').option('-g --generate', 'Create Model With Generate Rules From Table').action(()=>{
   var table_name = "";
+  var generate = false;
+
   //Check have value table name or not
   if(process.argv[4] == '-t' || process.argv[4] == '--table'){
     //If no custom config
     if(process.argv[5] == undefined){
       process.argv.push('main');
     }  
+
+    //If table name is -g or --generate
+    if(process.argv[5] == "-g" || process.argv[5] == "--generate"){
+        console.log('ERROR!\n' + 'Table Name Not Found');
+        return process.exit();
+    }
+
     table_name = process.argv[5];
   }
-
+  
+  //If Have generate and table not null
+  if((process.argv[6] == '-g' || process.argv[6] == '--generate') && (process.argv[4] == '-t' || process.argv[4] == '--table')){
+    //If no custom config
+    if(process.argv[7] == undefined){
+      process.argv.push('main');
+    } 
+    generate = true;
+  }
   //Run create model file
-  return compile.create_model(value,table_name);
+  return compile.create_model(process.argv[3],table_name,generate);
 
 });
 

@@ -3,18 +3,17 @@ var express = require('../../compile.js');
 //get express module//
 var express = require('express');
 var app = express();
-var table = "";
-var data_read = "";
+var DB = "";
 
 //declare var con from enviroment//
 var enviroment = require('../../compile.js');
 var con = enviroment.enviroment();
 var aura = require('../query/mysql.js');
+var get_config = enviroment.get_config();
 
+function run(val) {
 
-function run(val){
-     
-    if (val.insert != ""){
+    if (val.insert != "") {
         insert(val.insert);
     }
     // var json = JSON.stringify(val.query, function (key, value) {
@@ -40,41 +39,49 @@ function run(val){
 }
 
 
-
 //function insert///
 function insert(val) {
-    if(val.models != ""){
+    if (val.models != "") {
         models(val.models);
     }
     //console.log(val);
     //basic insert code without relation//
     // "con" get from variable then use .query() for setting code query for store data to mysql
-    // use parameter "val" as aurora parameter default
-    // val can be use in .query setting code
-    aura.query(val);
-   
+    // use parameter values as aurora parameter default
+    // the the values can be use in .query setting code
+    switch (get_config.config.db_type) {
+        case 'mysql':
+    
+            require('../query/mysql').insert_query(val);
+    
+            break;
+    
+        default:
+            break;
+    }
+    
 }
 
 
 
 //function read//
-function read(val,callback){
-    
- //con.query('SELECT * FROM keunggulan', function(err,rows)     {
-   //    if(err){ 
-     //   res.render('test',{page_title:"Dummy - Node.js",data:''});   
+function read(val, callback) {
+
+    //con.query('SELECT * FROM keunggulan', function(err,rows)     {
+    //    if(err){ 
+    //   res.render('test',{page_title:"Dummy - Node.js",data:''});   
     //}else{     
-      //    res.render('test',{page_title:"Dummy - Node.js",data:rows});
-       // }                   
-     //});
-    
-     con.query('SELECT ?? FROM ??', [val.select , val.table_name], function(err,result){
-     if(err){ 
-            callback(err,null);  
-         }else{    
-            callback(null,result);
-         }                   
-      });
+    //    res.render('test',{page_title:"Dummy - Node.js",data:rows});
+    // }                   
+    //});
+
+    con.query('SELECT ?? FROM ??', [val.select, val.table_name], function (err, result) {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, result);
+        }
+    });
 };
 
 

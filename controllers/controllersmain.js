@@ -10,7 +10,6 @@ var main = require('../core/aurora-crud/aura/sysaura');
 function create(req, res) {
     
     return main.insert({
-        models : "members",
         "table" : ['members'],
         "field" : ['name','age'],
         "result" : [

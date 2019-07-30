@@ -75,8 +75,8 @@ function aurora_model(name,condition,value) {
 }
 
 //Function for create model file
-function aurora_create_model(name,table){
-    return aurora_create_file_crud_module.create_model(name,table);
+function aurora_create_model(name,table,generate){
+    return aurora_create_file_crud_module.create_model(name,table,generate);
 }
 
 module.exports.serve = serve;
