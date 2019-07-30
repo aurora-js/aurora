@@ -19,7 +19,19 @@ function create(req, res) {
      });
  
  }
-
+ 
+ function update(req, res) {
+    console.log(req.body);
+    return main.update({
+        "table" : ['members'],
+        "field" : ['name','age'],
+        "result" : [
+            req.body.title,
+            req.body.deskripsi
+        ]
+     });
+ 
+ }
 //function index(req,res){
   //  return main.read(req,res);    
 //}
@@ -27,10 +39,9 @@ function create(req, res) {
 //get read function from sysaura
 function index(req, res) {
     return  main.read({
-        "select" : ['deskripsi'] , 
-        "table_name" : ['keunggulan'] ,
-        "where" : ['deskripsi'] ,
-        "any" : ['1234']
+        "select" : ['name','age'] , 
+        "table_name" : ['members'] 
+       
     },
      function(err, data){
         if (err) {
@@ -51,3 +62,4 @@ function index(req, res) {
 
 module.exports.create = create;
 module.exports.index = index;
+module.exports.update = update;

@@ -22,5 +22,9 @@ app.post('/simpan', function(req, res) {
    res.send(create(req,res));
 });
 
+app.post('/update', function(req, res) {
+    res.send(update(req,res));
+ });
+
 app.listen(port);
 console.log('Magic happens on port ' + port);

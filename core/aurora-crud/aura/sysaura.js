@@ -55,11 +55,11 @@ function run(val){
 //function insert///
 function insert(val) {
     
-    if(val.models != ""){
-        var json_model = fetch_json_models(val.field,val.result);
-        var response_model = enviroment.model(val.models,'create',json_model);
-        console.log(response_model);
-    }
+    // if(val.models != ""){
+    //     var json_model = fetch_json_models(val.field,val.result);
+    //     var response_model = enviroment.model(val.models,'create',json_model);
+    //     console.log(response_model);
+    // }
     //console.log(val);
     //basic insert code without relation//
     // "con" get from variable then use .query() for setting code query for store data to mysql
@@ -77,8 +77,19 @@ function insert(val) {
     }
     
 }
-
-
+ 
+function update(val) {
+    switch (get_config.config.db_type) {
+        case 'mysql':
+    
+            require('../query/mysql').update_query(val);
+    
+            break;
+    
+        default:
+            break;
+    }
+}
 
 //function read//
 function read(val,callback){
@@ -107,3 +118,4 @@ module.exports.insert = insert;
 module.exports.read = read;
 // module.exports.models = models;
 module.exports.run = run;
+module.exports.update = update;
