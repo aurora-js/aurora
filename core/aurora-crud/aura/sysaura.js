@@ -11,9 +11,22 @@ var con = enviroment.enviroment();
 var aura = require('../query/mysql.js');
 var get_config = enviroment.get_config();
 
-function run(val) {
+function fetch_json_models(field,value){
+    var json = "{";
 
-    if (val.insert != "") {
+    field.forEach(function(element,index){
+        json = json + "\""+element+"\""+":"+"\""+value[index]+"\"";
+        if(value[index+1] != undefined){
+            json = json + ',';
+        }
+    });
+    json = json + '}';
+
+    return JSON.parse(json);
+}
+function run(val){
+     
+    if (val.insert != ""){
         insert(val.insert);
     }
     // var json = JSON.stringify(val.query, function (key, value) {
@@ -41,8 +54,11 @@ function run(val) {
 
 //function insert///
 function insert(val) {
-    if (val.models != "") {
-        models(val.models);
+    
+    if(val.models != ""){
+        var json_model = fetch_json_models(val.field,val.result);
+        var response_model = enviroment.model(val.models,'create',json_model);
+        console.log(response_model);
     }
     //console.log(val);
     //basic insert code without relation//
@@ -65,33 +81,29 @@ function insert(val) {
 
 
 //function read//
-function read(val, callback) {
-
-    //con.query('SELECT * FROM keunggulan', function(err,rows)     {
-    //    if(err){ 
-    //   res.render('test',{page_title:"Dummy - Node.js",data:''});   
+function read(val,callback){
+    if(val.models != ""){
+        // models(val.models);
+    }
+ //con.query('SELECT * FROM keunggulan', function(err,rows)     {
+   //    if(err){ 
+     //   res.render('test',{page_title:"Dummy - Node.js",data:''});   
     //}else{     
-    //    res.render('test',{page_title:"Dummy - Node.js",data:rows});
-    // }                   
-    //});
-
-    con.query('SELECT ?? FROM ??', [val.select, val.table_name], function (err, result) {
-        if (err) {
-            callback(err, null);
-        } else {
-            callback(null, result);
-        }
-    });
+      //    res.render('test',{page_title:"Dummy - Node.js",data:rows});
+       // }                   
+     //});
+    
+     aura.read_query(val,callback);
 };
 
 
 
-function models() {
-    //sementara function model kosong dulu
-    console.log("bisadong");
-}
+// function models() {
+//     //sementara function model kosong dulu
+//     console.log("bisadong");
+// }
 
 module.exports.insert = insert;
 module.exports.read = read;
-module.exports.models = models;
+// module.exports.models = models;
 module.exports.run = run;

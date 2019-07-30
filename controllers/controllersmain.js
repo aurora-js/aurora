@@ -13,8 +13,8 @@ function create(req, res) {
         "table" : ['members'],
         "field" : ['name','age'],
         "result" : [
-            req.body.name,
-            req.body.age
+            req.body.title,
+            req.body.deskripsi
         ]
      });
  
@@ -27,9 +27,12 @@ function create(req, res) {
 //get read function from sysaura
 function index(req, res) {
     return  main.read({
-        "select" : ['name','age'] , 
-        "table_name" : ['members']
-    }, function(err, data){
+        "select" : ['deskripsi'] , 
+        "table_name" : ['keunggulan'] ,
+        "where" : ['deskripsi'] ,
+        "any" : ['1234']
+    },
+     function(err, data){
         if (err) {
             // error handling code goes here
             console.log("ERROR : ",err);            
