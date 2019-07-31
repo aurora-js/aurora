@@ -147,7 +147,7 @@ function check_detail_schema() {
 ! Program command for create model file!
 ! Value Required No Space !
 */
-program.command('model:create <model_name>').description('Create a New Model File').option('-t --table <table_name>', 'Add Value Table Name on Create Model File').option('-g --generate', 'Create Model With Generate Rules From Table').action((value) => {
+program.command('model:create <value>').description('Create a New Model File').option('-t --table <table_name>', 'Add Value Table Name on Create Model File').option('-g --generate', 'Create Model With Generate Rules From Table').action(()=>{
   var table_name = "";
   var generate = false;
 
@@ -176,7 +176,7 @@ program.command('model:create <model_name>').description('Create a New Model Fil
     generate = true;
   }
   //Run create model file
-  return compile.create_model(value, table_name, generate);
+  return compile.create_model(process.argv[3],table_name,generate);
 
 });
 
