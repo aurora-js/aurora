@@ -55,27 +55,35 @@ function run(val){
 //function insert///
 function insert(val) {
     
-    if(val.models != ""){
+    if(val.models != "" && val.models != undefined){
         var json_model = fetch_json_models(val.field,val.result);
         var response_model = enviroment.model(val.models,'create',json_model);
+        if (response_model.action != true) {
+            console.log(response_model);
+            console.log("please make sure check your model validation with your mysql field validation");
+        }else{
+            console.log(response_model);
+            switch (get_config.config.db_type) {
+                case 'mysql':
+            
+                    require('../query/mysql').insert_query(val);
+            
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+       
+    }else{
         console.log(response_model);
+        console.log("Please make sure you have model or check your model name")
     }
     //console.log(val);
     //basic insert code without relation//
     // "con" get from variable then use .query() for setting code query for store data to mysql
     // use parameter values as aurora parameter default
     // the the values can be use in .query setting code
-    switch (get_config.config.db_type) {
-        case 'mysql':
-    
-            require('../query/mysql').insert_query(val);
-    
-            break;
-    
-        default:
-            break;
-    }
-    
 }
 
 

@@ -44,7 +44,7 @@ function insert_query(val){
 }
 
 function read_query(val,callback){
-        con.query('SELECT ?? FROM ?? WHERE ?? = ?', [val.select , val.table_name , val.where , val.any], function(err,result){
+        con.query('SELECT ?? FROM ??', [val.select , val.table_name], function(err,result){
                 if(err){ 
                        callback(err,null);  
                     }else{    
