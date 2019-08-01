@@ -36,11 +36,23 @@ function insert_query(val){
     console.log(val);
         con.query('INSERT INTO ?? (??) VALUES (?) ', [val.table, val.field, val.result], function (err, result) {
                 if (err) {
-                    console.log("your insert code stucture not match, please check your main.insert");
+                    console.log("your insert code stucture not match, please check your maincontroller");
                 } else {
-                   console.log("success");
+                   console.log("success")
                 }
             });
+}
+
+function update_query(val) { 
+        console.log(val);
+          con.query('UPDATE INTO ?? SET ?? = VALUES(?)' [Val.table, val.field, val.result], function (err,result) {
+                if (err) {
+                        console.log("your insert code stucture not match, please check your main.update");
+                    } else {
+                       console.log("success");
+                    }   
+          });
+        
 }
 
 function read_query(val,callback){
@@ -55,3 +67,4 @@ function read_query(val,callback){
 module.exports.query = query;
 module.exports.read_query = read_query;
 module.exports.insert_query = insert_query;
+module.exports.update_query = update_query;

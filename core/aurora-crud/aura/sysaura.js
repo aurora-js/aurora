@@ -24,48 +24,29 @@ function fetch_json_models(field,value){
 
     return JSON.parse(json);
 }
-function run(val){
-     
-    if (val.insert != ""){
-        insert(val.insert);
-    }
-    // var json = JSON.stringify(val.query, function (key, value) {
-    //     if (typeof value === "function") {
-    //         return "/Function(" + value.toString() + ")/";
-    //     }
-    //     return value;
-    // });
-
-    // var obj2 = JSON.parse(json, function (key, value) {
-    //     if (typeof value === "string" &&
-    //         value.startsWith("/Function(") &&
-    //         value.endsWith(")/")) {
-    //         value = value.substring(10, value.length - 2);
-    //         console.log(value);
-    //         return eval("(" + value + ")");
-    //     }
-    //     return value;
-    // });
-    // console.log(obj2);
-    //obj2();
-
-}
-
 
 //function insert///
-function insert(val) {
+function insert_with_model(val) {
+    //basic insert//
+    // use parameter val as aurora parameter default
+    // val can be use in .query setting code
     
     if(val.models != "" && val.models != undefined){
+        //model validation//
         var json_model = fetch_json_models(val.field,val.result);
         var response_model = enviroment.model(val.models,'create',json_model);
         if (response_model.action != true) {
+            //model validation fail//
             console.log(response_model);
             console.log("please make sure check your model validation with your mysql field validation");
         }else{
+            //model validation success//
             console.log(response_model);
+             //query type validation//
             switch (get_config.config.db_type) {
+               //query setting mysql//
                 case 'mysql':
-            
+                    //call query setting in forlder query with file mysql, run function insert_query
                     require('../query/mysql').insert_query(val);
             
                     break;
@@ -79,14 +60,42 @@ function insert(val) {
         console.log(response_model);
         console.log("Please make sure you have model or check your model name")
     }
-    //console.log(val);
-    //basic insert code without relation//
-    // "con" get from variable then use .query() for setting code query for store data to mysql
-    // use parameter values as aurora parameter default
-    // the the values can be use in .query setting code
+    
 }
 
+//function insert///
+function insert(val) {
+    //basic insert//
+    // use parameter val as aurora parameter default
+    // val can be use in .query setting code
+    
+    //query type validation//
+    switch (get_config.config.db_type) {
+        //query setting mysql//
+         case 'mysql':
+             //call query setting in forlder query with file mysql, run function insert_query
+             require('../query/mysql').insert_query(val);
+     
+             break;
+     
+         default:
+             break;
+     }
+    
+}
 
+function update(val) {
+    switch (get_config.config.db_type) {
+        case 'mysql':
+    
+            require('../query/mysql').update_query(val);
+    
+            break;
+    
+        default:
+            break;
+    }
+}
 
 //function read//
 function read(val,callback){
@@ -105,13 +114,10 @@ function read(val,callback){
 };
 
 
-
-// function models() {
-//     //sementara function model kosong dulu
-//     console.log("bisadong");
-// }
-
 module.exports.insert = insert;
+module.exports.insertWithModel = insert_with_model;
+
 module.exports.read = read;
 // module.exports.models = models;
-module.exports.run = run;
+
+module.exports.update = update;
