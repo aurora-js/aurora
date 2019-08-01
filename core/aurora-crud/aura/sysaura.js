@@ -28,14 +28,14 @@ function fetch_json_models(field,value){
 
 //run where query
 function create_attr_read(val){
+    return new Promise(resolve => {
     if(val.where != undefined){
-        console.log(val.where);
         if (val.where.length > 1){
             val.where.forEach(function(element,index){
                 if (index == 0){
                     query_read = query_read + " WHERE";
                 }
-                    query_read = query_read +" "+ element[0] +" "+ element[1] +" \'"+ element [2]+"\'";
+                    query_read = query_read +" "+ element[0] +" "+ element[1] +" '"+ element [2]+"'";
                 if(val.where[index+1] != undefined){
                     query_read = query_read + " " + "AND";
                 }
@@ -44,7 +44,7 @@ function create_attr_read(val){
             console.log(query_read);
         }else{
             query_read = query_read + " WHERE";
-            query_read = query_read +" "+ val.where[0][0] +" "+ val.where[0][1] +" \'"+ val.where[0][2]+"\'";
+            query_read = query_read +" "+ val.where[0][0] +" "+ val.where[0][1] +" '"+ val.where[0][2]+"'";
             console.log(query_read);
         }
     }
@@ -60,7 +60,7 @@ function create_attr_read(val){
                     console.log('ERROR!\n',err);            
                 } else {        
                     // get data field from table
-                    return data;
+                    resolve(data);
                 } 
             });
      
@@ -69,6 +69,7 @@ function create_attr_read(val){
          default:
              break;
      }
+    });
  }
     
 // function run(val){
@@ -173,26 +174,29 @@ function update(val) {
 
 //function read//
 function read(val){
-    var select = "*";
-    var table_name = "";
+    return new Promise(resolve => {
+        var select = "*";
+        var table_name = "";
 
-    if(val.table_name != undefined){
-        table_name = val.table_name[0];
-    }
+        if(val.table_name != undefined){
+            table_name = val.table_name[0];
+        }
 
-    if(val.select != undefined){
-        select = val.select;
-    }
-    
-    if(val.models != "" && val.models != undefined){
-        var response_model = enviroment.model(val.models,null,[]);
-        table_name = response.table_name;
-    };
+        if(val.select != undefined){
+            select = val.select;
+        }
+        
+        if(val.models != "" && val.models != undefined){
+            var response_model = enviroment.model(val.models,null,[]);
+            table_name = response.table_name;
+        };
 
-    query_read = query_read + "SELECT "+ select +" FROM " + table_name;
-    console.log(query_read);
-
-   return create_attr_read(val);
+        query_read = query_read + "SELECT "+ select +" FROM " + table_name;
+        // console.log(create_attr_read(val));
+        return create_attr_read(val).then(function(q){
+            resolve(q);
+        });
+    });
 }
 
 module.exports.insert = insert;
