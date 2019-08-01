@@ -36,11 +36,11 @@ function create(req, res) {
 
 //get read function from sysaura
 function index(req, res) {
-    return  main.read({
+    var hasil = main.read({
         "select"     : ['title','deskripsi'] , 
         "table_name" : ['keunggulan'] ,
         "where"      : [
-                            ["title", ">", "simple"]          
+                            ["title", "=", "simple"], ["deskripsi", "=", "ini deskripsi"]                
                         ]
     },
      function(err, data){
@@ -55,6 +55,8 @@ function index(req, res) {
     }
     
     );   
+
+    console.log(hasil);
 }
 
 

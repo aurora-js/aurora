@@ -55,16 +55,16 @@ function update_query(val) {
         
 }
 
-function read_query(val,callback){
-        con.query('SELECT ?? FROM ??', [val.select , val.table_name], function(err,result){
-                if(err){ 
-                       callback(err,null);  
-                    }else{    
-                        callback(null,result);
-                    }                   
-                 });
-}
+// function read_query(val){
+//         con.query('SELECT ?? FROM ??', [val.select , val.table_name], function(err,result){
+//                 if(err){ 
+//                        console.log(err,null);  
+//                     }else{    
+//                         console.log(null,result);
+//                     }                   
+//                  });
+// }
 module.exports.query = query;
-module.exports.read_query = read_query;
+// module.exports.read_query = read_query;
 module.exports.insert_query = insert_query;
 module.exports.update_query = update_query;

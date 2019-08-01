@@ -26,6 +26,7 @@ function fetch_json_models(field,value){
     return JSON.parse(json);
 }
 
+//run where query
 function create_attr_read(val){
     if(val.where != undefined){
         console.log(val.where);
@@ -34,7 +35,7 @@ function create_attr_read(val){
                 if (index == 0){
                     query_read = query_read + " WHERE";
                 }
-                    query_read = query_read +" "+ element[0] +" "+ element[1] +" "+ element [2];
+                    query_read = query_read +" "+ element[0] +" "+ element[1] +" \'"+ element [2]+"\'";
                 if(val.where[index+1] != undefined){
                     query_read = query_read + " " + "AND";
                 }
@@ -43,10 +44,31 @@ function create_attr_read(val){
             console.log(query_read);
         }else{
             query_read = query_read + " WHERE";
-            query_read = query_read +" "+ val.where[0][0] +" "+ val.where[0][1] +" "+ val.where[0][2];
+            query_read = query_read +" "+ val.where[0][0] +" "+ val.where[0][1] +" \'"+ val.where[0][2]+"\'";
             console.log(query_read);
         }
     }
+    
+
+    switch (get_config.config.db_type) {
+        //query setting mysql//
+         case 'mysql':
+             //call query setting in forlder query with file mysql, run function insert_query
+             require('../query/mysql').query(query_read,null,function(err, data){
+                if (err) {
+                    // if error
+                    console.log('ERROR!\n',err);            
+                } else {        
+                    // get data field from table
+                    return data;
+                } 
+            });
+     
+             break;
+     
+         default:
+             break;
+     }
  }
     
 // function run(val){
@@ -167,21 +189,10 @@ function read(val){
         table_name = response.table_name;
     };
 
-    query_read = query_read + "SELECT  "+ select +" FROM "+table_name;
+    query_read = query_read + "SELECT "+ select +" FROM " + table_name;
     console.log(query_read);
 
-   create_attr_read(val);
-
-    
-    // switch (get_config.config.db_type) {
-    //     case 'mysql':
-    //         require('../query/mysql').read_query(val);
-        
-    //         break;  
-    //     default:
-    //         break;
-    // }
-    // query_read = query_read + "SELECT ?? FROM ??";
+   return create_attr_read(val);
 }
 
 module.exports.insert = insert;
@@ -189,5 +200,4 @@ module.exports.insertWithModel = insert_with_model;
 
 module.exports.read = read;
 // module.exports.models = models;
-
 module.exports.update = update;
