@@ -23,10 +23,11 @@ function create(req, res) {
 //get read function from sysaura
 function index(req, res) {
     return  main.read({
-        "select" : ['deskripsi'] , 
+        "select" : ['title','deskripsi'] , 
         "table_name" : ['keunggulan'] ,
-        "where" : ['deskripsi'] ,
-        "any" : ['1234']
+        where : [
+                        ["title", ">", "simple"], ["deskripsi", "=", "ini deskripsi"], ["deskripsi", "=", "1234"]                  
+                ]
     },
      function(err, data){
         if (err) {
@@ -39,9 +40,7 @@ function index(req, res) {
         }    
     }
     
-    );
-    
-    
+    );   
 }
 
 

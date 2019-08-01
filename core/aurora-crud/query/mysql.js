@@ -43,15 +43,19 @@ function insert_query(val){
             });
 }
 
-function read_query(val,callback){
-        con.query('SELECT ?? FROM ?? WHERE ?? = ?', [val.select , val.table_name , val.where , val.any], function(err,result){
-                if(err){ 
-                       callback(err,null);  
-                    }else{    
-                        callback(null,result);
-                    }                   
-                 });
-}
+//read query//
+// function read_query(val,callback){
+//         con.query('SELECT ?? FROM ??', [val.select , val.table_name], function(err,result){
+//                 if(err){ 
+//                        callback(err,null);  
+//                     }else{    
+//                         callback(null,result);
+//                     }                   
+//                  });
+                 
+// }
+
+
 module.exports.query = query;
-module.exports.read_query = read_query;
+// module.exports.read_query = read_query;
 module.exports.insert_query = insert_query;
