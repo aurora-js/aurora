@@ -22,8 +22,8 @@ app.post('/simpan', function(req, res) {
    res.send(create(req,res));
 });
 
-app.post('/update', function(req, res) {
-    res.send(update(req,res));
+app.get('/edit/:name', function(req, res) {
+    sysaura.update(req,res);
  });
 
 app.listen(port);

@@ -58,8 +58,11 @@ function index(req, res) {
     
     
 }
-
+function update(req, res) {
+    return   res.render('edit'); 
+}
 
 module.exports.create = create;
 module.exports.index = index;
 module.exports.update = update;
+module.exports.delete = delete;
