@@ -26,7 +26,7 @@ Value is {
 }
 */
 function create_database(command, value) {
-  return setTimeout(function(){
+  return setTimeout(function () {
     inquirer.prompt([{
       name: 'db',
       type: 'confirm',
@@ -38,7 +38,7 @@ function create_database(command, value) {
         return process.exit();
       }
     });
-  },200);
+  }, 200);
 }
 
 //Universal function for give message to user in command
@@ -50,7 +50,7 @@ function send_message(value) {
 /*
 ! Program command for run db!
 */
-program.command('db:run').description('Run Schema For Create Table To Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
+program.command('db:run').description('Run Schema For Create Table To Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(() => {
   //If db:run not have config to default config main
   if (process.argv.length === 2) {
     process.argv.push('main');
@@ -58,7 +58,7 @@ program.command('db:run').description('Run Schema For Create Table To Database')
 
   //For check have schema value or not
   var schema = check_detail_schema();
-  
+
 
   //Run schema
   return compile.schema('RUN', schema);
@@ -67,7 +67,7 @@ program.command('db:run').description('Run Schema For Create Table To Database')
 /*
 ! Program command for update db!
 */
-program.command('db:update').description('Run Schema For Update Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
+program.command('db:update').description('Run Schema For Update Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(() => {
   //If db:update not have config to default config main
   if (process.argv.length === 2) {
     process.argv.push('main');
@@ -75,15 +75,15 @@ program.command('db:update').description('Run Schema For Update Table On Databas
 
   //For check have schema value or not
   var schema = check_detail_schema();
-  
+
   //Update schema for run DB
-  return compile.schema('UPDATE',schema);
+  return compile.schema('UPDATE', schema);
 });
 
 /*
 ! Program command for delete db!
 */
-program.command('db:delete').description('Run Schema For Delete Some Field or Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
+program.command('db:delete').description('Run Schema For Delete Some Field or Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(() => {
   //If db:delete not have config to default config main
   if (process.argv.length === 2) {
     process.argv.push('main');
@@ -91,15 +91,15 @@ program.command('db:delete').description('Run Schema For Delete Some Field or Ta
 
   //For check have schema value or not
   var schema = check_detail_schema();
-  
+
   //Update schema for run DB
-  return compile.schema('DELETE',schema);
+  return compile.schema('DELETE', schema);
 });
 
 /*
 ! Program command for refresh db!
 */
-program.command('db:refresh').description('Run Schema For Refresh Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(()=>{
+program.command('db:refresh').description('Run Schema For Refresh Table On Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(() => {
   //If db:delete not have config to default config main
   if (process.argv.length === 2) {
     process.argv.push('main');
@@ -107,9 +107,9 @@ program.command('db:refresh').description('Run Schema For Refresh Table On Datab
 
   //For check have schema value or not
   var schema = check_detail_schema();
-  
+
   //Update schema for run DB
-  return compile.schema('REFRESH',schema);
+  return compile.schema('REFRESH', schema);
 });
 
 
@@ -117,19 +117,24 @@ program.command('db:refresh').description('Run Schema For Refresh Table On Datab
 ! Program command for create schema file !
 ! Value Required No Space !
 */
-program.command('schema:create <value>').description('Create a New Schema File').action((value)=>{
+program.command('schema:create <value>').description('Create a New Schema File').action((value) => {
   //Run create schema file
   return compile.create_schema(value);
 });
 
 //Function for check  have command detail schema for run or not
-function check_detail_schema(){
-  if(process.argv[3] == '-s' || process.argv[3] == '--schema'){
+function check_detail_schema() {
+  console.log(process.argv);
+  if (process.argv[3] == '-s' || process.argv[3] == '--schema') {
     //If no custom config
-    if(process.argv[5] == undefined){
+    if (process.argv[5] == undefined) {
       process.argv.push('main');
     }
     return process.argv[4];
+  }
+  else if ((process.argv[2] != '-s' || process.argv[3] != '--schema') && (process.argv[3] != undefined) && (process.argv[4] != undefined)) {
+    console.log('Command -s / --schema not found');
+    return process.exit();
   }
 }
 
@@ -147,27 +152,27 @@ program.command('model:create <value>').description('Create a New Model File').o
   var generate = false;
 
   //Check have value table name or not
-  if(process.argv[4] == '-t' || process.argv[4] == '--table'){
+  if (process.argv[4] == '-t' || process.argv[4] == '--table') {
     //If no custom config
-    if(process.argv[5] == undefined){
+    if (process.argv[5] == undefined) {
       process.argv.push('main');
-    }  
+    }
 
     //If table name is -g or --generate
-    if(process.argv[5] == "-g" || process.argv[5] == "--generate"){
-        console.log('ERROR!\n' + 'Table Name Not Found');
-        return process.exit();
+    if (process.argv[5] == "-g" || process.argv[5] == "--generate") {
+      console.log('ERROR!\n' + 'Table Name Not Found');
+      return process.exit();
     }
 
     table_name = process.argv[5];
   }
-  
+
   //If Have generate and table not null
-  if((process.argv[6] == '-g' || process.argv[6] == '--generate') && (process.argv[4] == '-t' || process.argv[4] == '--table')){
+  if ((process.argv[6] == '-g' || process.argv[6] == '--generate') && (process.argv[4] == '-t' || process.argv[4] == '--table')) {
     //If no custom config
-    if(process.argv[7] == undefined){
+    if (process.argv[7] == undefined) {
       process.argv.push('main');
-    } 
+    }
     generate = true;
   }
   //Run create model file
