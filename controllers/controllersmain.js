@@ -34,6 +34,19 @@ function create(req, res) {
  
  }
 
+ function drop(req, res) {
+    console.log(req.body);
+    return main.drop_query({
+        "table" : ['keunggulan'],
+        "field" : ['title','deskripsi'],
+        "result" : [
+            req.body.title,
+            req.body.deskripsi
+        ]
+     });
+ 
+ }
+
 //get read function from sysaura
 function index(req, res) {
     var hasil = main.read({
@@ -54,8 +67,11 @@ function index(req, res) {
 function update(req, res) {
     return   res.render('edit'); 
 }
+function drop(req, res) {
+    return   res.render('test'); 
+}
 
 module.exports.create = create;
 module.exports.index = index;
 module.exports.update = update;
-module.exports.delete = delete;
+module.exports.drop = drop;

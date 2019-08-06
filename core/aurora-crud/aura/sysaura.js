@@ -194,6 +194,18 @@ function update(val) {
     }
 }
 
+function drop_query(val) {
+    switch (get_config.config.db_type) {
+        case 'mysql':
+    
+            require('../query/mysql').drop_query(val);
+    
+            break;
+    
+        default:
+            break;
+    }
+}
 //function read//
 function read(val){
     return new Promise(resolve => {
@@ -235,3 +247,4 @@ module.exports.insertWithModel = insert_with_model;
 module.exports.read = read;
 // module.exports.models = models;
 module.exports.update = update;
+module.exports.drop_query = drop_query;

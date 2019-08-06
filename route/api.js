@@ -27,5 +27,9 @@ app.get('/edit/:name', function(req, res) {
     sysaura.update(req,res);
  });
 
+ app.get('/drop/:title', function(req, res) {
+    sysaura.drop(req,res);
+ });
+
 app.listen(port);
 console.log('Magic happens on port ' + port);
