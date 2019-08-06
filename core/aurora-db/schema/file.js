@@ -22,7 +22,9 @@ function create_file_schema(name){
 
     //Create file to ./database/schema
     fs.appendFile('./database/schema/'+date_file+'_'+name_file+'.js', syntax, function (err) {
-        if (err) throw err;
+        if (err){
+            return console.log(err);
+        }
 
         //Return command successfully
         return console.log('File '+date_file+'_'+name+'.js'+' is created successfully.');
