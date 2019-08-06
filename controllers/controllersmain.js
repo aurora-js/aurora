@@ -40,7 +40,10 @@ function index(req, res) {
         "select"     : ['title','deskripsi'] , 
         "table_name" : ['keunggulan'] ,
         "where"      : [
-                            ["title", "=", "simple"], ["deskripsi", "=", "ini deskripsi"]                
+                            ["title", "=", "wow"], ["title", "=", "Hallo"]
+                        ],
+        "orWhere"      : [
+                            ["deskripsi", "=", "1234"], ["deskripsi", "like", "%a%"]                
                         ]
     }).then(function(q){
         res.render('test',{page_title:"Dummy - Node.js",data:q}); 
