@@ -41,14 +41,36 @@ function create_attr_read(val){
                     query_read = query_read + " " + "AND";
                 }
             });
-            query_read = query_read;
-            console.log(query_read);
+                 
+        query_read = query_read;
+        console.log(query_read);
         }else{
             query_read = query_read + " WHERE";
             query_read = query_read +" "+ val.where[0][0] +" "+ val.where[0][1] +" '"+ val.where[0][2]+"'";
             console.log(query_read);
         }
+
+        if (val.orWhere){
+            val.orWhere.forEach(function(element,index){
+               if (index == 0){
+                   query_read = query_read + " OR";
+               }
+                   query_read = query_read +" "+ element[0] +" "+ element[1] +" '"+ element [2]+"'";
+               if(val.orWhere[index+1] != undefined){
+                   query_read = query_read + " " + "OR";
+               }
+
+           }); 
+           query_read = query_read;
+        console.log(query_read);     
+       }else{
+        query_read = query_read + " WHERE";
+        query_read = query_read +" "+ val.where[0][0] +" "+ val.where[0][1] +" '"+ val.where[0][2]+"'";
+        console.log(query_read);
+    } 
     }
+
+    
 
     switch (get_config.config.db_type) {
         //query setting mysql//
@@ -222,30 +244,50 @@ function update(val) {
     });
 }
 
+function drop_query(val) {
+    switch (get_config.config.db_type) {
+        case 'mysql':
+    
+            require('../query/mysql').drop_query(val);
+    
+            break;
+    
+        default:
+            break;
+    }
+}
 //function read//
 function read(val){
     return new Promise(resolve => {
         var select = "*";
         var table_name = "";
         query_read = "";
-        if(val.table_name != undefined){
-            table_name = val.table_name[0];
-        }
-
-        if(val.select != undefined){
-            select = val.select;
-        }
         
-        if(val.models != "" && val.models != undefined){
-            var response_model = enviroment.model(val.models,null,[]);
-            table_name = response.table_name;
+        switch (get_config.config.db_type) {
+            case 'mysql' :
+                    if(val.table_name != undefined){
+                        table_name = val.table_name[0];
+                    }
+            
+                    if(val.select != undefined){
+                        select = val.select;
+                    }
+                    
+                    if(val.models != "" && val.models != undefined){
+                        var response_model = enviroment.model(val.models,null,[]);
+                        table_name = response.table_name;
+                    };
+            
+                    query_read = query_read + "SELECT "+ select +" FROM " + table_name;
+                    // console.log(create_attr_read(val));
+                    return create_attr_read(val).then(function(q){
+                        resolve(q);
+                    });
+            break;
         };
 
-        query_read = query_read + "SELECT "+ select +" FROM " + table_name;
-        // console.log(create_attr_read(val));
-        return create_attr_read(val).then(function(q){
-            resolve(q);
-        });
+        
+        
     });
 }
 
@@ -255,3 +297,4 @@ module.exports.insertWithModel = insert_with_model;
 module.exports.read = read;
 // module.exports.models = models;
 module.exports.update = update;
+module.exports.drop_query = drop_query;
