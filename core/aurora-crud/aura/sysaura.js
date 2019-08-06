@@ -11,6 +11,7 @@ var con = enviroment.enviroment();
 var aura = require('../query/mysql.js');
 var get_config = enviroment.get_config();
 var query_read = "";
+var query_update = "";
 
 function fetch_json_models(field,value){
     var json = "{";
@@ -48,7 +49,6 @@ function create_attr_read(val){
             console.log(query_read);
         }
     }
-    
 
     switch (get_config.config.db_type) {
         //query setting mysql//
@@ -72,33 +72,77 @@ function create_attr_read(val){
     });
  }
     
-// function run(val){
-     
-//     if (val.insert != ""){
-//         insert(val.insert);
-//     }
-//     // var json = JSON.stringify(val.query, function (key, value) {
-//     //     if (typeof value === "function") {
-//     //         return "/Function(" + value.toString() + ")/";
-//     //     }
-//     //     return value;
-//     // });
+    //run update query
+function create_attr_update(val){
+    return new Promise(resolve => {
 
-//     // var obj2 = JSON.parse(json, function (key, value) {
-//     //     if (typeof value === "string" &&
-//     //         value.startsWith("/Function(") &&
-//     //         value.endsWith(")/")) {
-//     //         value = value.substring(10, value.length - 2);
-//     //         console.log(value);
-//     //         return eval("(" + value + ")");
-//     //     }
-//     //     return value;
-//     // });
-//     // console.log(obj2);
-//     //obj2();
+        if(val.set != undefined){
+            if (val.set.length > 1){
+                val.set.forEach(function(element,index){
+                    if (index == 0){
+                        query_update = query_update + " SET";
+                    }
+                        query_update = query_update +" "+ element[0] +" "+ element[1] +" '"+ element [2]+"'";
+                    if(val.set[index+1] != undefined){
+                        query_update = query_update + " " + ",";
+                    }
+                });
+                query_update = query_update;
+                //console.log(query_update);
+            }else{
+                query_update = query_update + " SET";
+                query_update = query_update +" "+ val.set[0][0] +" "+ val.set[0][1] +" '"+ val.set[0][2]+"'";
+                //console.log(query_update);
+            }
+        }
+        if(val.where != undefined){
+            if (val.where.length > 1){
+                val.where.forEach(function(element,index){
+                    if (index == 0){
+                        query_update = query_update + " WHERE";
+                    }
+                        query_update = query_update +" "+ element[0] +" "+ element[1] +"'"+ element [2]+"'";
+                    if(val.where[index+1] != undefined){
+                        query_update = query_update + " " + "AND";
+                    }
+                });
+                query_update = query_update;
+                //console.log(query_update);
+            }else{
+                query_update = query_update + " WHERE";
+                query_update = query_update +" "+ val.where[0][0] +" "+ val.where[0][1] +"'"+ val.where[0][2]+"'";
+                //console.log(query_update);
+            }
+        }
+         
+        switch (get_config.config.db_type) {
+            //query setting mysql//
+             case 'mysql':
+                 //call query setting in forlder query with file mysql, run function insert_query
+                 require('../query/mysql').query(query_update,null,function(err, data){
+                    // console.log("test looo");    
+                    if (err) {
+                        // if error
+                        console.log('ERROR!\n',err);            
+                    } else {        
+                        // get data field from table
+                        resolve(data);
+                    } 
+                });
+         
+                 break;
+         
+             default:
+                 break;
+         }
 
-// }
 
+
+        });
+    }
+    
+
+    
 
 //function insert///
 function insert_with_model(val) {
@@ -160,16 +204,22 @@ function insert(val) {
 }
 
 function update(val) {
-    switch (get_config.config.db_type) {
-        case 'mysql':
-    
-            require('../query/mysql').update_query(val);
-    
-            break;
-    
-        default:
-            break;
-    }
+    return new Promise(resolve => {
+        var table_name = "";
+        query_update = "";
+
+        if(val.table_name != undefined){
+            table_name = val.table_name[0];
+        }
+
+
+        query_update = query_update + "UPDATE "+ table_name;
+
+        return create_attr_update(val).then(function(q){
+            resolve(q);
+        });
+
+    });
 }
 
 //function read//
@@ -177,7 +227,7 @@ function read(val){
     return new Promise(resolve => {
         var select = "*";
         var table_name = "";
-
+        query_read = "";
         if(val.table_name != undefined){
             table_name = val.table_name[0];
         }
