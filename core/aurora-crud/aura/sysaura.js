@@ -140,6 +140,7 @@ function create_attr_update(val){
         switch (get_config.config.db_type) {
             //query setting mysql//
              case 'mysql':
+                 
                  //call query setting in forlder query with file mysql, run function insert_query
                  require('../query/mysql').query(query_update,null,function(err, data){
                     // console.log("test looo");    
@@ -230,6 +231,9 @@ function update(val) {
         var table_name = "";
         query_update = "";
 
+        switch (get_config.config.db_type) {
+            case 'mysql' :
+
         if(val.table_name != undefined){
             table_name = val.table_name[0];
         }
@@ -237,9 +241,11 @@ function update(val) {
 
         query_update = query_update + "UPDATE "+ table_name;
 
-        return create_attr_update(val).then(function(q){
+        return create_attr_update(val).then(function(q, res){
             resolve(q);
         });
+             break;
+        };
 
     });
 }
