@@ -27,7 +27,7 @@ function fetch_json_models(field,value){
     return JSON.parse(json);
 }
 
-//run where query
+//run where query read
 function create_attr_read(val){
     return new Promise(resolve => {
     if(val.where != undefined){
@@ -163,7 +163,52 @@ function create_attr_update(val){
         });
     }
     
+//run delete query
+    function create_attr_delete(val){
+        return new Promise(resolve => {
+        if(val.where != undefined){
+            if (val.where.length > 1){
+                val.where.forEach(function(element,index){
+                    if (index == 0){
+                        query_delete = query_delete + " WHERE";
+                    }
+                        query_delete = query_delete +" "+ element[0] +" "+ element[1] +" '"+ element [2]+"'";
+                });
+                     
+            query_delete = query_delete;
+            console.log(query_delete);
+            }else{
+                query_delete = query_delete + " WHERE";
+                query_delete = query_delete +" "+ val.where[0][0] +" "+ val.where[0][1] +" '"+ val.where[0][2]+"'";
+                console.log(query_delete);
+            }
+        }
 
+        switch (get_config.config.db_type) {
+            
+            //query setting mysql//
+             case 'mysql':
+                    console.log(query_delete);
+                 //call query setting in forlder query with file mysql, run function insert_query
+                 require('../query/mysql').query(query_delete,null,function(err, data){
+                    if (err) {
+                        // if error
+                        console.log('ERROR!\n',err);            
+                    } else {        
+                        // get data field from table
+                        resolve(data);
+                        // console.log('berhasilllll');
+                    } 
+                });
+         
+                 break;
+         
+             default:
+                 break;
+         }
+         
+        });
+     }
     
 
 //function insert///
@@ -244,17 +289,23 @@ function update(val) {
     });
 }
 
-function drop_query(val) {
-    switch (get_config.config.db_type) {
-        case 'mysql':
-    
-            require('../query/mysql').drop_query(val);
-    
-            break;
-    
-        default:
-            break;
-    }
+function delete_query(val) {
+    return new Promise(resolve => {
+        var table_name = "";
+        query_delete = "";
+
+        if(val.table_name != undefined){
+            table_name = val.table_name[0];
+        }
+
+
+        query_delete = query_delete + "DELETE "+" FROM " + table_name;
+
+        return create_attr_delete(val).then(function(q){
+            resolve(q);
+        });
+
+    });
 }
 //function read//
 function read(val){
@@ -297,4 +348,4 @@ module.exports.insertWithModel = insert_with_model;
 module.exports.read = read;
 // module.exports.models = models;
 module.exports.update = update;
-module.exports.drop_query = drop_query;
+module.exports.delete_query = delete_query;

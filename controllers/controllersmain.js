@@ -38,17 +38,20 @@ function create(req, res) {
     console.log(update);
  }
 
- function drop(req, res) {
+ //delete function
+ function deleteq(req, res) {
     console.log(req.body);
-    return main.drop_query({
-        "table" : ['keunggulan'],
-        "field" : ['title','deskripsi'],
-        "result" : [
-            req.body.title,
-            req.body.deskripsi
-        ]
-     });
- 
+    var deleteq = main.delete_query({
+        "table_name" : ['keunggulan'],
+        "where"      : [
+                            ["title", "=", req.params.title]                
+                        ]
+    }).then(function(q){
+        
+       console.log("bisa delete");
+    }); 
+    // return res.redirect('../');
+    console.log(deleteq);
  }
 
 //get read function from sysaura
@@ -71,11 +74,9 @@ function index(req, res) {
 function update(req, res) {
     return   res.render('edit'); 
 }
-function drop(req, res) {
-    return   res.render('test'); 
-}
+
 
 module.exports.create = create;
 module.exports.index = index;
 module.exports.update = update;
-module.exports.drop = drop;
+module.exports.deleteq = deleteq;

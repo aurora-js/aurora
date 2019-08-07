@@ -27,8 +27,24 @@ app.get('/edit/:name', function(req, res) {
     sysaura.update(req,res);
  });
 
- app.get('/drop/:title', function(req, res) {
-    sysaura.drop(req,res);
+ var findTitleBytitle = function (title, callback) {
+    // Perform database query that calls callback when it's done
+    // This is our fake database
+    if (!delete[title])
+      return callback(new Error(
+        'No user matching '
+         + title
+        )
+      );
+    return callback(null, delete[title]);
+  };
+
+ app.get('/delete/:title', function(req, res, next) {
+    var title = req.params.title;
+    findTitleBytitle(title, function(error, title) {
+        if (error) return next(error);
+   return sysaura.deleteq(req,res);
+    });
  });
 
 app.listen(port);

@@ -10,7 +10,7 @@
 <body>
     <form action="/update" method="post">
       name:<br>
-      <input type="text" name="title" value="<%= data[16].name %>">
+      <input type="text" name="title" value="title">
       <br>
       name:<br>
       <input type="text" name="titleupdate">
@@ -45,11 +45,11 @@
   for(var i = 0; i< data.length; i++) {%>  
   <tr>
     <th scope="row"><%= (i+1) %></th>
-    <td><%= data[i].name%></td>
-    <td><%= data[i].age%></td>
+    <td><%= data[i].title%></td>
+    <td><%= data[i].deskripsi%></td>
     <td>
     <a class="btn btn-success edit" href="../edit/<%=data[i].name%>">Edit</a>                       
-    <a class="btn btn-danger delete" onclick="return alert('Are You sure?')" href="../test/<%=data[i].title%>">Delete</a>                       
+    <a class="btn btn-danger delete" onclick="return alert('Are You sure?')" href="../delete/<%=data[i].title%>">Delete</a>                       
    </td>
   </tr>
   <% }
