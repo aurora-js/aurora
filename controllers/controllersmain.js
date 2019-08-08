@@ -23,7 +23,7 @@ function update(req, res) {
 
     console.log(req.body);
     main.update({
-        "table_name": ['members'],
+        "table_name": ['membersModel'],
         "set": [
             ["name", "=", req.body.nameupdate],
             ["age", "=", req.body.ageupdate]
