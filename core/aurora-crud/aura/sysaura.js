@@ -140,6 +140,7 @@ function create_attr_update(val){
         switch (get_config.config.db_type) {
             //query setting mysql//
              case 'mysql':
+                 
                  //call query setting in forlder query with file mysql, run function insert_query
                  require('../query/mysql').query(query_update,null,function(err, data){
                     // console.log("test looo");    
@@ -217,50 +218,39 @@ function insert_with_model(val) {
     // use parameter val as aurora parameter default
     // val can be use in .query setting code
     
+    
+    
+}
+
+//function insert///
+function insert(val) {
+    var table_name = '';
+    if(val.table != undefined && val.table.length > 0){
+        table_name = val.table[0];
+    }
+    //basic insert//
+    // use parameter val as aurora parameter default
+    // val can be use in .query setting code
     if(val.models != "" && val.models != undefined){
         //model validation//
         var json_model = fetch_json_models(val.field,val.result);
         var response_model = enviroment.model(val.models,'create',json_model);
         if (response_model.action != true) {
             //model validation fail//
-            console.log(response_model);
             console.log("please make sure check your model validation with your mysql field validation");
-        }else{
-            //model validation success//
-            console.log(response_model);
-             //query type validation//
-            switch (get_config.config.db_type) {
-               //query setting mysql//
-                case 'mysql':
-                    //call query setting in forlder query with file mysql, run function insert_query
-                    require('../query/mysql').insert_query(val);
-            
-                    break;
-            
-                default:
-                    break;
-            }
+            return response_model.response;
         }
-       
-    }else{
-        console.log(response_model);
-        console.log("Please make sure you have model or check your model name")
-    }
-    
-}
 
-//function insert///
-function insert(val) {
-    //basic insert//
-    // use parameter val as aurora parameter default
-    // val can be use in .query setting code
-    
+        table_name = response_model.table_name;
+
+    }
+
     //query type validation//
     switch (get_config.config.db_type) {
         //query setting mysql//
          case 'mysql':
              //call query setting in forlder query with file mysql, run function insert_query
-             require('../query/mysql').insert_query(val);
+             require('../query/mysql').insert_query(table_name,val);
      
              break;
      
@@ -275,6 +265,9 @@ function update(val) {
         var table_name = "";
         query_update = "";
 
+        switch (get_config.config.db_type) {
+            case 'mysql' :
+
         if(val.table_name != undefined){
             table_name = val.table_name[0];
         }
@@ -282,9 +275,11 @@ function update(val) {
 
         query_update = query_update + "UPDATE "+ table_name;
 
-        return create_attr_update(val).then(function(q){
+        return create_attr_update(val).then(function(q, res){
             resolve(q);
         });
+             break;
+        };
 
     });
 }

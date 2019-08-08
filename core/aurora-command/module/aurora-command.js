@@ -124,7 +124,6 @@ program.command('schema:create <value>').description('Create a New Schema File')
 
 //Function for check  have command detail schema for run or not
 function check_detail_schema() {
-  console.log(process.argv);
   if (process.argv[3] == '-s' || process.argv[3] == '--schema') {
     //If no custom config
     if (process.argv[5] == undefined) {
@@ -177,6 +176,40 @@ program.command('model:create <value>').description('Create a New Model File').o
   }
   //Run create model file
   return compile.create_model(process.argv[3],table_name,generate);
+
+});
+
+//command controller
+program.command('controller:create <value>').description('Create a New Controller File').option('-m --model <model_name>', 'Add Value Model Name on Create CRUD File').option('-g --generate', 'Create CRUD With Generate Rules From Model').action(()=>{
+  var model_name = "";
+  var generate = false;
+
+  //Check have value table name or not
+  if (process.argv[4] == '-m' || process.argv[4] == '--model') {
+    //If no custom config
+    if (process.argv[5] == undefined) {
+      process.argv.push('main');
+    }
+
+    //If table name is -g or --generate
+    if (process.argv[5] == "-g" || process.argv[5] == "--generate") {
+      console.log('ERROR!\n' + 'Model Not Found');
+      return process.exit();
+    }
+
+    table_name = process.argv[5];
+  }
+
+  //If Have generate and table not null
+  if ((process.argv[6] == '-g' || process.argv[6] == '--generate') && (process.argv[4] == '-m' || process.argv[4] == '--model')) {
+    //If no custom config
+    if (process.argv[7] == undefined) {
+      process.argv.push('main');
+    }
+    generate = true;
+  }
+  //Run create model file
+  return compile.create_crud(process.argv[3],model_name,generate);
 
 });
 
