@@ -39,9 +39,9 @@ function create(req, res) {
  }
 
  //delete function
- function deleteq(req, res) {
+ function erase(req, res) {
     console.log(req.body);
-    var deleteq = main.delete_query({
+    var deleteq = main.erase_query({
         "table_name" : ['keunggulan'],
         "where"      : [
                             ["title", "=", req.params.title]                
@@ -51,7 +51,7 @@ function create(req, res) {
        console.log("bisa delete");
     }); 
     // return res.redirect('../');
-    console.log(deleteq);
+    console.log(erase);
  }
 
 //get read function from sysaura
@@ -79,4 +79,4 @@ function update(req, res) {
 module.exports.create = create;
 module.exports.index = index;
 module.exports.update = update;
-module.exports.deleteq = deleteq;
+module.exports.erase = erase;

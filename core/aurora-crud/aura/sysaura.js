@@ -163,8 +163,8 @@ function create_attr_update(val){
         });
     }
     
-//run delete query
-    function create_attr_delete(val){
+//run erase query
+    function create_attr_erase(val){
         return new Promise(resolve => {
         if(val.where != undefined){
             if (val.where.length > 1){
@@ -289,7 +289,7 @@ function update(val) {
     });
 }
 
-function delete_query(val) {
+function erase_query(val) {
     return new Promise(resolve => {
         var table_name = "";
         query_delete = "";
@@ -301,7 +301,7 @@ function delete_query(val) {
 
         query_delete = query_delete + "DELETE "+" FROM " + table_name;
 
-        return create_attr_delete(val).then(function(q){
+        return create_attr_erase(val).then(function(q){
             resolve(q);
         });
 
@@ -348,4 +348,4 @@ module.exports.insertWithModel = insert_with_model;
 module.exports.read = read;
 // module.exports.models = models;
 module.exports.update = update;
-module.exports.delete_query = delete_query;
+module.exports.erase_query = erase_query;

@@ -43,7 +43,7 @@ app.get('/edit/:name', function(req, res) {
     var title = req.params.title;
     findTitleBytitle(title, function(error, title) {
         if (error) return next(error);
-   return sysaura.deleteq(req,res);
+   return sysaura.erase(req,res);
     });
  });
 
