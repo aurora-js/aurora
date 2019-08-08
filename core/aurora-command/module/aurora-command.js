@@ -197,7 +197,7 @@ program.command('controller:create <value>').description('Create a New Controlle
       return process.exit();
     }
 
-    table_name = process.argv[5];
+    model_name = process.argv[5];
   }
 
   //If Have generate and table not null

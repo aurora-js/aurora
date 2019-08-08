@@ -240,7 +240,7 @@ function create_crud_file(model,name,rules){
         if (err) throw err;
 
         //Return command successfully
-        console.log('File Model '+name_file+'.js'+' is created successfully.');
+        console.log('File Crontroller '+name_file+'.js'+' is created successfully.');
         return process.exit();
     });
 }
