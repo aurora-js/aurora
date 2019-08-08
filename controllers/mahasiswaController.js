@@ -10,66 +10,79 @@ var main = require('../core/aurora-crud/aura/sysaura');
 function create(req, res) {
 
     hasil = main.insert({
-        'models' : ['membersModel'],
-        "field": ['name', 'age'],
+        'models' : ['mahasiswaModel'],
+        "field": ['NIK', 'Email'],
         "result": [
-            req.body.title,
-            req.body.age
+            1,
+            '12'
         ]
     });
+    console.log(hasil);
+    // if(hasil == 'success'){
+    //     console,log('berhasil');
+    // }else{
+    //     console.log(hasil);
+    // }
 }
 
 function update(req, res) {
 
     console.log(req.body);
     main.update({
-        "table_name": ['membersModel'],
+        "models": ['mahasiswa'],
         "set": [
-            ["name", "=", req.body.nameupdate],
-            ["age", "=", req.body.ageupdate]
+            ["NIK", "=", 4],
+            ["password", "=", 4],
+            ["id_prodi_fk",'=',4] 
         ],
         "where": [
-            ["name", "=", req.body.namelama]
+            ["NIK", "=", 5]
+        ],
+        "orWhere": [
+            ["NIK", "=", 2]
         ]
     }).then(function (q) {
-        console.log("berhasil update");
-
+        console.log(q);
     });
-    return res.redirect('/');
+    // return res.redirect('/');
 }
 
  //delete function
- function erase(req, res) {
+ function deleteq(req, res) {
     console.log(req.body);
-    var deleteq = main.erase_query({
-        "table_name" : ['keunggulan'],
-        "where"      : [
-                            ["name", "=", req.params.title]                
+    var deleteq = main.delete_query({
+        "table_name" : ['mahasiswa'],
+        "where"        :  [
+            ["NIK", "=", 1],
+            ["password", "=", 1],
+            ["id_prodi_fk",'=',1]               
+        ],
+        "orWhere"      : [
+                            ["NIK", "=", 2]                
                         ]
     }).then(function(q){
         
        console.log("bisa delete");
     }); 
     // return res.redirect('../');
-    console.log(erase);
+    console.log(deleteq);
  }
 
 //get read function from sysaura
 function index(req, res) {
     var hasil = main.read({
-        "select"        : ['title', 'deskripsi'],
-        "table_name"    : ['keunggulan'],
-        "where"         : [
-                                ["title", "=", "wew"],                
-                            ],
-        "orWhere"      : [
-                            ["deskripsi", "=", "2345"], ["deskripsi", "=", "1234"]                
-                        ]
+        "select": ['Email','NIK','id_prodi_fk'],
+        "table_name": ['mahasiswa'],
+        'where' : [['NIK','=','2']],
+        'orWhere' :[
+            ['NIK','=','1'],['EMAIL','=','1']
+        ]
     }).then(function (q) {
         res.render('test', {
             page_title: "Dummy - Node.js",
             data: q
         });
+        console.log(q);
     });
 
     console.log(hasil);
@@ -96,4 +109,4 @@ module.exports.create = create;
 module.exports.index = index;
 module.exports.updatelink = updatelink;
 module.exports.update = update;
-module.exports.erase = erase;
+module.exports.deleteq = deleteq;

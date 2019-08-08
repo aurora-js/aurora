@@ -11,11 +11,14 @@
     */
     module.exports.config_enviroment = process.argv[process.argv.length-1] || 'main';
 
-    //For Run Function In Call App.js
-    try{
-        //For run serve
-        aurora.serve();
-        // console.log(aurora.model('prodiModelss','create',{Email : 'user mail.com', PASSWORD : '656656', password_confirmation : 'user mail.com'}));
-    } catch (error) {
-        return console.log(error);
+    //For run without aurora command
+    if(!process.argv[1].includes('aurora-command.js')){
+        //For Run Function In Call App.js
+        try{
+            //For run serve
+            aurora.serve();
+            // console.log(aurora.model('prodiModelss','create',{Email : 'user mail.com', PASSWORD : '656656', password_confirmation : 'user mail.com'}));
+        } catch (error) {
+            return console.log(error);
+        }
     }

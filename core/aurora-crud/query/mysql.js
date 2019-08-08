@@ -4,12 +4,14 @@ const enviroment = require('../../compile.js');
 const express = require('express');
 var app     = express();
 
-var con = enviroment.enviroment();
+var con = "";
 
 //For run query (It's universal)
 //Function query must have parameter sytax query and callback for return response after run query
 //If parameter value have some value, then query run with value
 function query(syntax,value,callback){
+        con = enviroment.enviroment();
+
         //If parameter value have some value
         if(value != null && value != "" && value != " " && value != undefined){
                 con.query(syntax, value, function(err,result){
@@ -33,6 +35,8 @@ function query(syntax,value,callback){
 }
 
 function insert_query(table_name,val){
+        con = enviroment.enviroment();
+        
     console.log(val);
         con.query('INSERT INTO ?? (??) VALUES (?) ', [table_name, val.field, val.result], function (err, result) {
                 if (err) {

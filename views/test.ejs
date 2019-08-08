@@ -43,8 +43,8 @@
   for(var i = 0; i< data.length; i++) {%>  
   <tr>
     <th scope="row"><%= (i+1) %></th>
-    <td><%= data[i].name%></td>
-    <td><%= data[i].age%></td>
+    <td><%= data[i].title%></td>
+    <td><%= data[i].deskripsi%></td>
     <td>
     <a class="btn btn-success edit" href="../edit/<%=data[i].name%>">Edit</a>                       
     <a class="btn btn-danger delete" onclick="return alert('Are You sure?')" href="../delete/<%=data[i].name%>">Delete</a>                       
