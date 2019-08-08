@@ -32,11 +32,12 @@ function query(syntax,value,callback){
         }
 }
 
-function insert_query(val){
+function insert_query(table_name,val){
     console.log(val);
-        con.query('INSERT INTO ?? (??) VALUES (?) ', [val.table, val.field, val.result], function (err, result) {
+        con.query('INSERT INTO ?? (??) VALUES (?) ', [table_name, val.field, val.result], function (err, result) {
                 if (err) {
-                    console.log("your insert code stucture not match, please check your maincontroller");
+                        console.log(err);
+                        console.log("your insert code stucture not match, please check your maincontroller");
                 } else {
                    console.log("success")
                 }

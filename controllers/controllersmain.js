@@ -8,43 +8,43 @@ var main = require('../core/aurora-crud/aura/sysaura');
 //declare route for function in sysaura//
 
 function create(req, res) {
-    
-    return main.insert({
-        "table" : ['members'],
-        "field" : ['name','age'],
-        "result" : [
-            req.body.title,
-            req.body.deskripsi
-        ]
-     });
- 
- }
- 
- function update(req, res) {
-    console.log(req.body);
-    var update = main.update({
-        "table_name" : ['members'] ,
-        "set"        : [
-                            ["name", "=", req.body.titleupdate],
-                            ["age", "=", req.body.ageupdate]
-        ],
-        "where"      : [
-                            ["name", "=", req.body.title]                
-                        ]
-    }).then(function(q){
-       console.log("bisa update");
-    }); 
 
-    console.log(update);
- }
+    hasil = main.insert({
+        'models' : ['membersModel'],
+        "field": ['name', 'age'],
+        "result": [
+            req.body.title,
+            req.body.age
+        ]
+    });
+}
+
+function update(req, res) {
+
+    console.log(req.body);
+    main.update({
+        "table_name": ['members'],
+        "set": [
+            ["name", "=", req.body.nameupdate],
+            ["age", "=", req.body.ageupdate]
+        ],
+        "where": [
+            ["name", "=", req.body.namelama]
+        ]
+    }).then(function (q) {
+        console.log("berhasil update");
+
+    });
+    return res.redirect('/');
+}
 
  //delete function
  function deleteq(req, res) {
     console.log(req.body);
     var deleteq = main.delete_query({
-        "table_name" : ['keunggulan'],
+        "table_name" : ['members'],
         "where"      : [
-                            ["title", "=", req.params.title]                
+                            ["name", "=", req.params.title]                
                         ]
     }).then(function(q){
         
@@ -57,26 +57,37 @@ function create(req, res) {
 //get read function from sysaura
 function index(req, res) {
     var hasil = main.read({
-        "select"     : ['title','deskripsi'] , 
-        "table_name" : ['keunggulan'] ,
-        "where"      : [
-                            ["title", "=", "wow"], ["title", "=", "Hallo"]
-                        ],
-        "orWhere"      : [
-                            ["deskripsi", "=", "1234"], ["deskripsi", "like", "%a%"]                
-                        ]
-    }).then(function(q){
-        res.render('test',{page_title:"Dummy - Node.js",data:q}); 
-    });   
+        "select": ['name', 'age'],
+        "table_name": ['members']
+    }).then(function (q) {
+        res.render('test', {
+            page_title: "Dummy - Node.js",
+            data: q
+        });
+    });
 
     console.log(hasil);
 }
-function update(req, res) {
-    return   res.render('edit'); 
+
+function updatelink(req, res) {
+    var hasil = main.read({
+        "select": ['name', 'age'],
+        "table_name": ['members'],
+    }).then(function (q) {
+        console.log(q);
+        res.render('edit', {
+            page_title: "Dummy - Node.js",
+            data: q
+        });
+
+    });
+
+    console.log(hasil);
 }
 
 
 module.exports.create = create;
 module.exports.index = index;
+module.exports.updatelink = updatelink;
 module.exports.update = update;
 module.exports.deleteq = deleteq;
