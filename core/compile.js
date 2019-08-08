@@ -74,19 +74,9 @@ function aurora_model(name,condition,value) {
     return aurora_model_module.main(name,condition,value);
 }
 
-//Function For Run Model
-function aurora_crud(name,condition,value) {
-    return aurora_crud_module.main(name,condition,value);
-}
-
 //Function for create model file
 function aurora_create_model(name,table,generate){
     return aurora_create_file_crud_module.create_model(name,table,generate);
-}
-
-//Function for create crud file
-function aurora_create_crud(name,model,generate){
-    return aurora_create_file_crud_module.create_crud(name,model,generate);
 }
 
 module.exports.serve = serve;
@@ -99,5 +89,3 @@ module.exports.create_schema = aurora_create_schema;
 module.exports.get_config = aurora_get_config;
 module.exports.model = aurora_model;
 module.exports.create_model = aurora_create_model;
-module.exports.crud = aurora_crud;
-module.exports.create_crud = aurora_create_crud;
