@@ -9,15 +9,14 @@ var main = require('../core/aurora-crud/aura/sysaura');
 
 function create(req, res) {
 
-    return main.insert({
-        "table": ['members'],
+    hasil = main.insert({
+        'models' : ['membersModel'],
         "field": ['name', 'age'],
         "result": [
             req.body.title,
             req.body.age
         ]
     });
-
 }
 
 function update(req, res) {
@@ -39,18 +38,21 @@ function update(req, res) {
     return res.redirect('/');
 }
 
-function drop(req, res) {
+ //delete function
+ function deleteq(req, res) {
     console.log(req.body);
-    return main.drop_query({
-        "table": ['keunggulan'],
-        "field": ['title', 'deskripsi'],
-        "result": [
-            req.body.title,
-            req.body.deskripsi
-        ]
-    });
-
-}
+    var deleteq = main.delete_query({
+        "table_name" : ['members'],
+        "where"      : [
+                            ["name", "=", req.params.title]                
+                        ]
+    }).then(function(q){
+        
+       console.log("bisa delete");
+    }); 
+    // return res.redirect('../');
+    console.log(deleteq);
+ }
 
 //get read function from sysaura
 function index(req, res) {
@@ -83,12 +85,9 @@ function updatelink(req, res) {
     console.log(hasil);
 }
 
-function drop(req, res) {
-    return res.render('test');
-}
 
 module.exports.create = create;
 module.exports.index = index;
 module.exports.updatelink = updatelink;
 module.exports.update = update;
-module.exports.drop = drop;
+module.exports.deleteq = deleteq;

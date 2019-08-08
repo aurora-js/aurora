@@ -32,11 +32,12 @@ function query(syntax,value,callback){
         }
 }
 
-function insert_query(val){
+function insert_query(table_name,val){
     console.log(val);
-        con.query('INSERT INTO ?? (??) VALUES (?) ', [val.table, val.field, val.result], function (err, result) {
+        con.query('INSERT INTO ?? (??) VALUES (?) ', [table_name, val.field, val.result], function (err, result) {
                 if (err) {
-                    console.log("your insert code stucture not match, please check your maincontroller");
+                        console.log(err);
+                        console.log("your insert code stucture not match, please check your maincontroller");
                 } else {
                    console.log("success")
                 }
@@ -55,17 +56,17 @@ function insert_query(val){
         
 // }
 
-function drop_query(val) { 
-        console.log(val);
-          con.query('DROP INTO ?? = VALUES(?)' [Val.table, val.field, val.result], function (err,result) {
-                if (err) {
-                        console.log("your DROP code stucture not match, please check your main.update");
-                    } else {
-                       console.log("success");
-                    }   
-          });
+// function drop_query(val) { 
+//         console.log(val);
+//           con.query('DROP INTO ?? = VALUES(?)' [Val.table, val.field, val.result], function (err,result) {
+//                 if (err) {
+//                         console.log("your DROP code stucture not match, please check your main.update");
+//                     } else {
+//                        console.log("success");
+//                     }   
+//           });
         
-}
+// }
 // function read_query(val){
 //         con.query('SELECT ?? FROM ??', [val.select , val.table_name], function(err,result){
 //                 if(err){ 
@@ -78,4 +79,4 @@ function drop_query(val) {
 module.exports.query = query;
 // module.exports.read_query = read_query;
 module.exports.insert_query = insert_query;
-module.exports.drop_query = drop_query;
+// module.exports.drop_query = drop_query;
