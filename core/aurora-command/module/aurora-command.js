@@ -124,7 +124,6 @@ program.command('schema:create <value>').description('Create a New Schema File')
 
 //Function for check  have command detail schema for run or not
 function check_detail_schema() {
-  console.log(process.argv);
   if (process.argv[3] == '-s' || process.argv[3] == '--schema') {
     //If no custom config
     if (process.argv[5] == undefined) {
