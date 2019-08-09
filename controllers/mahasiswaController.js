@@ -71,18 +71,19 @@ function update(req, res) {
 //get read function from sysaura
 function index(req, res) {
     var hasil = main.read({
-        "select": ['Email','NIKs','id_prodi_fk'],
-        "table_name": ['mahasiswa'],
-        'where' : [['NIK','=','2']],
-        'orWhere' :[
-            ['NIK','=','1'],['EMAIL','=','1']
-        ]
+        "select": ['*'],
+        "table_name": ['mahasiswa']
     }).then(function (q) {
-        res.render('test', {
-            page_title: "Dummy - Node.js",
-            data: q.data
-        });
-        console.log(q);
+        // res.render('test', {
+        //     page_title: "Dummy - Node.js",
+        //     data: q.data
+        // });
+        // console.log(q);
+        try {
+            res.redirect('/edit');
+        } catch (error) {
+            
+        }
     },function(err){
         try {
             console.log(err.action);
