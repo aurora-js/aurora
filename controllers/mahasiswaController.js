@@ -71,7 +71,7 @@ function update(req, res) {
 //get read function from sysaura
 function index(req, res) {
     var hasil = main.read({
-        "select": ['Email','NIK','id_prodi_fk'],
+        "select": ['Email','NIKs','id_prodi_fk'],
         "table_name": ['mahasiswa'],
         'where' : [['NIK','=','2']],
         'orWhere' :[
@@ -80,9 +80,16 @@ function index(req, res) {
     }).then(function (q) {
         res.render('test', {
             page_title: "Dummy - Node.js",
-            data: q
+            data: q.data
         });
         console.log(q);
+    },function(err){
+        try {
+            console.log(err.action);
+            res.redirect('/edit');
+        } catch (error) {
+            
+        }
     });
 
     console.log(hasil);
