@@ -216,8 +216,8 @@ function create_attr_update(val){
 //function insert///
 function insert(val) {
     var table_name = '';
-    if(val.table != undefined && val.table.length > 0){
-        table_name = val.table[0];
+    if(val.table_name != undefined && val.table_name.length > 0){
+        table_name = val.table_name[0];
     }
     //basic insert//
     // use parameter val as aurora parameter default
@@ -329,7 +329,6 @@ function read(val){
 }
 
 module.exports.insert = insert;
-module.exports.insertWithModel = insert_with_model;
 
 module.exports.read = read;
 // module.exports.models = models;
