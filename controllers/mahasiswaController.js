@@ -70,30 +70,50 @@ function update(req, res) {
 
 //get read function from sysaura
 function index(req, res) {
-    var hasil = main.read({
-        "select": ['*'],
-        "table_name": ['mahasiswa']
-    }).then(function (q) {
-        // res.render('test', {
-        //     page_title: "Dummy - Node.js",
-        //     data: q.data
-        // });
-        // console.log(q);
-        try {
-            res.redirect('/edit');
-        } catch (error) {
+    // var hasil = main.read({
+    //     "select": ['*'],
+    //     "table_name": ['mahasiswa']
+    // }).then(function (q) {
+    //     // res.render('test', {
+    //     //     page_title: "Dummy - Node.js",
+    //     //     data: q.data
+    //     // });
+    //     // console.log(q);
+    //     try {
+    //         res.redirect('/edit');
+    //     } catch (error) {
             
-        }
-    },function(err){
-        try {
-            console.log(err.action);
-            res.redirect('/edit');
-        } catch (error) {
+    //     }
+    // },function(err){
+    //     try {
+    //         console.log(err.action);
+    //         res.redirect('/edit');
+    //     } catch (error) {
             
-        }
-    });
+    //     }
+    // });
 
-    console.log(hasil);
+    main.query("SELECT * FROM mahasiswa").then(function (q) {
+            // res.render('test', {
+            //     page_title: "Dummy - Node.js",
+            //     data: q.data
+            // });
+            // console.log(q);
+            try {
+                console.log(q);
+            } catch (error) {
+                
+            }
+        },function(err){
+            try {
+                console.log(err.action);
+                // res.redirect('/edit');
+            } catch (error) {
+                
+            }
+        });
+
+    // console.log(hasil);
 }
 
 function updatelink(req, res) {

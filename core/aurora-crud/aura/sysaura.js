@@ -330,6 +330,30 @@ function read(val){
     });
 }
 
+//For custom query user 
+function universal_query(query){
+    return new Promise(function(resolve, reject) {
+        switch (get_config.config.db_type) {
+            //query setting mysql//
+            case 'mysql':
+                //call query setting in forlder query with file mysql, run function insert_query
+                require('../query/mysql').query(query,null,function(err, data){
+                    if (err) {
+                        // if error
+                        reject({action : false});          
+                    } else {        
+                        // get data field from table
+                        resolve({action :true, data :data});
+                    } 
+                });
+        
+                break;
+        
+            default:
+                break;
+        }
+    });
+}
 module.exports.insert = insert;
 // module.exports.insertWithModel = insert_with_model;
 
@@ -337,3 +361,4 @@ module.exports.read = read;
 // module.exports.models = models;
 module.exports.update = update;
 module.exports.erase_query = erase_query;
+module.exports.query = universal_query;
