@@ -1,4 +1,4 @@
-module.exports.model_name = "membersController";
+module.exports.model_name = "test";
 
 module.exports.erase = true
 

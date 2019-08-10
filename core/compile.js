@@ -5,6 +5,7 @@ var aurora_command_module = require('./aurora-command/main');
 var aurora_model_module = require('./aurora-crud/aura/modelaura');
 var aurora_create_file_crud_module = require('./aurora-crud/aura/file');
 
+
 var app = "";
 
 //Run serve
@@ -74,21 +75,18 @@ function aurora_model(name,condition,value) {
     return aurora_model_module.main(name,condition,value);
 }
 
-//Function For Run Model
-function aurora_crud(name,condition,value) {
-    return aurora_crud_module.main(name,condition,value);
-}
-
 //Function for create model file
 function aurora_create_model(name,table,generate){
     return aurora_create_file_crud_module.create_model(name,table,generate);
 }
 
-//Function for create crud file
-function aurora_create_crud(name,model,generate){
-    return aurora_create_file_crud_module.create_crud(name,model,generate);
+function aurora_crud(name,condition,value) {
+    return aurora_model_module.main(name,condition,value);
 }
 
+function aurora_create_crud(name,table,generate){
+    return aurora_create_file_crud_module.create_crud(name,table,generate);
+}
 module.exports.serve = serve;
 module.exports.enviroment = aurora_enviroment;
 module.exports.aurora_enviroment_without_db = aurora_enviroment_without_db;
