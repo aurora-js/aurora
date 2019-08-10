@@ -212,15 +212,6 @@ function create_attr_update(val){
      }
     
 
-//function insert///
-function insert_with_model(val) {
-    //basic insert//
-    // use parameter val as aurora parameter default
-    // val can be use in .query setting code
-    
-    
-    
-}
 
 //function insert///
 function insert(val) {
