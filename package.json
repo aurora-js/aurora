@@ -1,6 +1,6 @@
 {
-  "name": "aurora",
-  "version": "1.0.0",
+  "name": "aurorajs-framework",
+  "version": "0.0.1",
   "description": "",
   "main": "app.js",
   "dependencies": {
@@ -13,7 +13,7 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
-    "inquirer": "^6.4.1"
+    "inquirer": "^6.5.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -23,7 +23,7 @@
     "url": "git+https://github.com/aurora-js/aurora.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "auror",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/aurora-js/aurora/issues"
