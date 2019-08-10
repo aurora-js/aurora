@@ -1,8 +1,3 @@
-//get connection function from file compile.js with name aurora_enviroment//
-var express = require('../core/compile.js');
-//get express module//
-var express = require('express');
-var app = express();
 //declare var con from enviroment//
 var main = require('../core/aurora-crud/aura/sysaura');
 //declare route for function in sysaura//
@@ -23,7 +18,7 @@ function update(req, res) {
 
     console.log(req.body);
     main.update({
-        "table_name": ['membersModel'],
+        "table_name": ['members'],
         "set": [
             ["name", "=", req.body.nameupdate],
             ["age", "=", req.body.ageupdate]
@@ -32,10 +27,20 @@ function update(req, res) {
             ["name", "=", req.body.namelama]
         ]
     }).then(function (q) {
-        console.log("berhasil update");
-
+        try {
+            console.log(q);
+            console.log("berhasil update");
+            //res.redirect('/edit');
+        } catch (error) {
+            
+        }
+    },function(err){
+        try {
+            console.log(err.action);
+        } catch (error) {
+            
+        }
     });
-    return res.redirect('/');
 }
 
  //delete function
@@ -60,14 +65,8 @@ function update(req, res) {
 //get read function from sysaura
 function index(req, res) {
     var hasil = main.read({
-        "select"        : ['title', 'deskripsi'],
-        "table_name"    : ['keunggulan'],
-        "where"         : [
-                            ["title", "=", "Hallo"], ["title", "=", "wew"],               
-        ],
-        "orWhere"      : [
-                            ["deskripsi", "=", "2345"]                
-        ]
+        "select"        : ['name', 'age'],
+        "table_name"    : ['members']
     }).then(function (q) {
         // res.render('test', {
         //     page_title: "Dummy - Node.js",

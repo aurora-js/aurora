@@ -313,7 +313,7 @@ function create_crud_file(name,model){
        
          function_update = function_update + "\n\t\t[" +"'"+  key_rules_update[0] + "'," + "'='"+ ",req.body." +  key_rules_update[0] +"]";
          
-         function_update = function_update + "\n\t]\n});";
+         function_update = function_update + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t console.log(q); \n\t\t\t console.log(" + "'berhasil update'" + ");\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\tconsole.log(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
 
 
         // rules_create.forEach(function (element, index){
@@ -373,10 +373,15 @@ function create_crud_file(name,model){
     var name_file = name.split(' ').join('_');
 
     //For Function Name
-    var syntax = "function index(req, res) {\n"+function_read+"\n}\n\n";
+    var syntax ="//declare var con from enviroment//\nvar main = require('../core/aurora-crud/aura/sysaura');\n\n";
+    syntax = syntax+"function index(req, res) {\n"+function_read+"\n}\n\n";
     syntax = syntax+"function create(req, res) {\n"+function_insert+"\n}\n\n";
     syntax = syntax+"function update(req, res) {\n"+function_update+"\n}\n\n";
-    syntax = syntax+"function erase(req, res) {\n"+function_erase+"\n}\n\n";
+    syntax = syntax+"function erase(req, res) {\n"+function_erase+"\n}\n\n\n";
+    syntax = syntax+"module.exports.index = index;\n";
+    syntax = syntax+"module.exports.create = create;\n";
+    syntax = syntax+"module.exports.update = update;\n";
+    syntax = syntax+"module.exports.erase = erase;\n";
     //Create file to ./model/
     fs.appendFile('./controllers/'+name_file+'.js', syntax, function (err) {
         if (err) throw err;
