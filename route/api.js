@@ -19,6 +19,11 @@ app.get('/', function(req, res) {
     //res.render('test');
 });
 
+app.get('/getmahasiswa', function(req, res) {
+   require('../controllers/mahasiswaController').index(req,res);
+   //res.render('test');
+});
+
 app.post('/simpan', function(req, res) {
    res.send(create(req,res));
 });
