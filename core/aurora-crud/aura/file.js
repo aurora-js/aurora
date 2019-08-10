@@ -167,17 +167,31 @@ function create_file(table,name,rules){
     
     //If not with generate rules
     if(rules == null){
+
+        //For rulesOnRead
+        syntax = syntax + "module.exports.rulesOnRead = {\n\n};\n\n";
+
         //For rulesOnCreate
         syntax = syntax + "module.exports.rulesOnCreate = {\n\n};\n\n";
 
         //For rulesOnUpdate
         syntax = syntax + "module.exports.rulesOnUpdate = {\n\n};\n\n";
+
+        //For rulesOnErase
+        syntax = syntax + "module.exports.rulesOnErase = {\n\n};\n\n";
+
     }else{
+        //For rulesOnRead if have rules
+        syntax = syntax + "module.exports.rulesOnRead = "+rules+"\n\n";
+        
         //For rulesOnCreate if have rules
         syntax = syntax + "module.exports.rulesOnCreate = "+rules+"\n\n";
 
         //For rulesOnUpdate if have rules
         syntax = syntax + "module.exports.rulesOnUpdate = "+rules+"\n\n";
+
+        //For rulesOnErase if have rules
+        syntax = syntax + "module.exports.rulesOnErase = "+rules+"\n\n";
     }
 
     //Create file to ./model/
@@ -195,6 +209,9 @@ function create_file(table,name,rules){
 function create_crud_file(name,model){
     var model_name = "";
     var function_insert =" ";
+    var function_read =" ";
+    var function_update =" ";
+    var function_erase =" ";
     
     //Check model name
     if(model != null && model != "" && model != " " && model != undefined){
@@ -243,6 +260,39 @@ function create_crud_file(name,model){
         function_insert = function_insert + "\n\t]\n});";
 
 
+
+         //-----------------------------------------RULES READ-------------------------------------------------//
+         var rules_read = require('../../../model/'+result_file_model);
+        //Get field in rules
+        var key_rules_read = Object.keys(rules_read);
+        function_read = "main.read({\n\t'models' : ['"+model+"'],\n\t'select' : [";
+        // function_insert = function_insert+key_rules_create;
+
+        // For generate field
+        function_read = function_read +"'"+'*'+"'";
+         
+         // For generate field 
+        
+         function_read = function_read + "],\n\t";
+         
+         function_read = function_read + "\n});";
+
+
+        // rules_create.forEach(function (element, index){
+        //     console.log(element);
+        // });
+        //----------------------------------------------
+
+        //Ini untuk memproses modelnya 
+        //index()
+        /*
+        main.read({
+        "select"        : ['name', 'age'],
+        "table_name"    : ['members']
+    
+        });
+        */
+    
          //-----------------------------------------RULES UPDATE-------------------------------------------------//
          var rules_update = require('../../../model/'+result_file_model).rulesOnUpdate;
          //Get field in rules
@@ -286,6 +336,36 @@ function create_crud_file(name,model){
                 ]
             });
         */
+
+ //-----------------------------------------RULES ERASE-------------------------------------------------//
+ var rules_erase = require('../../../model/'+result_file_model).rulesOnErase;
+ //Get field in rules
+ var key_rules_erase = Object.keys(rules_erase);
+ function_erase = "main.erase_query({\n\t'models' : ['"+model+"'],\n\t'where' : [";
+ // function_insert = function_insert+key_rules_create;
+
+ // For generate field
+     function_erase = function_erase + "\n\t\t[" +"'"+ key_rules_erase[0] + "'," + "'='"+ ",req.params." +  key_rules_erase[0] +"]";
+
+     function_erase = function_erase + "\n\t]\n});";
+          
+
+ // rules_create.forEach(function (element, index){
+ //     console.log(element);
+ // });
+ //----------------------------------------------
+
+ //Ini untuk memproses modelnya 
+ //index()
+ /*
+ main.read({
+ "select"        : ['name', 'age'],
+ "table_name"    : ['members'],
+ "where"         : ['dhon', '=', '18'],
+ "orWhere"       : ['dam', '=', '20']
+
+ });
+ */
         model_name = model;
     }
     
@@ -293,10 +373,10 @@ function create_crud_file(name,model){
     var name_file = name.split(' ').join('_');
 
     //For Function Name
-    var syntax = "function index(req, res) {\n"+" "+"\n}\n\n";
+    var syntax = "function index(req, res) {\n"+function_read+"\n}\n\n";
     syntax = syntax+"function create(req, res) {\n"+function_insert+"\n}\n\n";
     syntax = syntax+"function update(req, res) {\n"+function_update+"\n}\n\n";
-    syntax = syntax+"function erase(req, res) {\n"+" "+"\n}\n\n";
+    syntax = syntax+"function erase(req, res) {\n"+function_erase+"\n}\n\n";
     //Create file to ./model/
     fs.appendFile('./controllers/'+name_file+'.js', syntax, function (err) {
         if (err) throw err;

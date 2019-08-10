@@ -166,7 +166,7 @@ function create_attr_update(val){
     
 //run erase query
     function create_attr_erase(val){
-        return new Promise(resolve => {
+        return new Promise(function(resolve,reject) {
         if(val.where != undefined){
             if (val.where.length > 1){
                 val.where.forEach(function(element,index){
@@ -194,11 +194,10 @@ function create_attr_update(val){
                  require('../query/mysql').query(query_delete,null,function(err, data){
                     if (err) {
                         // if error
-                        console.log('ERROR!\n',err);            
+                        reject({action : false});          
                     } else {        
                         // get data field from table
-                        resolve(data);
-                        // console.log('berhasilllll');
+                        resolve({action :true, data :data});
                     } 
                 });
          
@@ -276,7 +275,7 @@ function update(val) {
 }
 
 function erase_query(val) {
-    return new Promise(resolve => {
+    return new Promise(function(resolve, reject) {
         var table_name = "";
         query_delete = "";
 
@@ -289,6 +288,8 @@ function erase_query(val) {
 
         return create_attr_erase(val).then(function(q){
             resolve(q);
+        },function(err){
+            reject(err);
         });
 
     });

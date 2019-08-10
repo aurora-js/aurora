@@ -41,11 +41,14 @@ function update(req, res) {
  //delete function
  function erase(req, res) {
     console.log(req.body);
-    var deleteq = main.erase_query({
+    var erase = main.erase_query({
         "table_name" : ['keunggulan'],
         "where"      : [
                             ["name", "=", req.params.title]                
-                        ]
+                        ],
+        "orWhere"      : [
+                            ["name", "=", req.params.title]                
+                        ],
     }).then(function(q){
         
        console.log("bisa delete");
@@ -57,14 +60,34 @@ function update(req, res) {
 //get read function from sysaura
 function index(req, res) {
     var hasil = main.read({
-        "select"        : ['name', 'age'],
-        "table_name"    : ['members']
-    
+        "select"        : ['title', 'deskripsi'],
+        "table_name"    : ['keunggulan'],
+        "where"         : [
+                            ["title", "=", "Hallo"], ["title", "=", "wew"],               
+        ],
+        "orWhere"      : [
+                            ["deskripsi", "=", "2345"]                
+        ]
     }).then(function (q) {
-        res.render('test', {
+        // res.render('test', {
+        //     page_title: "Dummy - Node.js",
+        //     data: q
+        // });
+        try {
+            res.render('test', {
             page_title: "Dummy - Node.js",
             data: q
         });
+        } catch (error) {
+            
+        }
+    },function(err){
+        try {
+            console.log(err.action);
+            // res.redirect('/edit');
+        } catch (error) {
+            
+        }
     });
 
     console.log(hasil);

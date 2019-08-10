@@ -1,5 +1,9 @@
 function index(req, res) {
- 
+main.read({
+	'models' : ['membersModel'],
+	'select' : ['*'],
+	
+});
 }
 
 function create(req, res) {
@@ -27,6 +31,11 @@ main.update({
 }
 
 function erase(req, res) {
- 
+main.erase_query({
+	'models' : ['membersModel'],
+	'where' : [
+		['name','=',req.params.name]
+	]
+});
 }
 
