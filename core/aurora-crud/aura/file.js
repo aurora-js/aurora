@@ -206,22 +206,111 @@ function create_file(table,name,rules){
 
 
 //Function for run create table 
-function create_crud_file(model,name){
+function create_crud_file(name,model){
     var model_name = "";
-
+    var function_insert =" ";
+    
     //Check model name
     if(model != null && model != "" && model != " " && model != undefined){
+        var file_model = fs.readdirSync('./model');
+        //Ini untuk mencari file model
+        var no_file = true;
+        //For UpperCase to Lowercase
+        var name_file = model.toLowerCase().split(' ').join('_');
+        var result_file_model = "";
+        //For search file
+        file_model.forEach(element => {
+            element_backup = element;
+            element = element.toLowerCase();
+            var get = element.includes(name_file);
+            if(get == true){
+                result_file_model = element_backup;
+            }
+        });
+
+        //-----------------------------------------RULES CREATE-------------------------------------------------//
+        var rules_create = require('../../../model/'+result_file_model).rulesOnCreate;
+        //Get field in rules
+        var key_rules_create = Object.keys(rules_create);
+        function_insert = "main.insert({\n\t'models' : ['"+model+"'],\n\t'field' : [";
+        // function_insert = function_insert+key_rules_create;
+
+        // For generate field
+        key_rules_create.forEach(function(element,index){
+            function_insert = function_insert +"'"+element+"'";
+            if(key_rules_create[index+1] != undefined){
+                function_insert = function_insert + ",";
+            }
+        });
+        function_insert = function_insert + "],\n\t'result' : [";
+
+        // For generate result
+        key_rules_create.forEach(function(element,index){
+            if(index==0){
+                function_insert = function_insert +"\n";
+            }
+            function_insert = function_insert +"\t\treq.body."+element;
+            if(key_rules_create[index+1] != undefined){
+                function_insert = function_insert + ",\n";
+            }
+        });
+        function_insert = function_insert + "\n\t]\n});";
+
+
+         //-----------------------------------------RULES UPDATE-------------------------------------------------//
+         var rules_update = require('../../../model/'+result_file_model).rulesOnUpdate;
+         //Get field in rules
+         var key_rules_update = Object.keys(rules_update);
+         function_update = "main.update({\n\t'models' : ['"+model+"'],\n\t'set' : [";
+         // function_insert = function_insert+key_rules_create;
+ 
+         // For generate field
+         key_rules_update.forEach(function(element,index){
+            
+             function_update = function_update + "\n\t\t[" +"'"+ element + "'," + "'='"+ ",req.body." + element +"]";
+             if(key_rules_update[index+1] != undefined){
+                 function_update = function_update + ",";
+             }
+         });
+         function_update = function_update + "\n\t],\n\t'where' : [";
+ 
+       
+         function_update = function_update + "\n\t\t[" +"'"+  key_rules_update[0] + "'," + "'='"+ ",req.body." +  key_rules_update[0] +"]";
+         
+         function_update = function_update + "\n\t]\n});";
+
+
+        // rules_create.forEach(function (element, index){
+        //     console.log(element);
+        // });
+        //----------------------------------------------
+
+        //Ini untuk memproses modelnya 
+        //insert()
+        /*
+            main.insert({
+                'models' : ['mahasiswaModel'],
+                "field": ['id',' id_prodi_fk', 'Email', 'PASSWORD', 'NIK'],
+                "result": [
+                    req.body.id,
+                    req.body.id_prodi_fk,
+                    req.body.Email,
+                    req.body.PASSWORD,
+                    req.body.NIK
+                ]
+            });
+        */
         model_name = model;
     }
     
     //Change space to underscore and Uppercase to Lowercase or name file
     var name_file = name.split(' ').join('_');
 
-    //For table name
-    var syntax = "module.exports.model_name = \""+model_name+"\";\n\n";
-    
-  
-
+    //For Function Name
+    var syntax = "function index(req, res) {\n"+" "+"\n}\n\n";
+    syntax = syntax+"function create(req, res) {\n"+function_insert+"\n}\n\n";
+    syntax = syntax+"function update(req, res) {\n"+function_update+"\n}\n\n";
+    syntax = syntax+"function erase(req, res) {\n"+" "+"\n}\n\n";
     //Create file to ./model/
     fs.appendFile('./controllers/'+name_file+'.js', syntax, function (err) {
         if (err) throw err;

@@ -29,7 +29,7 @@ function fetch_json_models(field,value){
 
 //run where query read
 function create_attr_read(val){
-    return new Promise(resolve => {
+    return new Promise(function(resolve, reject) {
     if(val.where != undefined){
         if (val.where.length > 1){
             val.where.forEach(function(element,index){
@@ -79,10 +79,10 @@ function create_attr_read(val){
              require('../query/mysql').query(query_read,null,function(err, data){
                 if (err) {
                     // if error
-                    console.log('ERROR!\n',err);            
+                    reject({action : false});          
                 } else {        
                     // get data field from table
-                    resolve(data);
+                    resolve({action :true, data :data});
                 } 
             });
      
@@ -295,7 +295,7 @@ function erase_query(val) {
 }
 //function read//
 function read(val){
-    return new Promise(resolve => {
+    return new Promise(function(resolve, reject) {
         var select = "*";
         var table_name = "";
         query_read = "";
@@ -319,6 +319,8 @@ function read(val){
                     // console.log(create_attr_read(val));
                     return create_attr_read(val).then(function(q){
                         resolve(q);
+                    },function(err){
+                        reject(err);
                     });
             break;
         };
@@ -328,9 +330,35 @@ function read(val){
     });
 }
 
+//For custom query user 
+function universal_query(query){
+    return new Promise(function(resolve, reject) {
+        switch (get_config.config.db_type) {
+            //query setting mysql//
+            case 'mysql':
+                //call query setting in forlder query with file mysql, run function insert_query
+                require('../query/mysql').query(query,null,function(err, data){
+                    if (err) {
+                        // if error
+                        reject({action : false});          
+                    } else {        
+                        // get data field from table
+                        resolve({action :true, data :data});
+                    } 
+                });
+        
+                break;
+        
+            default:
+                break;
+        }
+    });
+}
 module.exports.insert = insert;
+// module.exports.insertWithModel = insert_with_model;
 
 module.exports.read = read;
 // module.exports.models = models;
 module.exports.update = update;
 module.exports.erase_query = erase_query;
+module.exports.query = universal_query;

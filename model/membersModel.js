@@ -6,6 +6,7 @@ module.exports.rulesOnCreate = {
 };
 
 module.exports.rulesOnUpdate = {
-
+    name : "string,required",
+	age : "string"
 };
 
