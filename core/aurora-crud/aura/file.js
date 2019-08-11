@@ -257,7 +257,8 @@ function create_crud_file(name,model){
                 function_insert = function_insert + ",\n";
             }
         });
-        function_insert = function_insert + "\n\t]\n});";
+        function_insert = function_insert + "\n\t";
+        function_insert = function_insert + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t console.log(q); \n\t\t\t console.log(" + "'berhasil insert'" + ");\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\tconsole.log(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
 
 
 

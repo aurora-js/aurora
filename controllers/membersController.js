@@ -16,8 +16,22 @@ main.insert({
 	'result' : [
 		req.body.name,
 		req.body.age
+	
 	]
-});
+}).then(function (q) {
+		 try {
+			 console.log(q); 
+			 console.log('berhasil insert');
+		 }catch(error){
+
+		}
+	},function(err){
+		 try{
+			console.log(err.action);
+			} catch(error){
+
+		} 
+	});
 }
 
 function update(req, res) {
