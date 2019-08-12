@@ -235,7 +235,7 @@ function create_crud_file(name,model){
         var rules_create = require('../../../model/'+result_file_model).rulesOnCreate;
         //Get field in rules
         var key_rules_create = Object.keys(rules_create);
-        function_insert = "main.insert({\n\t'models' : ['"+model+"'],\n\t'field' : [";
+        function_insert = "\tmain.insert({\n\t'models' : ['"+model+"'],\n\t'field' : [";
         // function_insert = function_insert+key_rules_create;
 
         // For generate field
@@ -258,7 +258,7 @@ function create_crud_file(name,model){
             }
         });
         function_insert = function_insert + "\n\t";
-        function_insert = function_insert + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t console.log(q); \n\t\t\t console.log(" + "'berhasil insert'" + ");\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\tconsole.log(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
+        function_insert = function_insert + "\n\t]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t return q;\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
 
 
 
@@ -298,7 +298,7 @@ function create_crud_file(name,model){
          var rules_update = require('../../../model/'+result_file_model).rulesOnUpdate;
          //Get field in rules
          var key_rules_update = Object.keys(rules_update);
-         function_update = "main.update({\n\t'models' : ['"+model+"'],\n\t'set' : [";
+         function_update = "\tmain.update({\n\t'models' : ['"+model+"'],\n\t'set' : [";
          // function_insert = function_insert+key_rules_create;
  
          // For generate field
@@ -314,7 +314,7 @@ function create_crud_file(name,model){
        
          function_update = function_update + "\n\t\t[" +"'"+  key_rules_update[0] + "'," + "'='"+ ",req.body." +  key_rules_update[0] +"]";
          
-         function_update = function_update + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t console.log(q); \n\t\t\t console.log(" + "'berhasil update'" + ");\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\tconsole.log(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
+         function_update = function_update + "\n\t]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t return q; \n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
 
 
         // rules_create.forEach(function (element, index){
