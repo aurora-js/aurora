@@ -43,6 +43,7 @@ function insert_query(table_name,val){
                         console.log(err);
                         console.log("your insert code stucture not match, please check your maincontroller");
                 } else {
+                   
                    console.log("success")
                 }
             });

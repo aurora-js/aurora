@@ -224,6 +224,7 @@ function create_attr_erase(val) {
 
 //function insert///
 function insert(val) {
+    
     var table_name = '';
     if (val.table_name != undefined && val.table_name.length > 0) {
         table_name = val.table_name[0];
@@ -261,7 +262,7 @@ function insert(val) {
 }
 
 function update(val) {
-    return new Promise(resolve => {
+    return new Promise(function (resolve, reject) {
         var table_name = '';
         query_update = "";
         if (val.table_name != undefined && val.table_name.length > 0) {
@@ -288,9 +289,17 @@ function update(val) {
                 query_update = query_update + "UPDATE " + table_name;
 
                 return create_attr_update(val).then(function (q) {
-                    resolve(q);
+                    resolve({
+                                action:true, 
+                                data:data,
+                                
+                            },q);
+                    
                 }, function (err) {
-                    reject(err);
+                    reject({
+                            action:false
+                    },err);
+
                 });
         };
 
