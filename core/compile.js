@@ -77,7 +77,13 @@ function aurora_model(name,condition,value) {
 
 //Function for create model file
 function aurora_create_model(name,table,generate){
-    return aurora_create_file_crud_module.create_model(name,table,generate);
+    return new Promise(function(resolve,reject){
+        aurora_create_file_crud_module.create_model(name,table,generate).then(function(){
+            resolve();
+        },function(err){
+            reject(err);
+        });
+    });
 }
 
 function aurora_crud(name,condition,value) {
@@ -85,12 +91,24 @@ function aurora_crud(name,condition,value) {
 }
 
 function aurora_create_crud(name,table,generate){
-    return aurora_create_file_crud_module.create_crud(name,table,generate);
+    return new Promise(function(resolve,reject){
+        aurora_create_file_crud_module.create_crud(name,table,generate).then(function(){
+            resolve();
+        },function(err){
+            reject(err);
+        });
+    });
 }
 
 //Function for generate file
 function aurora_generate(command,name,table){
-    return aurora_create_file_crud_module.generate(command,name,table);
+    return new Promise(function(resolve,reject){
+        return aurora_create_file_crud_module.generate(command,name,table).then(function(){
+            resolve();
+        },function(err){
+            reject(err);
+        });
+    });
 }
 
 module.exports.serve = serve;

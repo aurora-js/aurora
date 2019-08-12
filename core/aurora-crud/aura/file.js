@@ -4,15 +4,25 @@ var response_rules = null;
 
 //function for create model file 
 function create_file_model(name,table,generate){
-    var rules = null;
+    return new Promise(function(resolve,reject){
+        var rules = null;
 
-    if(generate != null && generate != "" && generate != " " && generate != undefined && generate == true){
-            return generate_rules(table).then(function(data){
-                create_file(table,name,response_rules);
-            });     
-    }else{
-        return create_file(table,name);
-    }
+        if(generate != null && generate != "" && generate != " " && generate != undefined && generate == true){
+                return generate_rules(table).then(function(data){
+                    create_file(table,name,response_rules).then(function(){
+                        resolve();
+                    },function(){
+                        reject();
+                    });
+                });     
+        }else{
+            return create_file(table,name).then(function(){
+                resolve();
+            },function(err){
+                reject(err);
+            });
+        }
+    });
 
 }
 
@@ -152,55 +162,59 @@ function generate_rules_data(data){
 
 //Function for run create table 
 function create_file(table,name,rules){
-    var table_name = "";
+    return new Promise(function(resolve,reject){
+        var table_name = "";
 
-    //Check table name
-    if(table != null && table != "" && table != " " && table != undefined){
-        table_name = table;
-    }
-    
-    //Change space to underscore and Uppercase to Lowercase or name file
-    var name_file = name.split(' ').join('_');
-
-    //For table name
-    var syntax = "module.exports.table_name = \""+table_name+"\";\n\n";
-    
-    //If not with generate rules
-    if(rules == null){
-
-        //For rulesOnRead
-        syntax = syntax + "module.exports.rulesOnRead = {\n\n};\n\n";
-
-        //For rulesOnCreate
-        syntax = syntax + "module.exports.rulesOnCreate = {\n\n};\n\n";
-
-        //For rulesOnUpdate
-        syntax = syntax + "module.exports.rulesOnUpdate = {\n\n};\n\n";
-
-        //For rulesOnErase
-        syntax = syntax + "module.exports.rulesOnErase = {\n\n};\n\n";
-
-    }else{
-        //For rulesOnRead if have rules
-        syntax = syntax + "module.exports.rulesOnRead = "+rules+"\n\n";
+        //Check table name
+        if(table != null && table != "" && table != " " && table != undefined){
+            table_name = table;
+        }
         
-        //For rulesOnCreate if have rules
-        syntax = syntax + "module.exports.rulesOnCreate = "+rules+"\n\n";
+        //Change space to underscore and Uppercase to Lowercase or name file
+        var name_file = name.split(' ').join('_');
 
-        //For rulesOnUpdate if have rules
-        syntax = syntax + "module.exports.rulesOnUpdate = "+rules+"\n\n";
+        //For table name
+        var syntax = "module.exports.table_name = \""+table_name+"\";\n\n";
+        
+        //If not with generate rules
+        if(rules == null){
 
-        //For rulesOnErase if have rules
-        syntax = syntax + "module.exports.rulesOnErase = "+rules+"\n\n";
-    }
+            //For rulesOnRead
+            syntax = syntax + "module.exports.rulesOnRead = {\n\n};\n\n";
 
-    //Create file to ./model/
-    fs.appendFile('./model/'+name_file+'.js', syntax, function (err) {
-        if (err) throw err;
+            //For rulesOnCreate
+            syntax = syntax + "module.exports.rulesOnCreate = {\n\n};\n\n";
 
-        //Return command successfully
-        console.log('File Model '+name+'.js'+' is created successfully.');
-        return process.exit();
+            //For rulesOnUpdate
+            syntax = syntax + "module.exports.rulesOnUpdate = {\n\n};\n\n";
+
+            //For rulesOnErase
+            syntax = syntax + "module.exports.rulesOnErase = {\n\n};\n\n";
+
+        }else{
+            //For rulesOnRead if have rules
+            syntax = syntax + "module.exports.rulesOnRead = "+rules+"\n\n";
+            
+            //For rulesOnCreate if have rules
+            syntax = syntax + "module.exports.rulesOnCreate = "+rules+"\n\n";
+
+            //For rulesOnUpdate if have rules
+            syntax = syntax + "module.exports.rulesOnUpdate = "+rules+"\n\n";
+
+            //For rulesOnErase if have rules
+            syntax = syntax + "module.exports.rulesOnErase = "+rules+"\n\n";
+        }
+
+        //Create file to ./model/
+        fs.appendFile('./model/'+name_file+'.js', syntax, function (err) {
+            if (err){
+                reject(err);
+            };
+
+            //Return command successfully
+            console.log('File Model '+name+'.js'+' is created successfully.');
+            return resolve();
+        });
     });
 }
 
@@ -399,26 +413,30 @@ function create_crud_file(name,model){
 
 //Function for generate
 function generate(command,name,table){
-    switch (command) {
-        case 'RUN':
-            var nameController = name+"Controller";
-            var nameModel = name+"Model";
-            console.log(nameModel);
-            //For generate model
-            create_file_model(nameModel,table,true)
-            setTimeout(function(){
-                //For generate controller 
-                create_crud_file(nameController,nameModel);
-                // setTimeout(function(){
-                //     //For update table
-                //     schema_update.run(type,true,schema);
-                // }, 2000);
-            }, 2000);
-            break;
+    return new Promise(function (resolve,reject){
+        switch (command) {
+            case 'RUN':
+                var nameController = name+"Controller";
+                var nameModel = name+"Model";
+
+                //For generate model
+                create_file_model(nameModel,table,true).then(function(){
+                    //For generate controller
+                    create_crud_file(nameController,nameModel).then(function(){
+                            resolve();
+                        },function(err){
+                            reject(err);
+                        });
+                },function(err){
+                      reject(err);
+                });
     
-        default:
-            break;
-    }
+                break;
+        
+            default:
+                break;
+        }
+    });
 }
 module.exports.create_model = create_file_model;
 module.exports.create_crud = create_crud_file;
