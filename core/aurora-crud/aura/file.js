@@ -246,35 +246,34 @@ function create_crud_file(name,model){
                 }
             });
 
-            //-----------------------------------------RULES CREATE-------------------------------------------------//
-            var rules_create = require('../../../model/'+result_file_model).rulesOnCreate;
-            //Get field in rules
-            var key_rules_create = Object.keys(rules_create);
-            function_insert = "main.insert({\n\t'models' : ['"+model+"'],\n\t'field' : [";
-            // function_insert = function_insert+key_rules_create;
+        //-----------------------------------------RULES CREATE-------------------------------------------------//
+        var rules_create = require('../../../model/'+result_file_model).rulesOnCreate;
+        //Get field in rules
+        var key_rules_create = Object.keys(rules_create);
+        function_insert = "\tmain.insert({\n\t'models' : ['"+model+"'],\n\t'field' : [";
+        // function_insert = function_insert+key_rules_create;
 
-            // For generate field
-            key_rules_create.forEach(function(element,index){
-                function_insert = function_insert +"'"+element+"'";
-                if(key_rules_create[index+1] != undefined){
-                    function_insert = function_insert + ",";
-                }
-            });
-            function_insert = function_insert + "],\n\t'result' : [";
+        // For generate field
+        key_rules_create.forEach(function(element,index){
+            function_insert = function_insert +"'"+element+"'";
+            if(key_rules_create[index+1] != undefined){
+                function_insert = function_insert + ",";
+            }
+        });
+        function_insert = function_insert + "],\n\t'result' : [";
 
-            // For generate result
-            key_rules_create.forEach(function(element,index){
-                if(index==0){
-                    function_insert = function_insert +"\n";
-                }
-                function_insert = function_insert +"\t\treq.body."+element;
-                if(key_rules_create[index+1] != undefined){
-                    function_insert = function_insert + ",\n";
-                }
-            });
-            function_insert = function_insert + "\n\t";
-            function_insert = function_insert + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t console.log(q); \n\t\t\t console.log(" + "'berhasil insert'" + ");\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\tconsole.log(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
-
+        // For generate result
+        key_rules_create.forEach(function(element,index){
+            if(index==0){
+                function_insert = function_insert +"\n";
+            }
+            function_insert = function_insert +"\t\treq.body."+element;
+            if(key_rules_create[index+1] != undefined){
+                function_insert = function_insert + ",\n";
+            }
+        });
+        function_insert = function_insert + "\n\t";
+        function_insert = function_insert + "\n\t]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t return q;\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
 
 
             //-----------------------------------------RULES READ-------------------------------------------------//
@@ -316,13 +315,47 @@ function create_crud_file(name,model){
             function_update = "main.update({\n\t'models' : ['"+model+"'],\n\t'set' : [";
             // function_insert = function_insert+key_rules_create;
     
-            // For generate field
-            key_rules_update.forEach(function(element,index){
-                
-                function_update = function_update + "\n\t\t[" +"'"+ element + "'," + "'='"+ ",req.body." + element +"]";
-                if(key_rules_update[index+1] != undefined){
-                    function_update = function_update + ",";
-                }
+         //-----------------------------------------RULES UPDATE-------------------------------------------------//
+         var rules_update = require('../../../model/'+result_file_model).rulesOnUpdate;
+         //Get field in rules
+         var key_rules_update = Object.keys(rules_update);
+         function_update = "\tmain.update({\n\t'models' : ['"+model+"'],\n\t'set' : [";
+         // function_insert = function_insert+key_rules_create;
+ 
+         // For generate field
+         key_rules_update.forEach(function(element,index){
+            
+             function_update = function_update + "\n\t\t[" +"'"+ element + "'," + "'='"+ ",req.body." + element +"]";
+             if(key_rules_update[index+1] != undefined){
+                 function_update = function_update + ",";
+             }
+         });
+         function_update = function_update + "\n\t],\n\t'where' : [";
+ 
+       
+         function_update = function_update + "\n\t\t[" +"'"+  key_rules_update[0] + "'," + "'='"+ ",req.body." +  key_rules_update[0] +"]";
+         
+         function_update = function_update + "\n\t]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t return q; \n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
+
+
+        // rules_create.forEach(function (element, index){
+        //     console.log(element);
+        // });
+        //----------------------------------------------
+
+        //Ini untuk memproses modelnya 
+        //insert()
+        /*
+            main.insert({
+                'models' : ['mahasiswaModel'],
+                "field": ['id',' id_prodi_fk', 'Email', 'PASSWORD', 'NIK'],
+                "result": [
+                    req.body.id,
+                    req.body.id_prodi_fk,
+                    req.body.Email,
+                    req.body.PASSWORD,
+                    req.body.NIK
+                ]
             });
             function_update = function_update + "\n\t],\n\t'where' : [";
     
