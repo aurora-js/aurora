@@ -207,190 +207,219 @@ function create_file(table,name,rules){
 
 //Function for run create table 
 function create_crud_file(name,model){
-    var model_name = "";
-    var function_insert =" ";
-    var function_read =" ";
-    var function_update =" ";
-    var function_erase =" ";
-    
-    //Check model name
-    if(model != null && model != "" && model != " " && model != undefined){
-        var file_model = fs.readdirSync('./model');
-        //Ini untuk mencari file model
-        var no_file = true;
-        //For UpperCase to Lowercase
-        var name_file = model.toLowerCase().split(' ').join('_');
-        var result_file_model = "";
-        //For search file
-        file_model.forEach(element => {
-            element_backup = element;
-            element = element.toLowerCase();
-            var get = element.includes(name_file);
-            if(get == true){
-                result_file_model = element_backup;
-            }
-        });
-
-        //-----------------------------------------RULES CREATE-------------------------------------------------//
-        var rules_create = require('../../../model/'+result_file_model).rulesOnCreate;
-        //Get field in rules
-        var key_rules_create = Object.keys(rules_create);
-        function_insert = "main.insert({\n\t'models' : ['"+model+"'],\n\t'field' : [";
-        // function_insert = function_insert+key_rules_create;
-
-        // For generate field
-        key_rules_create.forEach(function(element,index){
-            function_insert = function_insert +"'"+element+"'";
-            if(key_rules_create[index+1] != undefined){
-                function_insert = function_insert + ",";
-            }
-        });
-        function_insert = function_insert + "],\n\t'result' : [";
-
-        // For generate result
-        key_rules_create.forEach(function(element,index){
-            if(index==0){
-                function_insert = function_insert +"\n";
-            }
-            function_insert = function_insert +"\t\treq.body."+element;
-            if(key_rules_create[index+1] != undefined){
-                function_insert = function_insert + ",\n";
-            }
-        });
-        function_insert = function_insert + "\n\t";
-        function_insert = function_insert + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t console.log(q); \n\t\t\t console.log(" + "'berhasil insert'" + ");\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\tconsole.log(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
-
-
-
-         //-----------------------------------------RULES READ-------------------------------------------------//
-         var rules_read = require('../../../model/'+result_file_model);
-        //Get field in rules
-        var key_rules_read = Object.keys(rules_read);
-        function_read = "main.read({\n\t'models' : ['"+model+"'],\n\t'select' : [";
-        // function_insert = function_insert+key_rules_create;
-
-        // For generate field
-        function_read = function_read +"'"+'*'+"'";
-         
-         // For generate field 
+   return new Promise(function(resolve,reject){
+        var model_name = "";
+        var function_insert =" ";
+        var function_read =" ";
+        var function_update =" ";
+        var function_erase =" ";
         
-         function_read = function_read + "],\n\t";
-         
-         function_read = function_read + "\n});";
-
-
-        // rules_create.forEach(function (element, index){
-        //     console.log(element);
-        // });
-        //----------------------------------------------
-
-        //Ini untuk memproses modelnya 
-        //index()
-        /*
-        main.read({
-        "select"        : ['name', 'age'],
-        "table_name"    : ['members']
-    
-        });
-        */
-    
-         //-----------------------------------------RULES UPDATE-------------------------------------------------//
-         var rules_update = require('../../../model/'+result_file_model).rulesOnUpdate;
-         //Get field in rules
-         var key_rules_update = Object.keys(rules_update);
-         function_update = "main.update({\n\t'models' : ['"+model+"'],\n\t'set' : [";
-         // function_insert = function_insert+key_rules_create;
- 
-         // For generate field
-         key_rules_update.forEach(function(element,index){
-            
-             function_update = function_update + "\n\t\t[" +"'"+ element + "'," + "'='"+ ",req.body." + element +"]";
-             if(key_rules_update[index+1] != undefined){
-                 function_update = function_update + ",";
-             }
-         });
-         function_update = function_update + "\n\t],\n\t'where' : [";
- 
-       
-         function_update = function_update + "\n\t\t[" +"'"+  key_rules_update[0] + "'," + "'='"+ ",req.body." +  key_rules_update[0] +"]";
-         
-         function_update = function_update + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t console.log(q); \n\t\t\t console.log(" + "'berhasil update'" + ");\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\tconsole.log(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
-
-
-        // rules_create.forEach(function (element, index){
-        //     console.log(element);
-        // });
-        //----------------------------------------------
-
-        //Ini untuk memproses modelnya 
-        //insert()
-        /*
-            main.insert({
-                'models' : ['mahasiswaModel'],
-                "field": ['id',' id_prodi_fk', 'Email', 'PASSWORD', 'NIK'],
-                "result": [
-                    req.body.id,
-                    req.body.id_prodi_fk,
-                    req.body.Email,
-                    req.body.PASSWORD,
-                    req.body.NIK
-                ]
+        //Check model name
+        if(model != null && model != "" && model != " " && model != undefined){
+            var file_model = fs.readdirSync('./model');
+            //Ini untuk mencari file model
+            var no_file = true;
+            //For UpperCase to Lowercase
+            var name_file = model.toLowerCase().split(' ').join('_');
+            var result_file_model = "";
+            //For search file
+            file_model.forEach(element => {
+                element_backup = element;
+                element = element.toLowerCase();
+                var get = element.includes(name_file);
+                if(get == true){
+                    result_file_model = element_backup;
+                }
             });
-        */
 
- //-----------------------------------------RULES ERASE-------------------------------------------------//
- var rules_erase = require('../../../model/'+result_file_model).rulesOnErase;
- //Get field in rules
- var key_rules_erase = Object.keys(rules_erase);
- function_erase = "main.erase_query({\n\t'models' : ['"+model+"'],\n\t'where' : [";
- // function_insert = function_insert+key_rules_create;
+            //-----------------------------------------RULES CREATE-------------------------------------------------//
+            var rules_create = require('../../../model/'+result_file_model).rulesOnCreate;
+            //Get field in rules
+            var key_rules_create = Object.keys(rules_create);
+            function_insert = "main.insert({\n\t'models' : ['"+model+"'],\n\t'field' : [";
+            // function_insert = function_insert+key_rules_create;
 
- // For generate field
-     function_erase = function_erase + "\n\t\t[" +"'"+ key_rules_erase[0] + "'," + "'='"+ ",req.params." +  key_rules_erase[0] +"]";
+            // For generate field
+            key_rules_create.forEach(function(element,index){
+                function_insert = function_insert +"'"+element+"'";
+                if(key_rules_create[index+1] != undefined){
+                    function_insert = function_insert + ",";
+                }
+            });
+            function_insert = function_insert + "],\n\t'result' : [";
 
-     function_erase = function_erase + "\n\t]\n});";
-          
+            // For generate result
+            key_rules_create.forEach(function(element,index){
+                if(index==0){
+                    function_insert = function_insert +"\n";
+                }
+                function_insert = function_insert +"\t\treq.body."+element;
+                if(key_rules_create[index+1] != undefined){
+                    function_insert = function_insert + ",\n";
+                }
+            });
+            function_insert = function_insert + "\n\t";
+            function_insert = function_insert + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t console.log(q); \n\t\t\t console.log(" + "'berhasil insert'" + ");\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\tconsole.log(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
 
- // rules_create.forEach(function (element, index){
- //     console.log(element);
- // });
- //----------------------------------------------
 
- //Ini untuk memproses modelnya 
- //index()
- /*
- main.read({
- "select"        : ['name', 'age'],
- "table_name"    : ['members'],
- "where"         : ['dhon', '=', '18'],
- "orWhere"       : ['dam', '=', '20']
 
- });
- */
-        model_name = model;
-    }
+            //-----------------------------------------RULES READ-------------------------------------------------//
+            var rules_read = require('../../../model/'+result_file_model);
+            //Get field in rules
+            var key_rules_read = Object.keys(rules_read);
+            function_read = "main.read({\n\t'models' : ['"+model+"'],\n\t'select' : [";
+            // function_insert = function_insert+key_rules_create;
+
+            // For generate field
+            function_read = function_read +"'"+'*'+"'";
+            
+            // For generate field 
+            
+            function_read = function_read + "],\n\t";
+            
+            function_read = function_read + "\n});";
+
+
+            // rules_create.forEach(function (element, index){
+            //     console.log(element);
+            // });
+            //----------------------------------------------
+
+            //Ini untuk memproses modelnya 
+            //index()
+            /*
+            main.read({
+            "select"        : ['name', 'age'],
+            "table_name"    : ['members']
+        
+            });
+            */
+        
+            //-----------------------------------------RULES UPDATE-------------------------------------------------//
+            var rules_update = require('../../../model/'+result_file_model).rulesOnUpdate;
+            //Get field in rules
+            var key_rules_update = Object.keys(rules_update);
+            function_update = "main.update({\n\t'models' : ['"+model+"'],\n\t'set' : [";
+            // function_insert = function_insert+key_rules_create;
     
-    //Change space to underscore and Uppercase to Lowercase or name file
-    var name_file = name.split(' ').join('_');
+            // For generate field
+            key_rules_update.forEach(function(element,index){
+                
+                function_update = function_update + "\n\t\t[" +"'"+ element + "'," + "'='"+ ",req.body." + element +"]";
+                if(key_rules_update[index+1] != undefined){
+                    function_update = function_update + ",";
+                }
+            });
+            function_update = function_update + "\n\t],\n\t'where' : [";
+    
+        
+            function_update = function_update + "\n\t\t[" +"'"+  key_rules_update[0] + "'," + "'='"+ ",req.body." +  key_rules_update[0] +"]";
+            
+            function_update = function_update + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t console.log(q); \n\t\t\t console.log(" + "'berhasil update'" + ");\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\tconsole.log(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
 
-    //For Function Name
-    var syntax ="//declare var con from enviroment//\nvar main = require('../core/aurora-crud/aura/sysaura');\n\n";
-    syntax = syntax+"function index(req, res) {\n"+function_read+"\n}\n\n";
-    syntax = syntax+"function create(req, res) {\n"+function_insert+"\n}\n\n";
-    syntax = syntax+"function update(req, res) {\n"+function_update+"\n}\n\n";
-    syntax = syntax+"function erase(req, res) {\n"+function_erase+"\n}\n\n\n";
-    syntax = syntax+"module.exports.index = index;\n";
-    syntax = syntax+"module.exports.create = create;\n";
-    syntax = syntax+"module.exports.update = update;\n";
-    syntax = syntax+"module.exports.erase = erase;\n";
-    //Create file to ./model/
-    fs.appendFile('./controllers/'+name_file+'.js', syntax, function (err) {
-        if (err) throw err;
 
-        //Return command successfully
-        console.log('File Controller '+name+'.js'+' is created successfully.');
-        return process.exit();
+            // rules_create.forEach(function (element, index){
+            //     console.log(element);
+            // });
+            //----------------------------------------------
+
+            //Ini untuk memproses modelnya 
+            //insert()
+            /*
+                main.insert({
+                    'models' : ['mahasiswaModel'],
+                    "field": ['id',' id_prodi_fk', 'Email', 'PASSWORD', 'NIK'],
+                    "result": [
+                        req.body.id,
+                        req.body.id_prodi_fk,
+                        req.body.Email,
+                        req.body.PASSWORD,
+                        req.body.NIK
+                    ]
+                });
+            */
+
+    //-----------------------------------------RULES ERASE-------------------------------------------------//
+    var rules_erase = require('../../../model/'+result_file_model).rulesOnCreate;
+    //Get field in rules
+    var key_rules_erase = Object.keys(rules_erase);
+    function_erase = "main.erase_query({\n\t'models' : ['"+model+"'],\n\t'where' : [";
+    // function_insert = function_insert+key_rules_create;
+
+    // For generate field
+        function_erase = function_erase + "\n\t\t[" +"'"+ key_rules_erase[0] + "'," + "'='"+ ",req.params." +  key_rules_erase[0] +"]";
+
+        function_erase = function_erase + "\n\t]\n});";
+            
+
+    // rules_create.forEach(function (element, index){
+    //     console.log(element);
+    // });
+    //----------------------------------------------
+
+    //Ini untuk memproses modelnya 
+    //index()
+    /*
+    main.read({
+    "select"        : ['name', 'age'],
+    "table_name"    : ['members'],
+    "where"         : ['dhon', '=', '18'],
+    "orWhere"       : ['dam', '=', '20']
+
     });
+    */
+            model_name = model;
+        }
+        
+        //Change space to underscore and Uppercase to Lowercase or name file
+        var name_file = name.split(' ').join('_');
+
+        //For Function Name
+        var syntax ="//declare var con from enviroment//\nvar main = require('../core/aurora-crud/aura/sysaura');\n\n";
+        syntax = syntax+"function index(req, res) {\n"+function_read+"\n}\n\n";
+        syntax = syntax+"function create(req, res) {\n"+function_insert+"\n}\n\n";
+        syntax = syntax+"function update(req, res) {\n"+function_update+"\n}\n\n";
+        syntax = syntax+"function erase(req, res) {\n"+function_erase+"\n}\n\n\n";
+        syntax = syntax+"module.exports.index = index;\n";
+        syntax = syntax+"module.exports.create = create;\n";
+        syntax = syntax+"module.exports.update = update;\n";
+        syntax = syntax+"module.exports.erase = erase;\n";
+        //Create file to ./model/
+        fs.appendFile('./controllers/'+name_file+'.js', syntax, function (err) {
+            if (err) {
+                return reject(err);
+            };
+
+            //Return command successfully
+            console.log('File Controller '+name+'.js'+' is created successfully.');
+            return resolve();
+        });
+   });
+}
+
+//Function for generate
+function generate(command,name,table){
+    switch (command) {
+        case 'RUN':
+            var nameController = name+"Controller";
+            var nameModel = name+"Model";
+            console.log(nameModel);
+            //For generate model
+            create_file_model(nameModel,table,true)
+            setTimeout(function(){
+                //For generate controller 
+                create_crud_file(nameController,nameModel);
+                // setTimeout(function(){
+                //     //For update table
+                //     schema_update.run(type,true,schema);
+                // }, 2000);
+            }, 2000);
+            break;
+    
+        default:
+            break;
+    }
 }
 module.exports.create_model = create_file_model;
 module.exports.create_crud = create_crud_file;
+module.exports.generate = generate;
