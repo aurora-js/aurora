@@ -269,13 +269,9 @@ function create_crud_file(name,model){
         // function_insert = function_insert+key_rules_create;
 
         // For generate field
-        function_read = function_read +"'"+'*'+"'";
+        function_read = function_read +"'"+'*'+"'";        
          
-         // For generate field 
-        
-         function_read = function_read + "],\n\t";
-         
-         function_read = function_read + "\n});";
+         function_read = function_read + "]\n}).then(function (q) {\n\t\t try {\n\t\t\t return(q);;\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\treturn(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
 
 
         // rules_create.forEach(function (element, index){
@@ -346,8 +342,7 @@ function create_crud_file(name,model){
 
  // For generate field
      function_erase = function_erase + "\n\t\t[" +"'"+ key_rules_erase[0] + "'," + "'='"+ ",req.params." +  key_rules_erase[0] +"]";
-
-     function_erase = function_erase + "\n\t]\n});";
+     function_erase = function_erase + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t return(q);;\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\treturn(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
           
 
  // rules_create.forEach(function (element, index){

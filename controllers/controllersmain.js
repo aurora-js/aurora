@@ -65,15 +65,23 @@ function update(req, res) {
 //get read function from sysaura
 function index(req, res) {
     var hasil = main.read({
-        "select"        : ['name', 'age'],
-        "table_name"    : ['members']
+        "select"        : ['title', 'deskripsi'],
+        "table_name"    : ['keunggulan'],
+        "where"         : [
+                            ["title", "=", "hallo"],
+                            ["deskripsi", "=", "Ini uji coba"]                
+        ],
+        "orWhere"       : [
+                             ["title", "=", "wew"],
+                             ["deskripsi", "=", "2345"]               
+        ]
     }).then(function (q) {
         // res.render('test', {
         //     page_title: "Dummy - Node.js",
         //     data: q
         // });
         try {
-            res.render('test', {
+            return res.render('test', {
             page_title: "Dummy - Node.js",
             data: q
         });

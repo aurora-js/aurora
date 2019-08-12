@@ -4,9 +4,20 @@ var main = require('../core/aurora-crud/aura/sysaura');
 function index(req, res) {
 main.read({
 	'models' : ['membersModel'],
-	'select' : ['*'],
-	
-});
+	'select' : ['*']
+}).then(function (q) {
+		 try {
+			 return(q);;
+		 }catch(error){
+
+		}
+	},function(err){
+		 try{
+			return(err.action);
+			} catch(error){
+
+		} 
+	});
 }
 
 function create(req, res) {
@@ -52,7 +63,19 @@ main.erase_query({
 	'where' : [
 		['name','=',req.params.name]
 	]
-});
+}).then(function (q) {
+		 try {
+			 return(q);;
+		 }catch(error){
+
+		}
+	},function(err){
+		 try{
+			return(err.action);
+			} catch(error){
+
+		} 
+	});
 }
 
 
