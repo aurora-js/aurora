@@ -22,137 +22,146 @@ function create_db(value) {
 
 //Function create table
 function create_table(table, engine, field, last, exitsuccess) {
-    table_name = table;
-    //Open syntax sql to create table
-    query = "CREATE TABLE " + table_name + "(";
-    //Foreach to function in field to syntax
-    field.forEach(function (element, index) {
+    return new Promise(function(resolve,reject){
+        table_name = table;
+        //Open syntax sql to create table
+        query = "CREATE TABLE " + table_name + "(";
+        //Foreach to function in field to syntax
+        field.forEach(function (element, index) {
 
 
-        //Run check alter for column
-        attribute = check_attribute(element);
+            //Run check alter for column
+            attribute = check_attribute(element);
 
-        //Get syntax sql
-        if (query_field(element) != null) {
-            query = query + query_field(element);
-        }
-
-        //For check next field is create index or relation or unique
-        // var next_no_comma = "Not Null";
-        // if(field[index+1]){
-        //     next_no_comma = field[index+1].type;
-        // }
-
-        //If last field not have ' , '
-        // if(element.type !=null){
-        //|| next_no_comma == null
-        if (index == field.length - 1) {
-            if (attribute.action == true) {
-                query = query + attribute.data;
+            //Get syntax sql
+            if (query_field(element) != null) {
+                query = query + query_field(element);
             }
-        } else {
-            if (attribute.action == false) {
-                query = query + ", ";
+
+            //For check next field is create index or relation or unique
+            // var next_no_comma = "Not Null";
+            // if(field[index+1]){
+            //     next_no_comma = field[index+1].type;
+            // }
+
+            //If last field not have ' , '
+            // if(element.type !=null){
+            //|| next_no_comma == null
+            if (index == field.length - 1) {
+                if (attribute.action == true) {
+                    query = query + attribute.data;
+                }
             } else {
-                query = query + attribute.data + ", ";
+                if (attribute.action == false) {
+                    query = query + ", ";
+                } else {
+                    query = query + attribute.data + ", ";
+                }
             }
+            // }
+            // else{
+            //     //Function create index or relation or unique
+            //     check_relation_module(element);
+            // }
+
+        });
+
+        //Close sytax sql
+        query = query + " ) ENGINE=" + engine + ";";
+        // console.log(query);
+        //function run query from variable query 
+
+        if (query != "" && field.length != 0) {
+            return run_query('Table', query, 'created', last, table_name, exitsuccess).then(function(){
+                resolve();
+            },function(err){
+                reject(err);
+            });
+        } else if (query == "" && last == true && exitsuccess != false) {
+            //Maximum for 2 second to exit process
+            setTimeout(function () {
+                return process.exit();
+            }, 2000);
+
+        } else {
+            return null;
         }
-        // }
-        // else{
-        //     //Function create index or relation or unique
-        //     check_relation_module(element);
-        // }
-
     });
-
-    //Close sytax sql
-    query = query + " ) ENGINE=" + engine + ";";
-    // console.log(query);
-    //function run query from variable query 
-
-    if (query != "" && field.length != 0) {
-        return run_query('Table', query, 'created', last, table_name, exitsuccess);
-    } else if (query == "" && last == true && exitsuccess != false) {
-        //Maximum for 2 second to exit process
-        setTimeout(function () {
-            return process.exit();
-        }, 2000);
-
-    } else {
-        return null;
-    }
-
-
 
 }
 
 //Function update table
 function update_table(table, field, last, exitsuccess) {
-    table_name = table;
-    query = "";
-    alter = "";
+    return new Promise(function(resolve,reject){
+        table_name = table;
+        query = "";
+        alter = "";
 
-    //Foreach to function in field to syntax
-    field.forEach(function (element, index) {
-        //Generate sql for add column or change column
-        if (element.change_column == true || element.add_column == true || element.rename_index == true) {
-            //Open syntax sql to create table
-            alter = "ALTER TABLE " + table_name + " ";
+        //Foreach to function in field to syntax
+        field.forEach(function (element, index) {
+            //Generate sql for add column or change column
+            if (element.change_column == true || element.add_column == true || element.rename_index == true) {
+                //Open syntax sql to create table
+                alter = "ALTER TABLE " + table_name + " ";
 
-            //Syntax for add column     
-            if (element.add_column == true) {
-                alter = alter + "ADD " + query_field(element);
+                //Syntax for add column     
+                if (element.add_column == true) {
+                    alter = alter + "ADD " + query_field(element);
 
+                } else {
+
+                    //Sytax for change type or rename column with type
+                    alter = alter + "CHANGE COLUMN " + element.from_column + " " + query_field(element);
+                }
+
+                //Check attribute
+                attribute = check_attribute(element);
+
+                // if (index == field.length - 1) {
+                if (attribute.action == true) {
+                    alter = alter + attribute.data;
+                }
+                // } else {
+                //     if (attribute.action == false) {
+                //         alter = alter + ", ";
+                //     } else {
+                //         alter = alter + attribute.data + ", ";
+                //     }
+                // }
             } else {
-
-                //Sytax for change type or rename column with type
-                alter = alter + "CHANGE COLUMN " + element.from_column + " " + query_field(element);
+                var column_index = generate_index_column(element.add_index_column);
+                //It's for add index 
+                alter = "CREATE INDEX ";
+                if (element.add_index_name != null) {
+                    alter = alter + element.add_index_name + " ON " + table_name + column_index;
+                } else {
+                    alter = alter + element.add_index_column[0] + "_" + "index" + " ON " + table_name + column_index;
+                }
             }
+            query = query + alter + ";\n";
+        });
 
-            //Check attribute
-            attribute = check_attribute(element);
+        //Close sytax sql
+        // query = query + " );";
+        // console.log(query);
+        //function run query from variable query
+        if (query != "") {
+            return run_query('Table', query, 'updated', last, table_name, exitsuccess).then(function(){
+                resolve();
+            },function(err){
+                reject(err);
+            });
+        } else if (query == "" && last == true && exitsuccess != false) {
 
-            // if (index == field.length - 1) {
-            if (attribute.action == true) {
-                alter = alter + attribute.data;
-            }
-            // } else {
-            //     if (attribute.action == false) {
-            //         alter = alter + ", ";
-            //     } else {
-            //         alter = alter + attribute.data + ", ";
-            //     }
-            // }
+            //Maximum for 2 second to exit process
+            setTimeout(function () {
+                return process.exit();
+            }, 2000);
+
         } else {
-            var column_index = generate_index_column(element.add_index_column);
-            //It's for add index 
-            alter = "CREATE INDEX ";
-            if (element.add_index_name != null) {
-                alter = alter + element.add_index_name + " ON " + table_name + column_index;
-            } else {
-                alter = alter + element.add_index_column[0] + "_" + "index" + " ON " + table_name + column_index;
-            }
+            return null;
         }
-        query = query + alter + ";\n";
     });
-
-    //Close sytax sql
-    // query = query + " );";
-    // console.log(query);
-    //function run query from variable query
-    if (query != "") {
-        return run_query('Table', query, 'updated', last, table_name, exitsuccess);
-    } else if (query == "" && last == true && exitsuccess != false) {
-
-        //Maximum for 2 second to exit process
-        setTimeout(function () {
-            return process.exit();
-        }, 2000);
-
-    } else {
-        return null;
-    }
-
 
 
 }
@@ -160,74 +169,80 @@ function update_table(table, field, last, exitsuccess) {
 
 //Function delete table
 function delete_table(table, field, last, exitsuccess) {
-    table_name = table;
-    query = "";
-    alter = "";
+    return new Promise(function(resolve,reject){
+        table_name = table;
+        query = "";
+        alter = "";
 
-    field.forEach(function (element, index) {
-        //Generate sql for delete column, index, foreign , primary
-        if (element.drop_column == true || element.drop_index == true || element.drop_unique == true || element.drop_foreign == true || element.drop_primary == true) {
-            //Open syntax sql to create table
-            alter = "ALTER TABLE " + table_name + " DROP ";
+        field.forEach(function (element, index) {
+            //Generate sql for delete column, index, foreign , primary
+            if (element.drop_column == true || element.drop_index == true || element.drop_unique == true || element.drop_foreign == true || element.drop_primary == true) {
+                //Open syntax sql to create table
+                alter = "ALTER TABLE " + table_name + " DROP ";
 
-            //Syntax for add column     
-            if (element.drop_column == true) {
-                alter = alter + "COLUMN " + element.drop_column_from;
-            } else if (element.drop_index == true) {
-                alter = alter + "INDEX " + element.drop_index_from;
-            } else if (element.drop_unique == true) {
-                alter = alter + "INDEX " + element.drop_unique_from;
-            } else if (element.drop_foreign == true) {
-                alter = alter + "FOREIGN KEY " + element.drop_foreign_from;
-            } else if (element.drop_primary == true) {
-                alter = alter + "PRIMARY KEY";
+                //Syntax for add column     
+                if (element.drop_column == true) {
+                    alter = alter + "COLUMN " + element.drop_column_from;
+                } else if (element.drop_index == true) {
+                    alter = alter + "INDEX " + element.drop_index_from;
+                } else if (element.drop_unique == true) {
+                    alter = alter + "INDEX " + element.drop_unique_from;
+                } else if (element.drop_foreign == true) {
+                    alter = alter + "FOREIGN KEY " + element.drop_foreign_from;
+                } else if (element.drop_primary == true) {
+                    alter = alter + "PRIMARY KEY";
+                }
+
+                //Check attribute
+                attribute = check_attribute(element);
+
+                // if (index == field.length - 1) {
+                if (attribute.action == true) {
+                    alter = alter + attribute.data;
+                }
+                // } else {
+                //     if (attribute.action == false) {
+                //         alter = alter + ", ";
+                //     } else {
+                //         alter = alter + attribute.data + ", ";
+                //     }
+                // }
+            } else {
+                //It's for delete table
+
+                if (element.drop_table == true) {
+                    alter = "DROP TABLE ";
+                } else if (element.drop_table_if_exists == true) {
+                    alter = "DROP TABLE IF EXISTS ";
+                }
+
+                alter = alter + table_name;
             }
 
-            //Check attribute
-            attribute = check_attribute(element);
+            query = query + alter + ";\n";
+        });
 
-            // if (index == field.length - 1) {
-            if (attribute.action == true) {
-                alter = alter + attribute.data;
-            }
-            // } else {
-            //     if (attribute.action == false) {
-            //         alter = alter + ", ";
-            //     } else {
-            //         alter = alter + attribute.data + ", ";
-            //     }
-            // }
+        //Close sytax sql
+        // query = query + " );";
+        // console.log(query);
+        //function run query from variable query
+        if (query != "") {
+            return run_query('Table', query, 'deleted', last, table_name, exitsuccess).then(function(){
+                resolve();
+            },function(err){
+                reject(err);
+            });
+        } else if (query == "" && last == true && exitsuccess != false) {
+
+            //Maximum for 2 second to exit process
+            setTimeout(function () {
+                return process.exit();
+            }, 2000);
+
         } else {
-            //It's for delete table
-
-            if (element.drop_table == true) {
-                alter = "DROP TABLE ";
-            } else if (element.drop_table_if_exists == true) {
-                alter = "DROP TABLE IF EXISTS ";
-            }
-
-            alter = alter + table_name;
+            return null;
         }
-
-        query = query + alter + ";\n";
     });
-
-    //Close sytax sql
-    // query = query + " );";
-    // console.log(query);
-    //function run query from variable query
-    if (query != "") {
-        return run_query('Table', query, 'deleted', last, table_name, exitsuccess);
-    } else if (query == "" && last == true && exitsuccess != false) {
-
-        //Maximum for 2 second to exit process
-        setTimeout(function () {
-            return process.exit();
-        }, 2000);
-
-    } else {
-        return null;
-    }
 }
 
 
@@ -568,32 +583,38 @@ function query_field(field) {
 
 //function for run query
 function run_query(type, query, command, last, table, exitsuccess) {
-    // return new Promise(resolve => {
-        con = compile.enviroment();
-        con.query(query, function (err, result) {
-            if (err) {
-                console.log('ERROR!\n' + err.sqlMessage);
-                return process.exit();
-            } else {
-                if (last == true && index_column.length == 0) {
-                    console.log(type + ' ' + table + ' successfully ' + command);
-                    if(exitsuccess != false){
-                        //Maximum for 2 second to exit process
-                        setTimeout( function() {
-                            return process.exit();
-                        } , 2000) ; 
-                    } 
-                }else{
-                    return console.log(type +' '+ table + ' successfully ' + command);
+    return new Promise(function(resolve,reject){
+        // return new Promise(resolve => {
+            con = compile.enviroment();
+            con.query(query, function (err, result) {
+                if (err) {
+                    console.log('ERROR!\n' + err.sqlMessage);
+                    reject(err);
+                    return process.exit();
+                } else {
+                    if (last == true && index_column.length == 0) {
+                        console.log(type + ' ' + table + ' successfully ' + command);
+                        resolve();
+                        if(exitsuccess != false){
+                            //Maximum for 2 second to exit process
+                            setTimeout( function() {
+                                reject(err);
+                                return process.exit();
+                            } , 2000) ; 
+                        } 
+                    }else{
+                        console.log(type +' '+ table + ' successfully ' + command);
+                        resolve();
+                    }
+                    //check create INDEX after create TABLE
+                    // if(index_column.length>0){
+                    //     return console.log('jalan index');
+                    // }
                 }
-                //check create INDEX after create TABLE
-                // if(index_column.length>0){
-                //     return console.log('jalan index');
-                // }
-            }
-        //     resolve();
-        // });
-    
+            //     resolve();
+            // });
+        
+        });
     });
 }
 
