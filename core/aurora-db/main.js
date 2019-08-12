@@ -33,15 +33,17 @@ function schema(command,type,schema) {
             break;
         case 'REFRESH':
             //For delete table
-            schema_delete.delete_table(type,false,schema);
-            setTimeout(function(){
+            schema_delete.delete_table(type,false,schema).then(function(){
                 //For create table
-                schema_run.run(type,false,schema);
-                setTimeout(function(){
+                schema_run.run(type,false,schema).then(function(){
                     //For update table
-                    schema_update.run(type,true,schema);
-                }, 2000);
-            }, 2000);
+                    schema_update.run(type,true,schema);    
+                },function(err){
+                    reject(err);
+                });
+            },function(err){
+                reject(err);
+            }); 
             break;
         default:
             break;

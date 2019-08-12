@@ -49,78 +49,85 @@ function check_db_type(type) {
 */
 //Function for run schema 
 function run(type,exitsuccess,schema) {
-    check_db_type(type);
-    type_database = type;
+    return new Promise(function(resolve,reject){
+        check_db_type(type);
+        type_database = type;
 
-    //Check Run Schema In Certain File Or Not 
-    if(schema != null){
-        /*
-            ! Important !
-            Name file can not use '.js',
-            but if user have schema like :
-            1. 2019......_person_one.js
-            2. 2019......_person_two.js
-            user must use '.js', example user want run schema person_one, user must run command :
-            aurora db:run -s person_one or person_one.js
-        */
-        var no_file = true;
-        //For UpperCase to Lowercase
-        var name_file = schema.toLowerCase().split(' ').join('_');
+        //Check Run Schema In Certain File Or Not 
+        if(schema != null){
+            /*
+                ! Important !
+                Name file can not use '.js',
+                but if user have schema like :
+                1. 2019......_person_one.js
+                2. 2019......_person_two.js
+                user must use '.js', example user want run schema person_one, user must run command :
+                aurora db:run -s person_one or person_one.js
+            */
+            var no_file = true;
+            //For UpperCase to Lowercase
+            var name_file = schema.toLowerCase().split(' ').join('_');
 
-        //For search file
-        files.forEach(element => {
-            var get = element.includes(name_file);
-            if(get == true){
-                files = [];
-                files.push(element);
-                no_file = false;
+            //For search file
+            files.forEach(element => {
+                var get = element.includes(name_file);
+                if(get == true){
+                    files = [];
+                    files.push(element);
+                    no_file = false;
+                }
+            });
+
+            //If no file
+            if(no_file == true){
+                return console.log('Schema '+name_file+' Not Found');
             }
-        });
-
-        //If no file
-        if(no_file == true){
-            return console.log('Schema '+name_file+' Not Found');
         }
-    }
 
-    //Foreach file to get up value
-    files.forEach(function (element, keys) {
-        //Reset Field 
-        field_arr = [];
+        //Foreach file to get up value
+        files.forEach(function (element, keys) {
+            //Reset Field 
+            field_arr = [];
 
-        var schemafile = require('../../../database/schema/' + element);
+            var schemafile = require('../../../database/schema/' + element);
 
-        var json = JSON.stringify(schemafile.create.blueprint, function (key, value) {
-            if (typeof value === "function") {
-                return "/Function(" + value.toString() + ")/";
+            var json = JSON.stringify(schemafile.create.blueprint, function (key, value) {
+                if (typeof value === "function") {
+                    return "/Function(" + value.toString() + ")/";
+                }
+                return value;
+            });
+
+            var obj2 = JSON.parse(json, function (key, value) {
+                if (typeof value === "string" &&
+                    value.startsWith("/Function(") &&
+                    value.endsWith(")/")) {
+                    value = value.substring(10, value.length - 2);
+                    return eval("(" + value + ")");
+                }
+                return value;
+            });
+
+            //For run function in json
+            obj2();
+
+            //Check last file
+            var last = false;
+            if (keys == files.length - 1) {
+                last = true;
             }
-            return value;
+            
+            //Run create to file query
+            return require('../query/'+type_database).create_table(schemafile.create.table_name,schemafile.create.engine,field_arr,last,exitsuccess).then(function(){
+                if(keys == files.length - 1){
+                    resolve();
+                }     
+            },function(err){
+                reject(err);
+            });
         });
 
-        var obj2 = JSON.parse(json, function (key, value) {
-            if (typeof value === "string" &&
-                value.startsWith("/Function(") &&
-                value.endsWith(")/")) {
-                value = value.substring(10, value.length - 2);
-                return eval("(" + value + ")");
-            }
-            return value;
-        });
-
-        //For run function in json
-        obj2();
-
-        //Check last file
-        var last = false;
-        if (keys == files.length - 1) {
-            last = true;
-        }
-        
-        //Run create to file query
-        return require('../query/'+type_database).create_table(schemafile.create.table_name,schemafile.create.engine,field_arr,last,exitsuccess);
     });
-
-
 
     //console.log(files);
 }
