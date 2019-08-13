@@ -178,31 +178,18 @@ function create_file(table,name,rules){
         
         //If not with generate rules
         if(rules == null){
-
-            //For rulesOnRead
-            syntax = syntax + "module.exports.rulesOnRead = {\n\n};\n\n";
-
             //For rulesOnCreate
             syntax = syntax + "module.exports.rulesOnCreate = {\n\n};\n\n";
 
             //For rulesOnUpdate
             syntax = syntax + "module.exports.rulesOnUpdate = {\n\n};\n\n";
 
-            //For rulesOnErase
-            syntax = syntax + "module.exports.rulesOnErase = {\n\n};\n\n";
-
         }else{
-            //For rulesOnRead if have rules
-            syntax = syntax + "module.exports.rulesOnRead = "+rules+"\n\n";
-            
             //For rulesOnCreate if have rules
             syntax = syntax + "module.exports.rulesOnCreate = "+rules+"\n\n";
 
             //For rulesOnUpdate if have rules
             syntax = syntax + "module.exports.rulesOnUpdate = "+rules+"\n\n";
-
-            //For rulesOnErase if have rules
-            syntax = syntax + "module.exports.rulesOnErase = "+rules+"\n\n";
         }
 
         //Create file to ./model/
@@ -288,9 +275,8 @@ function create_crud_file(name,model){
             
             // For generate field 
             
-            function_read = function_read + "],\n\t";
-            
-            function_read = function_read + "\n});";
+            function_read = function_read + "]\n}).then(function (q) {\n\t\t try {\n\t\t\t return(q);;\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\treturn(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
+
 
 
             // rules_create.forEach(function (element, index){
@@ -307,13 +293,7 @@ function create_crud_file(name,model){
         
             });
             */
-        
-            //-----------------------------------------RULES UPDATE-------------------------------------------------//
-            var rules_update = require('../../../model/'+result_file_model).rulesOnUpdate;
-            //Get field in rules
-            var key_rules_update = Object.keys(rules_update);
-            function_update = "main.update({\n\t'models' : ['"+model+"'],\n\t'set' : [";
-            // function_insert = function_insert+key_rules_create;
+
     
          //-----------------------------------------RULES UPDATE-------------------------------------------------//
          var rules_update = require('../../../model/'+result_file_model).rulesOnUpdate;
@@ -395,8 +375,8 @@ function create_crud_file(name,model){
 
     // For generate field
         function_erase = function_erase + "\n\t\t[" +"'"+ key_rules_erase[0] + "'," + "'='"+ ",req.params." +  key_rules_erase[0] +"]";
-
-        function_erase = function_erase + "\n\t]\n});";
+        function_erase = function_erase + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t return(q);;\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\treturn(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
+         
             
 
     // rules_create.forEach(function (element, index){

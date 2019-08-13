@@ -55,11 +55,11 @@ function create_attr_read(val) {
                 });
 
                 query_read = query_read;
-                console.log(query_read);
+                // console.log(query_read);
             } else {
                 query_read = query_read + " WHERE";
                 query_read = query_read + " " + val.where[0][0] + " " + val.where[0][1] + " '" + val.where[0][2] + "'";
-                console.log(query_read);
+                // console.log(query_read);
             }
 
             if (val.orWhere) {
@@ -74,11 +74,11 @@ function create_attr_read(val) {
 
                 });
                 query_read = query_read;
-                console.log(query_read);
+                // console.log(query_read);
             } else {
                 query_read = query_read + " WHERE";
                 query_read = query_read + " " + val.where[0][0] + " " + val.where[0][1] + " '" + val.where[0][2] + "'";
-                console.log(query_read);
+                // console.log(query_read);
             }
         }
 
@@ -194,11 +194,11 @@ function create_attr_erase(val) {
                 });
 
                 query_delete = query_delete;
-                console.log(query_delete);
+                // console.log(query_delete);
             } else {
                 query_delete = query_delete + " WHERE";
                 query_delete = query_delete + " " + val.where[0][0] + " " + val.where[0][1] + " '" + val.where[0][2] + "'";
-                console.log(query_delete);
+                // console.log(query_delete);
             }
         }
 
@@ -206,7 +206,7 @@ function create_attr_erase(val) {
 
             //query setting mysql//
             case 'mysql':
-                console.log(query_delete);
+                // console.log(query_delete);
                 //call query setting in forlder query with file mysql, run function insert_query
                 require('../query/mysql').query(query_delete, null, function (err, data) {
                     if (err) {
@@ -338,14 +338,23 @@ function erase_query(val) {
         if (val.table_name != undefined) {
             table_name = val.table_name[0];
         }
+        if (val.models != "" && val.models != undefined) {  
+            var response_model = enviroment.model(val.models, null, []);
+            table_name = response_model.table_name;
+        };
 
 
         query_delete = query_delete + "DELETE " + " FROM " + table_name;
 
-        return create_attr_erase(val).then(function (q) {
-            resolve(q);
+        return create_attr_erase(val).then(function (data) {
+            resolve({
+                action:true,
+                data:data
+            });
         }, function (err) {
-            reject(err);
+            reject({
+                action:false
+            });
         });
 
     });
@@ -356,7 +365,6 @@ function read(val) {
         var select = "*";
         var table_name = "";
         query_read = "";
-
         switch (get_config.config.db_type) {
             case 'mysql':
                 if (val.table_name != undefined) {
@@ -367,17 +375,22 @@ function read(val) {
                     select = val.select;
                 }
 
-                if (val.models != "" && val.models != undefined) {
+                if (val.models != "" && val.models != undefined) {  
                     var response_model = enviroment.model(val.models, null, []);
-                    table_name = response.table_name;
+                    table_name = response_model.table_name;
                 };
 
                 query_read = query_read + "SELECT " + select + " FROM " + table_name;
                 // console.log(create_attr_read(val));
-                return create_attr_read(val).then(function (q) {
-                    resolve(q);
+                return create_attr_read(val).then(function (data) {
+                    resolve({
+                        action:true,
+                        data:data
+                    });
                 }, function (err) {
-                    reject(err);
+                    reject({
+                        action:false
+                    });
                 });
                 break;
         };

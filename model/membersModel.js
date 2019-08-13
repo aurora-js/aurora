@@ -10,8 +10,4 @@ module.exports.rulesOnUpdate = {
 	age : "string"
 };
 
-module.exports.rulesOnErase = {
-    name : "string,required",
-    age : "string"
-};
 
