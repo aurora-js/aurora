@@ -37,7 +37,7 @@ function query(syntax,value,callback){
 function insert_query(table_name,val){
         con = enviroment.enviroment();
         
-    console.log(val);
+    //console.log(val);
         con.query('INSERT INTO ?? (??) VALUES (?) ', [table_name, val.field, val.result], function (err, result) {
                 if (err) {
                         console.log(err);
@@ -47,6 +47,8 @@ function insert_query(table_name,val){
                    console.log("success")
                 }
             });
+
+         
 }
 
 // function update_query(val) { 

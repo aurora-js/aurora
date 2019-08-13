@@ -23,7 +23,19 @@ function fetch_json_models(field, value) {
         }
     });
     json = json + '}';
+    return JSON.parse(json);
+}
 
+function fetch_json_models_update(field) {
+    var json = "{";
+   
+    field.forEach(function (element, index) {
+        json = json + " \"" + element[0] + "\" " + ":" + " \"" + element[2] + "\"";
+        if (field[index + 1] != undefined) {
+            json = json + " " + ",";
+        }
+    });
+    json = json + '}';
     return JSON.parse(json);
 }
 
@@ -224,54 +236,68 @@ function create_attr_erase(val) {
 
 //function insert///
 function insert(val) {
-    
-    var table_name = '';
-    if (val.table_name != undefined && val.table_name.length > 0) {
-        table_name = val.table_name[0];
-    }
-    //basic insert//
-    // use parameter val as aurora parameter default
-    // val can be use in .query setting code
-    if (val.models != "" && val.models != undefined) {
-        //model validation//
-        var json_model = fetch_json_models(val.field, val.result);
-        var response_model = enviroment.model(val.models, 'create', json_model);
-        if (response_model.action != true) {
-            //model validation fail//
-            console.log("please make sure check your model validation with your mysql field validation");
-            return response_model.response;
+    return new Promise(function (resolve, reject) {
+        var table_name = '';
+        if (val.table_name != undefined && val.table_name.length > 0) {
+            table_name = val.table_name[0];
+        }
+        //basic insert//
+        // use parameter val as aurora parameter default
+        // val can be use in .query setting code
+        if (val.models != "" && val.models != undefined) {
+            //model validation//
+            var json_model = fetch_json_models(val.field, val.result);
+            var response_model = enviroment.model(val.models, 'create', json_model);
+            if (response_model.action != true) {
+                //model validation fail//
+                console.log("please make sure check your model validation with your mysql field validation");
+                return response_model.response;
+            }
+
+            table_name = response_model.table_name;
+
         }
 
-        table_name = response_model.table_name;
+        //query type validation//
+        switch (get_config.config.db_type) {
+            //query setting mysql//
+            case 'mysql':
+                //call query setting in forlder query with file mysql, run function insert_query
+                require('../query/mysql').insert_query(table_name, val, function (q) {
+                    resolve({
+                        action: true,
 
-    }
+                    }, q);
 
-    //query type validation//
-    switch (get_config.config.db_type) {
-        //query setting mysql//
-        case 'mysql':
-            //call query setting in forlder query with file mysql, run function insert_query
-            require('../query/mysql').insert_query(table_name, val);
+                }, function (err) {
+                    reject({
+                        action: false
+                    }, err);
 
-            break;
+                });
+                
+                break;
 
-        default:
-            break;
-    }
+            default:
+                break;
+        }
 
+    });
 }
 
 function update(val) {
     return new Promise(function (resolve, reject) {
-        var table_name = '';
+        var table_name = "";
         query_update = "";
+        
         if (val.table_name != undefined && val.table_name.length > 0) {
             table_name = val.table_name[0];
         }
         if (val.models != "" && val.models != undefined) {
             //model validation//
-            var json_model = fetch_json_models(val.set, val.where);
+            var json_model = fetch_json_models_update(val.set);
             var response_model = enviroment.model(val.models, 'update', json_model);
+            //console.log(response_model);
             if (response_model.action != true) {
                 //model validation fail//
                 console.log("please make sure check your model validation with your mysql field validation");
@@ -285,20 +311,18 @@ function update(val) {
         switch (get_config.config.db_type) {
             case 'mysql':
 
-
                 query_update = query_update + "UPDATE " + table_name;
-
-                return create_attr_update(val).then(function (q) {
+                
+               create_attr_update(val).then(function (q) {
                     resolve({
-                                action:true, 
-                                data:data,
-                                
-                            },q);
-                    
+                        action: true,
+                        data: q
+                    });
+
                 }, function (err) {
                     reject({
-                            action:false
-                    },err);
+                        action: false
+                    }, err);
 
                 });
         };

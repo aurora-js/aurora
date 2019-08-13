@@ -5,7 +5,7 @@ var main = require('../core/aurora-crud/aura/sysaura');
 function create(req, res) {
 
     hasil = main.insert({
-        'table_name' : ['members'],
+        'models' : ['membersModel'],
         "field": ['name', 'age'],
         "result": [
             req.body.title,
@@ -18,7 +18,7 @@ function update(req, res) {
 
     console.log(req.body);
     main.update({
-        "table_name": ['members'],
+        "models": ['membersModel'],
         "set": [
             ["name", "=", req.body.nameupdate],
             ["age", "=", req.body.ageupdate]
@@ -29,14 +29,14 @@ function update(req, res) {
     }).then(function (q) {
         try {
             console.log(q);
-            console.log("berhasil update");
+            // console.log("berhasil update");
             //res.redirect('/edit');
         } catch (error) {
             
         }
     },function(err){
         try {
-            console.log(err.action);
+            // console.log(err.action);
         } catch (error) {
             
         }
@@ -97,7 +97,7 @@ function updatelink(req, res) {
         "select": ['name', 'age'],
         "table_name": ['members'],
     }).then(function (q) {
-        console.log(q);
+        //console.log(q);
         res.render('edit', {
             page_title: "Dummy - Node.js",
             data: q
