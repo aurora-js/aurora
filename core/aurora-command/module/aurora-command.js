@@ -175,7 +175,12 @@ program.command('model:create <value>').description('Create a New Model File').o
     generate = true;
   }
   //Run create model file
-  return compile.create_model(process.argv[3],table_name,generate);
+  return compile.create_model(process.argv[3],table_name,generate).then(function(){
+      process.exit();
+  },function(err){
+      console.log(err);
+      process.exit();
+  });
 
 });
 
@@ -195,7 +200,12 @@ program.command('controller:create <value>').description('Create a New Controlle
   }
 
   //Run create model file
-  return compile.create_crud(process.argv[3],model_name);
+  return compile.create_crud(process.argv[3],model_name).then(function(){
+    process.exit();
+  },function(err){
+      console.log(err);
+      process.exit();
+  });
 
 });
 
@@ -229,7 +239,12 @@ program.command('generate:run <value>').description('Create a New Model,Controll
   }
 
   // Run create model file
-  return compile.generate('RUN',process.argv[3],table_name);
+  return compile.generate('RUN',process.argv[3],table_name).then(function(){
+    process.exit();
+  },function(err){
+      console.log(err);
+      process.exit();
+  });
 
 });
 //! ------------------------------------------------------------------------------------------------------- !

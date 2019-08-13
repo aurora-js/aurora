@@ -21,7 +21,7 @@ main.read({
 }
 
 function create(req, res) {
-main.insert({
+	main.insert({
 	'models' : ['membersModel'],
 	'field' : ['name','age'],
 	'result' : [
@@ -29,16 +29,15 @@ main.insert({
 		req.body.age
 	
 	]
-}).then(function (q) {
+	}).then(function (q) {
 		 try {
-			 console.log(q); 
-			 console.log('berhasil insert');
+			 return q;
 		 }catch(error){
 
 		}
 	},function(err){
 		 try{
-			console.log(err.action);
+
 			} catch(error){
 
 		} 
@@ -46,7 +45,7 @@ main.insert({
 }
 
 function update(req, res) {
-main.update({
+	main.update({
 	'models' : ['membersModel'],
 	'set' : [
 		['name','=',req.body.name],
@@ -55,16 +54,15 @@ main.update({
 	'where' : [
 		['name','=',req.body.name]
 	]
-}).then(function (q) {
+	}).then(function (q) {
 		 try {
-			 console.log(q); 
-			 console.log('berhasil update');
+			 return q; 
 		 }catch(error){
 
 		}
 	},function(err){
 		 try{
-			console.log(err.action);
+
 			} catch(error){
 
 		} 
