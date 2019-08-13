@@ -306,13 +306,7 @@ function create_crud_file(name,model){
         
             });
             */
-        
-            //-----------------------------------------RULES UPDATE-------------------------------------------------//
-            var rules_update = require('../../../model/'+result_file_model).rulesOnUpdate;
-            //Get field in rules
-            var key_rules_update = Object.keys(rules_update);
-            function_update = "main.update({\n\t'models' : ['"+model+"'],\n\t'set' : [";
-            // function_insert = function_insert+key_rules_create;
+
     
          //-----------------------------------------RULES UPDATE-------------------------------------------------//
          var rules_update = require('../../../model/'+result_file_model).rulesOnUpdate;
