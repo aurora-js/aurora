@@ -47,56 +47,61 @@ function update(req, res) {
  function erase(req, res) {
     console.log(req.body);
     var erase = main.erase_query({
-        "table_name" : ['keunggulan'],
+        "models" : ['membersModel'],
         "where"      : [
-                            ["name", "=", req.params.title]                
+                            ["title", "=", req.params.title]                
                         ],
         "orWhere"      : [
-                            ["name", "=", req.params.title]                
+                            ["title", "=", req.params.title]                
                         ],
     }).then(function(q){
-        
-       console.log("bisa delete");
-    }); 
-    // return res.redirect('../');
-    console.log(erase);
+        try {
+            console.log(q.data);
+            console.log("berhasil hapus");
+            //res.redirect('/edit');
+        } catch (error) {
+            
+        }
+    },function(err){
+        try {
+            console.log(err);
+        } catch (error) {
+            
+        }
+    });
  }
 
 //get read function from sysaura
 function index(req, res) {
     var hasil = main.read({
+        'table_name' : ['keunggulan'],
         "select"        : ['title', 'deskripsi'],
-        "table_name"    : ['keunggulan'],
         "where"         : [
                             ["title", "=", "hallo"],
-                                          
+                            ["title", "=", "wew"]              
         ],
-        "orWhere"       : [
+        "orWhere"       : [ ["deskripsi", "=", "2345"],
                                           
         ]
     }).then(function (q) {
-        // res.render('test', {
-        //     page_title: "Dummy - Node.js",
-        //     data: q
-        // });
         try {
+            // console.log(q.data)
             return res.render('test', {
             page_title: "Dummy - Node.js",
-            data: q
+            data: q.data.data
         });
         } catch (error) {
             
         }
     },function(err){
         try {
-            console.log(err.action);
+            console.log(err);
             // res.redirect('/edit');
         } catch (error) {
             
         }
     });
 
-    console.log(hasil);
 }
 
 function updatelink(req, res) {
