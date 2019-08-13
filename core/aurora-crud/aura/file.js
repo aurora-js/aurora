@@ -178,31 +178,18 @@ function create_file(table,name,rules){
         
         //If not with generate rules
         if(rules == null){
-
-            //For rulesOnRead
-            syntax = syntax + "module.exports.rulesOnRead = {\n\n};\n\n";
-
             //For rulesOnCreate
             syntax = syntax + "module.exports.rulesOnCreate = {\n\n};\n\n";
 
             //For rulesOnUpdate
             syntax = syntax + "module.exports.rulesOnUpdate = {\n\n};\n\n";
 
-            //For rulesOnErase
-            syntax = syntax + "module.exports.rulesOnErase = {\n\n};\n\n";
-
         }else{
-            //For rulesOnRead if have rules
-            syntax = syntax + "module.exports.rulesOnRead = "+rules+"\n\n";
-            
             //For rulesOnCreate if have rules
             syntax = syntax + "module.exports.rulesOnCreate = "+rules+"\n\n";
 
             //For rulesOnUpdate if have rules
             syntax = syntax + "module.exports.rulesOnUpdate = "+rules+"\n\n";
-
-            //For rulesOnErase if have rules
-            syntax = syntax + "module.exports.rulesOnErase = "+rules+"\n\n";
         }
 
         //Create file to ./model/
