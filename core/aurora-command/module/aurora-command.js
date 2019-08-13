@@ -199,6 +199,39 @@ program.command('controller:create <value>').description('Create a New Controlle
 
 });
 
+
+//For generate all 
+/*
+! Program command for create all file (Model,Controller)!
+! Value Required No Space !
+*/
+program.command('generate:run <value>').description('Create a New Model,Controller File').option('-t --table <table_name>', 'Add Value Table Name').action(()=>{
+  var table_name = "";
+  var generate = false;
+
+  //Check have value table name or not
+  if (process.argv[4] == '-t' || process.argv[4] == '--table') {
+    //If no custom config
+    if (process.argv[6] == undefined) {
+      process.argv.push('main');
+    }
+
+    //If table name is -g or --generate
+    if (process.argv[5] == undefined) {
+      console.log('ERROR!\n' + 'Table Name Not Found');
+      return process.exit();
+    }
+
+    table_name = process.argv[5];
+  }else{
+      console.log('ERROR!\n' + 'Table Name Not Found');
+      return process.exit();
+  }
+
+  // Run create model file
+  return compile.generate('RUN',process.argv[3],table_name);
+
+});
 //! ------------------------------------------------------------------------------------------------------- !
 
 

@@ -69,11 +69,10 @@ function index(req, res) {
         "table_name"    : ['keunggulan'],
         "where"         : [
                             ["title", "=", "hallo"],
-                            ["deskripsi", "=", "Ini uji coba"]                
+                                          
         ],
         "orWhere"       : [
-                             ["title", "=", "wew"],
-                             ["deskripsi", "=", "2345"]               
+                                          
         ]
     }).then(function (q) {
         // res.render('test', {

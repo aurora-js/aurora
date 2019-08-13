@@ -3,30 +3,22 @@ var main = require('../core/aurora-crud/aura/sysaura');
 
 function index(req, res) {
 main.read({
-	'models' : ['membersModel'],
-	'select' : ['*']
-}).then(function (q) {
-		 try {
-			 return(q);;
-		 }catch(error){
-
-		}
-	},function(err){
-		 try{
-			return(err.action);
-			} catch(error){
-
-		} 
-	});
+	'models' : ['mahasiswaModel'],
+	'select' : ['*'],
+	
+});
 }
 
 function create(req, res) {
 main.insert({
-	'models' : ['membersModel'],
-	'field' : ['name','age'],
+	'models' : ['mahasiswaModel'],
+	'field' : ['id','id_prodi_fk','Email','PASSWORD','NIK'],
 	'result' : [
-		req.body.name,
-		req.body.age
+		req.body.id,
+		req.body.id_prodi_fk,
+		req.body.Email,
+		req.body.PASSWORD,
+		req.body.NIK
 	
 	]
 }).then(function (q) {
@@ -47,13 +39,16 @@ main.insert({
 
 function update(req, res) {
 main.update({
-	'models' : ['membersModel'],
+	'models' : ['mahasiswaModel'],
 	'set' : [
-		['name','=',req.body.name],
-		['age','=',req.body.age]
+		['id','=',req.body.id],
+		['id_prodi_fk','=',req.body.id_prodi_fk],
+		['Email','=',req.body.Email],
+		['PASSWORD','=',req.body.PASSWORD],
+		['NIK','=',req.body.NIK]
 	],
 	'where' : [
-		['name','=',req.body.name]
+		['id','=',req.body.id]
 	]
 }).then(function (q) {
 		 try {
@@ -73,23 +68,11 @@ main.update({
 
 function erase(req, res) {
 main.erase_query({
-	'models' : ['membersModel'],
+	'models' : ['mahasiswaModel'],
 	'where' : [
-		['name','=',req.params.name]
+		['id','=',req.params.id]
 	]
-}).then(function (q) {
-		 try {
-			 return(q);;
-		 }catch(error){
-
-		}
-	},function(err){
-		 try{
-			return(err.action);
-			} catch(error){
-
-		} 
-	});
+});
 }
 
 
