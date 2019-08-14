@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var sysaura  = require('../controllers/controllersmain');
 var create = sysaura.create;
 
-app.use(express.static('../public'));
+app.use(express.static('../assets'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
