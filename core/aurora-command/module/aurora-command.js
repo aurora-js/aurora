@@ -13,8 +13,14 @@ const inquirer = require('inquirer');
 program.version('Aurora - 0.1 Dev\nAurora Command - 0.0.1', '-v, --version');
 
 //Require compile module
-var compile = require('../../compile');
+var path = require('path');
+var fs   = require('fs');
+var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../../');
 
+
+var compile = require(lib + '/compile');
+// require('../../compile');
+// console.log(compile);
 
 // ! ------------------------------------------ For Aurora DB ----------------------------------- !
 
