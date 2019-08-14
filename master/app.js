@@ -17,7 +17,6 @@
         try{
             //For run serve
             aurora.serve();
-            // console.log(aurora.model('prodiModelss','create',{Email : 'user mail.com', PASSWORD : '656656', password_confirmation : 'user mail.com'}));
         } catch (error) {
             return console.log(error);
         }
