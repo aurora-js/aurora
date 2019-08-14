@@ -6,7 +6,12 @@ const async = require('async');
 const schema_folder = './database/schema/';
 
 //Name file from foreach in folder ./database/schema 
-var files = fs.readdirSync(schema_folder); // reading files from folders
+try {
+    var files = fs.readdirSync(schema_folder); // reading files from folders
+} catch (error) {
+    
+}
+
 
 //Main variable
 var table_name = null;
