@@ -56,4 +56,5 @@ app.get('/edit/:name', function(req, res) {
  });
 
 app.listen(port);
-console.log('Magic happens on port ' + port);
+console.log('Aurora Serve on port ' + port);
+

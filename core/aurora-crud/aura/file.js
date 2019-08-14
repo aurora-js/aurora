@@ -436,7 +436,11 @@ function generate(command,name,table){
                 create_file_model(nameModel,table,true).then(function(){
                     //For generate controller
                     create_crud_file(nameController,nameModel).then(function(){
-                            resolve();
+                            generate_route(nameController,name.toLowerCase(),nameModel).then(function(){
+                                resolve();
+                            },function(err){
+                                reject(err);
+                            });
                         },function(err){
                             reject(err);
                         });
@@ -449,6 +453,47 @@ function generate(command,name,table){
             default:
                 break;
         }
+    });
+}
+
+//for generate routes 
+function generate_route(name,route,model){
+    return new Promise(function (resolve,reject){
+        var get_field = require('../../../model/'+model).rulesOnCreate;
+        //Get field in rules
+        var obj_get_field = Object.keys(get_field);
+        
+        //read file
+        fs.readFile('./route/api.js', 'utf8', function (err, data) {
+
+            var syntax_route = data.replace('app.listen(port);', '').replace("console.log('Aurora Serve on port ' + port);", '');
+            
+            //For index syntax
+            syntax_route = syntax_route+"app.get('/"+route+"', function(req, res) {\n\trequire('../controllers/"+name+"').index(req,res);\n});";
+
+            //For create syntax
+            syntax_route = syntax_route+"\n\napp.post('/create/"+route+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').create(req,res));\n});";
+
+            //For update syntax
+            syntax_route = syntax_route+"\n\napp.post('/edit/"+route+"/:"+obj_get_field[0]+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').update(req,res));\n});";
+
+            //For delete syntax
+            syntax_route = syntax_route+"\n\napp.post('/delete/"+route+"/:"+obj_get_field[0]+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').erase(req,res));\n});";
+
+            //For add listen
+            syntax_route = syntax_route+"\n\napp.listen(port);";
+
+            //For add magic
+            syntax_route = syntax_route+"\n\nconsole.log('Aurora Serve on port ' + port);";
+            
+            fs.writeFile('./route/api.js', syntax_route, function (err) {
+                if (err) {
+                    return reject(err);
+                };
+                console.log('Route updated successfully.');
+                return resolve();
+            });
+        });
     });
 }
 module.exports.create_model = create_file_model;
