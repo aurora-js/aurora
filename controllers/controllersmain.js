@@ -5,7 +5,7 @@ var main = require('../core/aurora-crud/aura/sysaura');
 function create(req, res) {
 
     hasil = main.insert({
-        'models' : ['membersModel'],
+        'models': ['membersModel'],
         "field": ['name', 'age'],
         "result": [
             req.body.title,
@@ -25,6 +25,10 @@ function update(req, res) {
         ],
         "where": [
             ["name", "=", req.body.namelama]
+        ],
+        "orWhere": [
+            ["age", "=", "123"],
+
         ]
     }).then(function (q) {
         try {
@@ -32,73 +36,73 @@ function update(req, res) {
             // console.log("berhasil update");
             //res.redirect('/edit');
         } catch (error) {
-            
+
         }
-    },function(err){
+    }, function (err) {
         try {
             // console.log(err.action);
         } catch (error) {
-            
+
         }
     });
 }
 
- //delete function
- function erase(req, res) {
+//delete function
+function erase(req, res) {
     console.log(req.body);
     var erase = main.erase_query({
-        "models" : ['membersModel'],
-        "where"      : [
-                            ["title", "=", req.params.title]                
-                        ],
-        "orWhere"      : [
-                            ["title", "=", req.params.title]                
-                        ],
-    }).then(function(q){
+        "models": ['membersModel'],
+        "where": [
+            ["title", "=", req.params.title]
+        ],
+        "orWhere": [
+            ["title", "=", req.params.title]
+        ],
+    }).then(function (q) {
         try {
             console.log(q.data);
             console.log("berhasil hapus");
             //res.redirect('/edit');
         } catch (error) {
-            
+
         }
-    },function(err){
+    }, function (err) {
         try {
             console.log(err);
         } catch (error) {
-            
+
         }
     });
- }
+}
 
 //get read function from sysaura
 function index(req, res) {
     var hasil = main.read({
-        'table_name' : ['keunggulan'],
-        "select"        : ['title', 'deskripsi'],
-        "where"         : [
-                            ["title", "=", "hallo"],
-                            ["title", "=", "wew"]              
+        'table_name': ['members'],
+        "select": ['name', 'age'],
+        "where": [
+            ["name", "=", "kko"]
         ],
-        "orWhere"       : [ ["deskripsi", "=", "2345"],
-                                          
+        "orWhere": [
+            ["age", "=", "123"],
+
         ]
     }).then(function (q) {
         try {
             // console.log(q.data)
             return res.render('test', {
-            page_title: "Dummy - Node.js",
-            data: q.data.data
-        });
+                page_title: "Dummy - Node.js",
+                data: q.data.data
+            });
         } catch (error) {
-            
+
         }
-    },function(err){
+    }, function (err) {
         try {
             console.log(err);
             // res.redirect('/edit');
         } catch (error) {
-            
+
         }
     });
 
