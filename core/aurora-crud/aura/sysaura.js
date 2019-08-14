@@ -152,6 +152,25 @@ function create_attr_update(val) {
                 query_update = query_update + " " + val.where[0][0] + " " + val.where[0][1] + "'" + val.where[0][2] + "'";
                 //console.log(query_update);
             }
+
+            if (val.orWhere) {
+                val.orWhere.forEach(function (element, index) {
+                    if (index == 0) {
+                        query_update = query_update + " OR";
+                    }
+                    query_update = query_update + " " + element[0] + " " + element[1] + " '" + element[2] + "'";
+                    if (val.orWhere[index + 1] != undefined) {
+                        query_update = query_update + " " + "OR";
+                    }
+
+                });
+                query_update = query_update;
+                // console.log(query_update);
+            } else {
+                query_update = query_update + " WHERE";
+                query_update = query_update + " " + val.where[0][0] + " " + val.where[0][1] + " '" + val.where[0][2] + "'";
+                // console.log(query_update);
+            }
         }
 
         switch (get_config.config.db_type) {
