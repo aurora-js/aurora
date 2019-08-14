@@ -34,27 +34,24 @@ app.post('/update', function(req, res) {
 app.get('/edit/:name', function(req, res) {
     sysaura.updatelink(req,res);
  });
+//routes setelah command generate dari members//
 
- var findTitleBytitle = function (title, callback) {
-    // Perform database query that calls callback when it's done
-    // This is our fake database
-    if (!delete[title])
-      return callback(new Error(
-        'No user matching '
-         + title
-        )
-      );
-    return callback(null, delete[title]);
-  };
+app.get('/members', function(req, res) {
+	require('../controllers/membersController').index(req,res);
+});
 
- app.get('/delete/:title', function(req, res, next) {
-    var title = req.params.title;
-    findTitleBytitle(title, function(error, title) {
-        if (error) return next(error);
-   return sysaura.erase(req,res);
-    });
- });
+app.post('/create/members', function(req, res) {
+	res.send(require('../controllers/membersController').create(req,res));
+});
+
+app.post('/edit/members/:name', function(req, res) {
+	res.send(require('../controllers/membersController').update(req,res));
+});
+
+app.post('/delete/members/:name', function(req, res) {
+	res.send(require('../controllers/membersController').erase(req,res));
+});
 
 app.listen(port);
-console.log('Aurora Serve on port ' + port);
 
+console.log('Aurora Serve on port ' + port);

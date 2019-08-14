@@ -1,12 +1,13 @@
 module.exports.table_name = "members";
 
 module.exports.rulesOnCreate = {
-    name : "string,required",
-    age : "string"
+	name : "string",
+	age : "string"
 };
 
+
 module.exports.rulesOnUpdate = {
-    name : "string,required",
+	name : "string",
 	age : "string"
 };
 

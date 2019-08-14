@@ -313,7 +313,7 @@ function create_crud_file(name,model){
          function_update = function_update + "\n\t],\n\t'where' : [";
  
        
-         function_update = function_update + "\n\t\t[" +"'"+  key_rules_update[0] + "'," + "'='"+ ",req.body." +  key_rules_update[0] +"]";
+         function_update = function_update + "\n\t\t[" +"'"+  key_rules_update[0] + "'," + "'='"+ ",req.params." +  key_rules_update[0] +"]";
          
          function_update = function_update + "\n\t]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
 
