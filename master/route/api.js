@@ -3,7 +3,6 @@ var app     = express();
 var port    = process.env.PORT || 3000;
 var path    = require('path');
 var bodyParser = require('body-parser');
-var sysaura  = require('../controllers/controllersmain');
 var create = sysaura.create;
 
 app.use(express.static('../assets'));
