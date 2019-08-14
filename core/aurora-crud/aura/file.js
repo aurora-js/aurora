@@ -260,7 +260,7 @@ function create_crud_file(name,model){
             }
         });
         function_insert = function_insert + "\n\t";
-        function_insert = function_insert + "\n\t]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t return q;\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
+        function_insert = function_insert + "\n\t]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
 
 
             //-----------------------------------------RULES READ-------------------------------------------------//
@@ -275,7 +275,7 @@ function create_crud_file(name,model){
             
             // For generate field 
             
-            function_read = function_read + "]\n}).then(function (q) {\n\t\t try {\n\t\t\t return(q);;\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\treturn(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
+            function_read = function_read + "]\n}).then(function (q) {\n\t\t try {\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
 
 
 
@@ -313,9 +313,9 @@ function create_crud_file(name,model){
          function_update = function_update + "\n\t],\n\t'where' : [";
  
        
-         function_update = function_update + "\n\t\t[" +"'"+  key_rules_update[0] + "'," + "'='"+ ",req.body." +  key_rules_update[0] +"]";
+         function_update = function_update + "\n\t\t[" +"'"+  key_rules_update[0] + "'," + "'='"+ ",req.params." +  key_rules_update[0] +"]";
          
-         function_update = function_update + "\n\t]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t return q; \n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
+         function_update = function_update + "\n\t]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
 
 
         // rules_create.forEach(function (element, index){
@@ -375,7 +375,7 @@ function create_crud_file(name,model){
 
     // For generate field
         function_erase = function_erase + "\n\t\t[" +"'"+ key_rules_erase[0] + "'," + "'='"+ ",req.params." +  key_rules_erase[0] +"]";
-        function_erase = function_erase + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t return(q);;\n\t\t }catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\treturn(err.action);\n\t\t\t} catch(error){\n\n\t\t} \n\t});";
+        function_erase = function_erase + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
          
             
 
