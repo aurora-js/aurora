@@ -269,15 +269,16 @@ program.command('new:project <value>').description('Create a New Project With Au
       return console.log('Error Get Dir');
     }
 
-    var source = path.join(path.dirname(fs.realpathSync(__filename)), '../../../master');
-    var destination = stdout.replace(/\r?\n|\r/g,'').toString()+"\\"+value;
+    var source = '../aurora';
+    var destination = stdout+"/"+value;
+    
     // copy source folder to destination
     fs_copy.copy(source, destination, function (err) {
         if (err){
-            console.log('Error Create Project, Please Try Again\nSorry :(');
-            return console.error(err);
+            console.log('An error occured while copying the folder.')
+            return console.error(err)
         }
-        console.log('YEAY!\nProject Created Successfully\nHappy using Aurora JS :)');
+        console.log('Copy completed!')
     });
   });
   
