@@ -1,6 +1,6 @@
 {
-  "name": "aurorajs-framework",
-  "version": "0.1.4",
+  "name": "aurorajs-core",
+  "version": "0.0.1",
   "description": "",
   "main": "app.js",
   "dependencies": {
