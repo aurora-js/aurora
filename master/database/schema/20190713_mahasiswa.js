@@ -3,10 +3,10 @@ module.exports.create = {
     'engine' : 'innoDB',
     'blueprint' : function(){
         increment('id');
-        integer('id_prodi_fk');
+        // integer('id_prodi_fk');
         varchar('Email', 100),unique();
-        varchar('PASSWORD', 100);
-        bigInteger('NIK'),nullable();
+        // varchar('PASSWORD', 100);
+        // bigInteger('NIK'),nullable();
         //foreign('id_prodi_fk'),references('prodi','id'),onDelete('CASCADE'),onUpdate('RESTRICT');
         // index(['NIK','nama']);
     }
