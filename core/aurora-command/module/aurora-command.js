@@ -82,7 +82,6 @@ program.command('db:run').description('Run Schema For Create Table To Database')
     },function(err){
         return console.log(err);
     });
-      
 });
 
 /*
