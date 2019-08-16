@@ -24,7 +24,7 @@ Then, cd into the new folder :
 cd my-app
 ```
 
-And, YEAY your project is created successfully, for check run your project  you can run this command :
+And, YEAY your project is created successfully, for check your project  you can run this command :
 ```
 node ./app.js
 ```
