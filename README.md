@@ -6,7 +6,7 @@ Simple Framework for [Node.JS](https://nodejs.org/en/). **Fast, Simple, and Easy
 
 Before installing, make sure your Node.JS 0.10 or higher
 
-Installion using the npm install command :
+Installation using the npm install command :
 
 ```
 npm i aurorajs-core -g
