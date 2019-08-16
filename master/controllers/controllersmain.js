@@ -18,13 +18,10 @@ function update(req, res) {
 
     console.log(req.body);
     main.update({
-        "models": ['membersModel'],
+        "table_name": ['membersModel'],
         "set": [
             ["name", "=", req.body.nameupdate],
             ["age", "=", req.body.ageupdate]
-        ],
-        "where": [
-            ["name", "=", req.body.namelama]
         ],
         "orWhere": [
             ["age", "=", "123"],
