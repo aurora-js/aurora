@@ -267,7 +267,7 @@ function create_crud_file(name,model){
             var rules_read = require('../../../model/'+result_file_model);
             //Get field in rules
             var key_rules_read = Object.keys(rules_read);
-            function_read = "main.read({\n\t'models' : ['"+model+"'],\n\t'select' : [";
+            function_read = "\tmain.read({\n\t'models' : ['"+model+"'],\n\t'select' : [";
             // function_insert = function_insert+key_rules_create;
 
             // For generate field
@@ -275,7 +275,7 @@ function create_crud_file(name,model){
             
             // For generate field 
             
-            function_read = function_read + "]\n}).then(function (q) {\n\t\t try {\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
+            function_read = function_read + "]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
 
 
 
@@ -370,12 +370,12 @@ function create_crud_file(name,model){
     var rules_erase = require('../../../model/'+result_file_model).rulesOnCreate;
     //Get field in rules
     var key_rules_erase = Object.keys(rules_erase);
-    function_erase = "main.erase_query({\n\t'models' : ['"+model+"'],\n\t'where' : [";
+    function_erase = "\tmain.erase_query({\n\t'models' : ['"+model+"'],\n\t'where' : [";
     // function_insert = function_insert+key_rules_create;
 
     // For generate field
         function_erase = function_erase + "\n\t\t[" +"'"+ key_rules_erase[0] + "'," + "'='"+ ",req.params." +  key_rules_erase[0] +"]";
-        function_erase = function_erase + "\n\t]\n}).then(function (q) {\n\t\t try {\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
+        function_erase = function_erase + "\n\t]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
          
             
 

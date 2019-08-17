@@ -10,7 +10,7 @@ const program = require('commander');
 const inquirer = require('inquirer');
 
 //Version Auora 
-program.version('Aurora - 0.1 Dev\nAurora Command - 0.0.1', '-v, --version');
+program.version('Aurora - 0.0.3 Alpha\nAurora Command - 0.0.1', '-v, --version');
 
 //Require compile module
 var path = require('path');
