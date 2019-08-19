@@ -75,13 +75,13 @@ function erase(req, res) {
 //get read function from sysaura
 function index(req, res) {
     var hasil = main.read({
-        'table_name': ['members'],
-        "select": ['name', 'age'],
+        'table_name': ['keunggulan'],
+        "select": ['title', 'deskripsi'],
         "where": [
-            ["name", "=", "kko"]
+            ["title", "=", "wew"]
         ],
         "orWhere": [
-            ["age", "=", "123"],
+            ["deskripsi", "=", "2345"],
 
         ]
     }).then(function (q) {
