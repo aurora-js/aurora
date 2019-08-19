@@ -9,6 +9,12 @@ const schema_folder = './database/schema/';
 //Name file from foreach in folder ./database/schema 
 try {
     var files = fs.readdirSync(schema_folder); // reading files from folders
+    //Remove .keep files
+    var files = files.filter(function(value, index, arr){
+
+        return value != ".keep";
+    
+    });
 } catch (error) {
     
 }
@@ -88,6 +94,11 @@ function run(type,exitsuccess,schema) {
             }
         }
 
+        //Check File 
+        if(files.length == 0){
+            console.log('Nothing to migrate');
+            process.exit();
+        }
         //Foreach file to get up value
         files.forEach(function (element, keys) {
             //Reset Field 

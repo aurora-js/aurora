@@ -478,7 +478,7 @@ function generate_route(name,route,model){
             syntax_route = syntax_route+"\n\napp.post('/edit/"+route+"/:"+obj_get_field[0]+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').update(req,res));\n});";
 
             //For delete syntax
-            syntax_route = syntax_route+"\n\napp.post('/delete/"+route+"/:"+obj_get_field[0]+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').erase(req,res));\n});";
+            syntax_route = syntax_route+"\n\napp.get('/delete/"+route+"/:"+obj_get_field[0]+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').erase(req,res));\n});";
 
             //For add listen
             syntax_route = syntax_route+"\n\napp.listen(port);";
