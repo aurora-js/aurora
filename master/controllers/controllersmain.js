@@ -85,7 +85,7 @@ function index(req, res) {
         ]
     }).then(function (q) {
         try {
-            console.log(q.data.data);
+            console.log(q.data);
             // return res.render('test.js', {
             //     page_title: "Dummy - Node.js",
             //     data: q.data.data
