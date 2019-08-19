@@ -77,19 +77,19 @@ function index(req, res) {
         'table_name': ['keunggulan'],
         "select": ['title', 'deskripsi'],
         "where": [
-            ["title", "=", "wew"]
+            ["title", "=", "wew"], ["deskripsi", "=", "2345"]
         ],
         "orWhere": [
-            ["deskripsi", "=", "2345"],
+            ["deskripsi", "=", "2345"], ["deskripsi", "=", "2345"],
 
         ]
     }).then(function (q) {
         try {
-            // console.log(q.data)
-            return res.render('test', {
-                page_title: "Dummy - Node.js",
-                data: q.data.data
-            });
+            console.log(q.data.data);
+            // return res.render('test.js', {
+            //     page_title: "Dummy - Node.js",
+            //     data: q.data.data
+            // });
         } catch (error) {
 
         }
