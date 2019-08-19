@@ -25,7 +25,6 @@ function update(req, res) {
         ],
         "orWhere": [
             ["age", "=", "123"],
-
         ]
     }).then(function (q) {
         try {

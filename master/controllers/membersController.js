@@ -2,12 +2,12 @@
 var main = require('../core/aurora-crud/aura/sysaura');
 
 function index(req, res) {
-main.read({
+	main.read({
 	'models' : ['membersModel'],
 	'select' : ['*']
-}).then(function (q) {
+	}).then(function (q) {
 		 try {
-			 
+			
 			}catch(error){
 
 		}
@@ -52,7 +52,7 @@ function update(req, res) {
 		['age','=',req.body.age]
 	],
 	'where' : [
-		['name','=',req.body.name]
+		['name','=',req.params.name]
 	]
 	}).then(function (q) {
 		 try {
@@ -70,12 +70,12 @@ function update(req, res) {
 }
 
 function erase(req, res) {
-main.erase_query({
+	main.erase_query({
 	'models' : ['membersModel'],
 	'where' : [
 		['name','=',req.params.name]
 	]
-}).then(function (q) {
+	}).then(function (q) {
 		 try {
 			
 			}catch(error){
