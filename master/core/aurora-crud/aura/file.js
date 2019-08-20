@@ -295,7 +295,7 @@ function create_crud_file(name,model){
             */
 
              //-----------------------------------------RULES SHOW DETAIL-------------------------------------------------//
-             var rules_show_detail = require('../../../model/'+result_file_model);
+             var rules_show_detail = require('../../../model/'+result_file_model).rulesOnCreate;
              //Get field in rules
              var key_rules_show_detail = Object.keys(rules_show_detail);
              function_show_detail = "\tmain.read({\n\t'models' : ['"+model+"'],\n\t'select' : [";
@@ -304,9 +304,14 @@ function create_crud_file(name,model){
              // For generate field
              function_show_detail = function_show_detail +"'"+'*'+"'";
              
+             //For add where
+             function_show_detail = function_show_detail + "],\n\t'where' : [";
+ 
+             function_show_detail = function_show_detail + "\n\t\t[" +"'"+  key_rules_show_detail[0] + "'," + "'='"+ ",req.params." +  key_rules_show_detail[0] +"]";
+
              // For generate field 
              
-             function_show_detail = function_show_detail + "]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
+             function_show_detail = function_show_detail + "\n\t]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
  
  
  
@@ -437,12 +442,12 @@ function create_crud_file(name,model){
         syntax = syntax+"function index(req, res) {\n"+function_read+"\n}\n\n";
         syntax = syntax+"function create(req, res) {\n"+function_insert+"\n}\n\n";
         syntax = syntax+"function update(req, res) {\n"+function_update+"\n}\n\n";
-        syntax = syntax+"function show_detail(req, res) {\n"+function_show_detail+"\n}\n\n";
+        syntax = syntax+"function show_edit(req, res) {\n"+function_show_detail+"\n}\n\n";
         syntax = syntax+"function erase(req, res) {\n"+function_erase+"\n}\n\n\n";
         syntax = syntax+"module.exports.index = index;\n";
         syntax = syntax+"module.exports.create = create;\n";
         syntax = syntax+"module.exports.update = update;\n";
-        syntax = syntax+"//module.exports.show_detail = show_detail;//\n";
+        syntax = syntax+"module.exports.show_edit = show_edit;\n";
         syntax = syntax+"module.exports.erase = erase;\n";
         //Create file to ./model/
         fs.appendFile('./controllers/'+name_file+'.js', syntax, function (err) {
@@ -509,6 +514,9 @@ function generate_route(name,route,model){
 
             //For update syntax
             syntax_route = syntax_route+"\n\napp.post('/edit/"+route+"/:"+obj_get_field[0]+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').update(req,res));\n});";
+
+            //For show update syntax
+            syntax_route = syntax_route+"\n\napp.get('/show/edit/"+route+"/:"+obj_get_field[0]+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').show_edit(req,res));\n});";
 
             //For delete syntax
             syntax_route = syntax_route+"\n\napp.get('/delete/"+route+"/:"+obj_get_field[0]+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').erase(req,res));\n});";
