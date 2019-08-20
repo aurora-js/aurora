@@ -294,6 +294,37 @@ function create_crud_file(name,model){
             });
             */
 
+             //-----------------------------------------RULES SHOW DETAIL-------------------------------------------------//
+             var rules_show_detail = require('../../../model/'+result_file_model);
+             //Get field in rules
+             var key_rules_show_detail = Object.keys(rules_show_detail);
+             function_show_detail = "\tmain.read({\n\t'models' : ['"+model+"'],\n\t'select' : [";
+             // function_insert = function_insert+key_rules_create;
+ 
+             // For generate field
+             function_show_detail = function_show_detail +"'"+'*'+"'";
+             
+             // For generate field 
+             
+             function_show_detail = function_show_detail + "]\n\t}).then(function (q) {\n\t\t try {\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t}\n\t},function(err){\n\t\t try{\n\t\t\t\n\t\t\t}catch(error){\n\n\t\t} \n\t});";
+ 
+ 
+ 
+             // rules_create.forEach(function (element, index){
+             //     console.log(element);
+             // });
+             //----------------------------------------------
+ 
+             //Ini untuk memproses modelnya 
+             //index()
+             /*
+             main.read({
+             "select"        : ['name', 'age'],
+             "table_name"    : ['members']
+         
+             });
+             */
+ 
     
          //-----------------------------------------RULES UPDATE-------------------------------------------------//
          var rules_update = require('../../../model/'+result_file_model).rulesOnUpdate;
@@ -406,10 +437,12 @@ function create_crud_file(name,model){
         syntax = syntax+"function index(req, res) {\n"+function_read+"\n}\n\n";
         syntax = syntax+"function create(req, res) {\n"+function_insert+"\n}\n\n";
         syntax = syntax+"function update(req, res) {\n"+function_update+"\n}\n\n";
+        syntax = syntax+"function show_detail(req, res) {\n"+function_show_detail+"\n}\n\n";
         syntax = syntax+"function erase(req, res) {\n"+function_erase+"\n}\n\n\n";
         syntax = syntax+"module.exports.index = index;\n";
         syntax = syntax+"module.exports.create = create;\n";
         syntax = syntax+"module.exports.update = update;\n";
+        syntax = syntax+"//module.exports.show_detail = show_detail;//\n";
         syntax = syntax+"module.exports.erase = erase;\n";
         //Create file to ./model/
         fs.appendFile('./controllers/'+name_file+'.js', syntax, function (err) {

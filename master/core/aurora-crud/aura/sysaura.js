@@ -253,35 +253,23 @@ function insert(val) {
                 console.log("please make sure check your model validation with your mysql field validation");
                 return response_model.response;
             }
-
             table_name = response_model.table_name;
-
         }
-
         //query type validation//
         switch (get_config.config.db_type) {
             //query setting mysql//
             case 'mysql':
                 //call query setting in forlder query with file mysql, run function insert_query
-                require('../query/mysql').insert_query(table_name, val, function (q) {
-                    resolve({
-                        action: true,
-
-                    }, q);
-
-                }, function (err) {
-                    reject({
-                        action: false
-                    }, err);
-
+                require('../query/mysql').insert_query(table_name, val).then(function (q) {
+                    resolve(q);
+                }, function(err){
+                    reject(err)
                 });
                 
                 break;
-
             default:
                 break;
-        }
-
+        };
     });
 }
 

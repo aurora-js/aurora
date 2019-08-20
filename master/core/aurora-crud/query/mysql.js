@@ -35,19 +35,24 @@ function query(syntax,value,callback){
 }
 
 function insert_query(table_name,val){
+        return new Promise(function (resolve, reject) {
         con = enviroment.enviroment();
         
     //console.log(val);
         con.query('INSERT INTO ?? (??) VALUES (?) ', [table_name, val.field, val.result], function (err, result) {
                 if (err) {
+                        reject({
+                                action: false
+                            });
                         console.log(err);
                         console.log("your insert code stucture not match, please check your maincontroller");
                 } else {
-                   
-                   console.log("success")
+                        resolve({
+                                action: true
+                            });
                 }
             });
-
+        });
          
 }
 
