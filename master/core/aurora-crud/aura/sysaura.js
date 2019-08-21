@@ -61,7 +61,8 @@ function create_attr_read(val) {
                 query_read = query_read + " " + val.where[0][0] + " " + val.where[0][1] + " '" + val.where[0][2] + "'";
                 // console.log(query_read);
             }
-
+        }
+        if (val.orWhere != undefined) {
             if (val.orWhere) {
                 val.orWhere.forEach(function (element, index) {
                     if (index == 0) {
@@ -76,12 +77,11 @@ function create_attr_read(val) {
                 query_read = query_read;
                 // console.log(query_read);
             } else {
-                query_read = query_read + " WHERE";
-                query_read = query_read + " " + val.where[0][0] + " " + val.where[0][1] + " '" + val.where[0][2] + "'";
+                query_read = query_read + " " + val.orWhere[0][0] + " " + val.orWhere[0][1] + " '" + val.orWhere[0][2] + "'";
                 // console.log(query_read);
             }
         }
-
+    
 
 
         switch (get_config.config.db_type) {
@@ -96,10 +96,7 @@ function create_attr_read(val) {
                         });
                     } else {
                         // get data field from table
-                        resolve({
-                            action: true,
-                            data: data
-                        });
+                        resolve(data);
                     }
                 });
 
