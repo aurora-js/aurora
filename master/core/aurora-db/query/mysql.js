@@ -588,6 +588,9 @@ function run_query(type, query, command, last, table, exitsuccess) {
             con = compile.enviroment();
             con.query(query, function (err, result) {
                 if (err) {
+                    if(err.errno == 1049){
+                        return null;
+                    }
                     console.log('ERROR!\n' + err.sqlMessage);
                     reject(err);
                     return process.exit();

@@ -40,7 +40,7 @@ function connection_mysql(config){
             switch (err.errno) {
                 case 1049:
                         console.log("ERROR!\nDatabase not found!");
-                        return compile.command('DATABASE','CREATE DATABASE',{database : config.database, type : 'mysql'});
+                        return compile.command('DATABASE','CREATE DATABASE',{database : config.database, type : config.db_type});
                     break;
                 case 'ENOTFOUND' :
                         console.log("ERROR!\nHost not found!");

@@ -10,7 +10,7 @@ const program = require('commander');
 const inquirer = require('inquirer');
 
 //Version Auora 
-program.version('Aurora - 0.1 Dev\nAurora Command - 0.0.1', '-v, --version');
+program.version('Aurora - 0.0.4 Alpha\nAurora Command - 0.0.1', '-v, --version');
 
 //Require compile module
 var path = require('path');
@@ -64,7 +64,6 @@ function send_message(value) {
 */
 program.command('db:run').description('Run Schema For Create Table To Database').option('-s --schema <schema>', 'Run Schema For Certain File').action(() => {
     get_directory().then(function(d){
-      console.log('test');
       // copy source folder to destination
       compile = require(d + '/core/compile');
 

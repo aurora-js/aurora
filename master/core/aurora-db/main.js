@@ -39,10 +39,10 @@ function schema(command,type,schema) {
                     //For update table
                     schema_update.run(type,true,schema);    
                 },function(err){
-                    reject(err);
+                    console.log(err);
                 });
             },function(err){
-                reject(err);
+                console.log(err);
             }); 
             break;
         default:

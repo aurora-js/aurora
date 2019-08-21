@@ -18,7 +18,7 @@ function create_file_schema(name){
     syntax = syntax + "module.exports.update = {\n\t'blueprint' : function(){\n\n\t}\n};\n\n";
 
     //For delete module
-    syntax = syntax + "module.exports.delete = {\n\t'blueprint' : function(){\n\n\t}\n};\n";
+    syntax = syntax + "module.exports.delete = {\n\t'blueprint' : function(){\n\t\tdropIfExistsTable('"+name+"');\n\t}\n};\n";
 
     //Create file to ./database/schema
     fs.appendFile('./database/schema/'+date_file+'_'+name_file+'.js', syntax, function (err) {
