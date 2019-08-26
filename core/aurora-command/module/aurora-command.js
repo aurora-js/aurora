@@ -9,8 +9,19 @@ https://www.npmjs.com/package/inquirer
 const program = require('commander');
 const inquirer = require('inquirer');
 
+/*
+Thank you so much lodash, console.table and fuzzy
+
+https://www.npmjs.com/package/lodash
+https://www.npmjs.com/package/console.table
+https://www.npmjs.com/package/fuzzy
+*/
+const _ = require('lodash');
+const fuzzy = require('fuzzy');
+const cTable = require('console.table');
+
 //Version Auora 
-program.version('Aurora - 0.0.4 Alpha\nAurora Command - 0.0.1', '-v, --version');
+program.version('Aurora - 0.0.5 Alpha\nAurora Command - 0.0.1', '-v, --version');
 
 //Require compile module
 var path = require('path');
@@ -180,6 +191,421 @@ function check_detail_schema() {
   }
 }
 
+
+//For generate create schema 
+var table_name_schema = null; 
+var column_schema = null;
+var run_generate = 0;
+var status_edit = false;
+var column_edit = 0;
+
+var column_generate = {
+  number : null,
+  name : null,
+  type : null,
+  length : null,
+  primary_key : false,
+  unique : false,
+  nullable : false
+}
+
+var column_relation = {
+  column_foreign_key : null,
+  column_references : null,
+  table_references : null,
+  on_delete : null,
+  on_update : null
+}
+
+var column_to_generate = [];
+
+inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
+
+//Type column
+var column_type = ['increment',
+                   'integer', 
+                   'decimal', 
+                   'float', 
+                   'double', 
+                   'real'
+                  ];
+
+//Status relation
+var status_relation = ['CASCADE',
+                   'RESTRICT'
+                  ];
+
+//For add column 
+function add_column(field,value,newrow){
+    column_generate["number"] = run_generate;
+    column_generate[field] = value;
+    if (newrow == true) {  
+        if(status_edit==true){
+          column_to_generate[column_edit-1] = column_generate;
+        }else{
+          column_to_generate.push(column_generate);
+        }
+        column_generate = {
+          number : null,
+          name : null,
+          type : null,
+          length : null,
+          primary_key : false,
+          unique : false,
+          nullable : false
+        }
+    }
+}
+
+//For add relation
+function add_relation(){
+
+}
+
+//For print column to create
+function show_column(){
+  return new Promise(function(resolve){
+      if(column_to_generate.length != 0){
+        console.log("\nColumn to create on table "+table_name_schema+":\n")
+        const table = cTable.getTable(column_to_generate);
+        console.log(table);
+        resolve();
+      }else{
+        resolve();
+      }
+  });
+}
+
+//For search type column
+function searchColumnType(answers, input) {
+  input = input || '';
+  return new Promise(function(resolve) {
+    setTimeout(function() {
+      var fuzzyResult = fuzzy.filter(input, column_type);
+      resolve(
+        fuzzyResult.map(function(el) {
+          return el.original;
+        })
+      );
+    }, _.random(30, 500));
+  });
+}
+
+program.command('schema:generate').description('Create schema with generate').action(() => {
+  return input_table_name();
+});
+
+//Function for create table name 
+function input_table_name(){
+  /*
+  ! Program command for create table name !
+  ! Value Required No Space !
+  */
+  return inquirer
+  .prompt([
+    {
+      name: 'table_name',
+      type: 'input',
+      message: 'What table name do you want to make ?',
+    },
+  ])
+  .then(answers => {
+    table_name_schema = answers.table_name;
+    input_column();
+  });
+}
+
+//Function for input column
+function input_column(){
+  return inquirer
+  .prompt([
+    {
+      name: 'column',
+      type: 'number',
+      message: 'How many columns do you want to make ?',
+    },
+  ])
+  .then(answers => {
+      column_schema = answers.column;
+      create_column();
+  });
+}
+
+//Function for create column 
+function create_column(){
+    if(run_generate < column_schema){
+        //If edit column
+        if(status_edit == true){
+          run_generate = column_edit;
+        }else{
+          run_generate++;
+        }
+        
+        show_column().then(function(){
+          return create_column_name();
+        });
+    }else{
+
+    }
+}
+
+//Function for add column name 
+function create_column_name(){
+  return inquirer
+  .prompt([
+    {
+      name: 'column',
+      type: 'input',
+      message: 'The name of column '+run_generate+' that you want to make ?',
+    },
+  ])
+  .then(answers => {
+      add_column('name',answers.column,false);
+      create_column_type();
+  });
+}
+
+//Function for add column type
+function create_column_type(){
+  return inquirer
+  .prompt([
+    {
+      type: 'autocomplete',
+      name: 'column_type',
+      message: 'The type of column '+run_generate+' that you want to make ?',
+      source: searchColumnType,
+    }
+  ])
+  .then(function(answers) {
+    add_column('type',answers.column_type,false);
+    return create_column_length();
+  });
+}
+
+//Function for add column length
+function create_column_length(){
+  return inquirer
+  .prompt([
+    {
+      name: 'column',
+      type: 'number',
+      message: 'The length of column '+run_generate+' that you want to make ?',
+    },
+  ])
+  .then(answers => {
+    
+    if(column_generate.type != "increment"){
+      add_column('length',answers.column,false);
+      return create_column_attribute();
+    }else{
+      add_column('length',answers.column,true);
+      if(run_generate < column_schema && status_edit == false){
+        return create_column();
+      }else{
+        show_column().then(function(){
+          return confirm_column();
+        });
+      }
+    } 
+  });
+}
+
+//For add attribute to column 
+function create_column_attribute(){
+  return inquirer
+  .prompt([
+    {
+      type: 'list',
+      name: 'attr',
+      message: 'Attribute column 1 do you want to create ?',
+      choices: [
+        'No Attribute','primary','unique','nullable' 
+      ],
+    },
+  ])
+  .then(answers => {
+    // var status_add_attribute = 0;
+    if(answers.attr == 'primary'){
+      // if(answers.attr.length == 1 || answers.attr.length -1 == status_add_attribute){
+        add_column('primary_key',true,true);
+      // }else{
+      //   status_add_attribute++;
+      //   add_column('primary_key',true,false);
+      // }
+      
+    }
+
+    if(answers.attr == 'unique'){
+      // if(answers.attr.length == 1 || answers.attr.length -1 == status_add_attribute){
+        add_column('unique',true,true);
+      // }else{
+      //   status_add_attribute++;
+      //   add_column('unique',true,false);
+      // }
+        
+    }
+
+    if(answers.attr == 'nullable'){
+      // if(answers.attr.length == 1 || answers.attr.length -1 == status_add_attribute){
+        add_column('nullable',true,true);
+      // }else{
+      //   status_add_attribute++;
+      //   add_column('nullable',true,false);
+      // }
+      
+    }
+
+    if(answers.attr == 'No Attribute'){
+        add_column('length',column_generate.length,true);
+    }
+
+
+    if(run_generate < column_schema && status_edit == false){
+      return create_column();
+    }else{
+      show_column().then(function(){
+        return confirm_column();
+      });
+    }
+  });
+}
+
+//For confirm column
+function confirm_column(){
+  inquirer.prompt([{
+    name: 'confirmation',
+    type: 'confirm',
+    message: 'Are the columns you want to make correct ?',
+  }]).then((answers) => {
+      if (answers.confirmation == true) {
+        return confirm_relation();
+      } else {
+        return edit_column();
+      }
+  });
+}
+
+//For edit in index column 
+function edit_column(){
+  return inquirer
+  .prompt([
+    {
+      name: 'column',
+      message: 'What column number do you want to change ?',
+    },
+  ])
+  .then(answers => {
+      status_edit = true;
+      column_edit = answers.column;
+      run_generate = 0;
+      create_column();
+  });
+}
+
+//For create relation table 
+function confirm_relation(){
+  inquirer.prompt([{
+    name: 'confirmation',
+    type: 'confirm',
+    message: 'Does this table have a relation ?',
+  }]).then((answers) => {
+      if (answers.confirmation == true) {
+        return create_relation();
+      } else {
+        return generate_file_schema(table_name_schema,column_to_generate,column_relation);
+      }
+  });
+}
+
+//For input relation 
+function create_relation(){
+  return inquirer
+  .prompt([
+    {
+      type : 'input',
+      name: 'column_fk',
+      message: 'Local column name for relation ?'
+    },
+    {
+      type : 'input',
+      name: 'table_relation',
+      message: 'Table to relation ?'
+    },
+    {
+      type : 'input',
+      name: 'references_column',
+      message: 'References column name for relation ?'
+    },
+    {
+      type : 'list',
+      name: 'on_update',
+      message: 'On update?',
+      choices: [
+        'CASCADE','RESTRICT'
+      ]
+    },
+    {
+      type : 'list',
+      name: 'on_delete',
+      message: 'On Delete?',
+      choices: [
+        'CASCADE','RESTRICT'
+      ]
+    },
+  ])
+  .then(answers => {
+    column_relation['column_foreign_key'] = answers.column_fk;
+    column_relation['column_references'] = answers.references_column;
+    column_relation['table_references'] = answers.table_relation;
+    column_relation['on_delete'] = answers.on_delete;
+    column_relation['on_update'] = answers.on_update;
+    return generate_file_schema(table_name_schema,column_to_generate,column_relation);
+  });
+}
+
+//For generate file schema with column
+function generate_file_schema(table_name,column,relation){
+  get_directory().then(function(d){
+      compile = require(d + '/core/compile'); 
+      return compile.create_schema_generate(table_name,column,relation).then(function(name_file){
+        var filename = name_file+'.js';
+        //Run db run 
+        return run_db(name_file);
+        
+      });
+  });
+}
+
+//For confirm want db run or not 
+function run_db(name_file){
+  inquirer.prompt([{
+    name: 'confirmation',
+    type: 'confirm',
+    message: 'Do you want create this table to your database ?',
+  }]).then((answers) => {
+      if (answers.confirmation == true) {
+        inquirer.prompt([{
+          name: 'name_config',
+          type: 'input',
+          message: 'Configure the connection you want to use ? (if you want to use default configuration, directly enter)',
+          default: 'main',
+        }]).then((answers) => {
+          //Run Command Db Run
+          const { exec } = require('child_process');
+          exec('aurora db:run -s '+name_file+' '+answers.name_config, (err, stdout, stderr) => {
+            if (err) {
+              console.log(err);
+              return process.exit();
+            } 
+            return console.log(`${stdout}`);
+          });
+
+        });
+      } else {
+        return console.log('Schema generate successfully, if you want create this table to your database you can run\nCommand Aurora DB Run');
+      }
+  });
+}
 //! ------------------------------------------------------------------------------------------------------- !
 
 
@@ -353,6 +779,7 @@ function get_directory(){
       });
   });
 }
+
 // allow commander to parse `process.argv`
 program.parse(process.argv);
 
