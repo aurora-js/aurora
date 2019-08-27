@@ -7,7 +7,10 @@ function index(req, res) {
 	'select' : ['*']
 	}).then(function (q) {
 		 try {
-			return res.render('test', {page_title:"dummy - node.js", q:data})
+			return res.render('test.js', {
+                page_title: "Dummy - Node.js",
+                data: q.data.data
+            });
 			}catch(error){
 
 		}
