@@ -377,8 +377,28 @@ function create_column_type(){
     }
   ])
   .then(function(answers) {
-    add_column('type',answers.column_type,false);
-    return create_column_length();
+    
+    //If with input length
+    if(answers.column_type != 'increment' && answers.column_type != 'float' && answers.column_type != 'double'){
+      add_column('type',answers.column_type,false);
+      return create_column_length();
+    }else{
+      //If no input length
+      if(answers.column_type != 'increment'){
+        add_column('type',answers.column_type,false);
+        return create_column_attribute();
+      }else{
+        add_column('type',answers.column_type,true);
+        if(run_generate < column_schema && status_edit == false){
+          return create_column();
+        }else{
+          show_column().then(function(){
+            return confirm_column();
+          });
+        }
+      }
+    }
+    
   });
 }
 
@@ -559,10 +579,24 @@ function create_relation(){
     column_relation['table_references'] = answers.table_relation;
     column_relation['on_delete'] = answers.on_delete;
     column_relation['on_update'] = answers.on_update;
-    return generate_file_schema(table_name_schema,column_to_generate,column_relation);
+    confirm_relation_to_create();
   });
 }
 
+//Function for confirm relation
+function confirm_relation_to_create(){
+  inquirer.prompt([{
+    name: 'confirmation',
+    type: 'confirm',
+    message: 'Column to relation is '+column_relation['column_foreign_key']+" references to table "+column_relation['table_references']+" on column "+column_relation['column_references']+" And action on update is "+column_relation['on_update']+" then on delete is "+column_relation['on_delete']+", it's correct ?",
+  }]).then((answers) => {
+      if (answers.confirmation == true) {
+        return generate_file_schema(table_name_schema,column_to_generate,column_relation);
+      } else {
+        return create_relation();
+      }
+  });
+}
 //For generate file schema with column
 function generate_file_schema(table_name,column,relation){
   get_directory().then(function(d){
