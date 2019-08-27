@@ -188,22 +188,44 @@ function create_attr_erase(val) {
                         query_delete = query_delete + " WHERE";
                     }
                     query_delete = query_delete + " " + element[0] + " " + element[1] + " '" + element[2] + "'";
+                    if (val.where[index + 1] != undefined) {
+                        query_delete = query_delete + " " + "AND";
+                    }
                 });
 
                 query_delete = query_delete;
                 // console.log(query_delete);
             } else {
-                query_delete = query_delete + " WHERE";
+                query_delete = querydelete + " WHERE";
                 query_delete = query_delete + " " + val.where[0][0] + " " + val.where[0][1] + " '" + val.where[0][2] + "'";
                 // console.log(query_delete);
             }
         }
+        if (val.orWhere != undefined) {
+            if (val.orWhere) {
+                val.orWhere.forEach(function (element, index) {
+                    if (index == 0) {
+                        query_delete = query_delete + " OR";
+                    }
+                    query_delete = query_delete + " " + element[0] + " " + element[1] + " '" + element[2] + "'";
+                    if (val.orWhere[index + 1] != undefined) {
+                        query_delete = query_delete + " " + "OR";
+                    }
+
+                });
+                query_delete = query_delete;
+                // console.log(query_delete);
+            } else {
+                query_delete = query_delete + " " + val.orWhere[0][0] + " " + val.orWhere[0][1] + " '" + val.orWhere[0][2] + "'";
+                // console.log(query_delete);
+            }
+        }
+    
+
 
         switch (get_config.config.db_type) {
-
             //query setting mysql//
             case 'mysql':
-                // console.log(query_delete);
                 //call query setting in forlder query with file mysql, run function insert_query
                 require('../query/mysql').query(query_delete, null, function (err, data) {
                     if (err) {
@@ -213,10 +235,7 @@ function create_attr_erase(val) {
                         });
                     } else {
                         // get data field from table
-                        resolve({
-                            action: true,
-                            data: data
-                        });
+                        resolve(data);
                     }
                 });
 
@@ -225,7 +244,6 @@ function create_attr_erase(val) {
             default:
                 break;
         }
-
     });
 }
 
@@ -328,10 +346,12 @@ function erase_query(val) {
             table_name = response_model.table_name;
         };
 
+    switch (get_config.config.db_type) {
+        case 'mysql':
 
         query_delete = query_delete + "DELETE " + " FROM " + table_name;
 
-        return create_attr_erase(val).then(function (data) {
+        create_attr_erase(val).then(function (data) {
             resolve({
                 action:true,
                 data:data
@@ -339,11 +359,13 @@ function erase_query(val) {
         }, function (err) {
             reject({
                 action:false
-            });
+            },err);
         });
+    };
 
-    });
+});
 }
+
 //function read//
 function read(val) {
     return new Promise(function (resolve, reject) {

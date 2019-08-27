@@ -31,7 +31,7 @@ app.get('/show/edit/testing/:id', function(req, res) {
 	res.send(require('../controllers/testingController').show_edit(req,res));
 });
 
-app.get('/delete/testing/:id', function(req, res) {
+app.delete('/delete/testing/:id', function(req, res) {
 	res.send(require('../controllers/testingController').erase(req,res));
 });
 

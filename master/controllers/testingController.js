@@ -7,9 +7,10 @@ function index(req, res) {
 	'select' : ['*']
 	}).then(function (q) {
 		 try {
-			return res.render('test.js', {
+			 console.log(q);
+			res.render('test', {
                 page_title: "Dummy - Node.js",
-                data: q.data.data
+                data: q.data
             });
 			}catch(error){
 
@@ -104,7 +105,7 @@ function erase(req, res) {
 	]
 	}).then(function (q) {
 		 try {
-			
+			console.log("berhasil hapus")
 			}catch(error){
 
 		}
