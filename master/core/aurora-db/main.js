@@ -73,6 +73,18 @@ function create_schema(name){
     return files.create_file_schema(name);
 }
 
+//Function for create file schema
+function create_schema_generate(table_name,column,relation){
+    return new Promise(function(resolve,reject){
+        files.create_file_schema_generate(table_name,column,relation).then(function(name_file){
+            resolve(name_file);
+        },function(err){
+            reject(err);
+        });
+    });
+}
+
 module.exports.main = main;
 module.exports.schema = schema;
 module.exports.create_schema = create_schema;
+module.exports.create_schema_generate = create_schema_generate;

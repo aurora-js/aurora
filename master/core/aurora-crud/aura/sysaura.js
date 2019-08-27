@@ -96,10 +96,7 @@ function create_attr_read(val) {
                         });
                     } else {
                         // get data field from table
-                        resolve({
-                            action: true,
-                            data: data
-                        });
+                        resolve(data);
                     }
                 });
 

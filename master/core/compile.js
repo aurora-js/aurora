@@ -63,6 +63,19 @@ function aurora_create_schema(name) {
     return aurora_db_module.create_schema(name);
 }
 
+/*
+Run for create schema file with generate
+*/
+function aurora_create_schema_generate(table_name,column,relation) {
+    return new Promise(function(resolve,reject){
+        aurora_db_module.create_schema_generate(table_name,column,relation).then(function(name_file){
+            resolve(name_file);
+        },function(err){
+            reject(err);
+        });
+    });
+}
+
 
 //Function For Get Config Value From User
 function aurora_get_config() {
@@ -118,6 +131,7 @@ module.exports.db = aurora_db;
 module.exports.command = aurora_command;
 module.exports.schema = aurora_schema;
 module.exports.create_schema = aurora_create_schema;
+module.exports.create_schema_generate = aurora_create_schema_generate;
 module.exports.get_config = aurora_get_config;
 module.exports.model = aurora_model;
 module.exports.create_model = aurora_create_model;
