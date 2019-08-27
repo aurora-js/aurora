@@ -48,8 +48,8 @@
     <td>
     <a class="btn btn-success edit" href="../edit/<%=data[i].name%>">Edit</a>                       
     <a class="btn btn-danger delete" onclick="return alert('Are You sure?')" href="../delete/<%=data[i].title%>">Delete</a>
-    <form method="GET" ...>
-      <input type="button" name="_method" value="delete" />
+    <form method="POST" ...>
+      <input type="hidden" name="_method" value="delete" />
     </form>                       
    </td>
   </tr>

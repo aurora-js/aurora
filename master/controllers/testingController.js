@@ -105,7 +105,7 @@ function erase(req, res) {
 	]
 	}).then(function (q) {
 		 try {
-			console.log("berhasil hapus")
+			 
 			}catch(error){
 
 		}
