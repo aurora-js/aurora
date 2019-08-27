@@ -8,6 +8,7 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <body>
+<<<<<<< HEAD
     <form action="/simpan" method="post">
      
       name:<br>
@@ -15,6 +16,14 @@
       <br>age:<br>
       <input type="text" name="age">
      
+=======
+    <form action="/create/members" method="post">
+      name:<br>
+      <input type="text" name="name">
+      <br>umur:<br>
+      <input type="number" name="age"><br>
+  
+>>>>>>> 8c80cce4fed37f16ab32b62c2934880adfe0f17b
       <input type="submit" value="Submit">
     </form>
     <hr>
@@ -31,8 +40,13 @@
 <thead>
   <tr>
     <th scope="col">#</th>
+<<<<<<< HEAD
     <th scope="col">Title</th>
     <th scope="col">Deskripsi</th>
+=======
+    <th scope="col">Name</th>
+    <th scope="col">Email</th>
+>>>>>>> 8c80cce4fed37f16ab32b62c2934880adfe0f17b
     <th width="200px">Action</th>
  
   </tr>
@@ -43,6 +57,7 @@
   for(var i = 0; i< data.length; i++) {%>  
   <tr>
     <th scope="row"><%= (i+1) %></th>
+<<<<<<< HEAD
     <td><%= data[i].title%></td>
     <td><%= data[i].deskripsi%></td>
     <td>
@@ -51,6 +66,13 @@
     <form method="POST" ...>
       <input type="hidden" name="_method" value="delete" />
     </form>                       
+=======
+    <td><%= data[i].name%></td>
+    <td><%= data[i].age%></td>
+    <td>
+    <a class="btn btn-success edit" href="../show/edit/members/<%=data[i].id%>">Edit</a>                       
+    <a class="btn btn-danger delete" onclick="return alert('Are You sure?')" href="../customers/delete/<%=data[i].id%>">Delete</a>                       
+>>>>>>> 8c80cce4fed37f16ab32b62c2934880adfe0f17b
    </td>
   </tr>
   <% }
