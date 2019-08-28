@@ -12,25 +12,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 app.set('views',path.join(__dirname,'../views'));
 
-app.get('/mahasiswa', function(req, res) {
-	require('../controllers/mahasiswaController').index(req,res);
-});
 
-app.post('/mahasiswa', function(req, res) {
-	res.send(require('../controllers/mahasiswaController').create(req,res));
-});
-
-app.put('/mahasiswa/:id', function(req, res) {
-	res.send(require('../controllers/mahasiswaController').update(req,res));
-});
-
-app.get('/show/edit/mahasiswa/:id', function(req, res) {
-	require('../controllers/mahasiswaController').show_edit(req,res);
-});
-
-app.delete('/mahasiswa/:id', function(req, res) {
-	res.send(require('../controllers/mahasiswaController').erase(req,res));
-});
 
 app.listen(port);
 

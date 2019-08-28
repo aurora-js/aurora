@@ -196,7 +196,7 @@ function create_attr_erase(val) {
                 query_delete = query_delete;
                 // console.log(query_delete);
             } else {
-                query_delete = querydelete + " WHERE";
+                query_delete = query_delete + " WHERE";
                 query_delete = query_delete + " " + val.where[0][0] + " " + val.where[0][1] + " '" + val.where[0][2] + "'";
                 // console.log(query_delete);
             }
@@ -344,7 +344,7 @@ function erase_query(val) {
         if (val.models != "" && val.models != undefined) {  
             var response_model = enviroment.model(val.models, null, []);
             table_name = response_model.table_name;
-        };
+        }
 
     switch (get_config.config.db_type) {
         case 'mysql':
