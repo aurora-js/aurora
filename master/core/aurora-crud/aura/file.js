@@ -513,16 +513,16 @@ function generate_route(name,route,model){
             syntax_route = syntax_route+"app.get('/"+route+"', function(req, res) {\n\trequire('../controllers/"+name+"').index(req,res);\n});";
 
             //For create syntax
-            syntax_route = syntax_route+"\n\napp.post('/create/"+route+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').create(req,res));\n});";
+            syntax_route = syntax_route+"\n\napp.post('/"+route+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').create(req,res));\n});";
 
             //For update syntax
-            syntax_route = syntax_route+"\n\napp.put('/edit/"+route+"/:"+obj_get_field[0]+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').update(req,res));\n});";
+            syntax_route = syntax_route+"\n\napp.put('/"+route+"/:"+obj_get_field[0]+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').update(req,res));\n});";
 
             //For show update syntax
             syntax_route = syntax_route+"\n\napp.get('/show/edit/"+route+"/:"+obj_get_field[0]+"', function(req, res) {\n\trequire('../controllers/"+name+"').show_edit(req,res);\n});";
 
             //For delete syntax
-            syntax_route = syntax_route+"\n\napp.get('/delete/"+route+"/:"+obj_get_field[0]+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').erase(req,res));\n});";
+            syntax_route = syntax_route+"\n\napp.delete('/"+route+"/:"+obj_get_field[0]+"', function(req, res) {\n\tres.send(require('../controllers/"+name+"').erase(req,res));\n});";
 
             //For add listen
             syntax_route = syntax_route+"\n\napp.listen(port);";
