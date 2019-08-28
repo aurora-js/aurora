@@ -12,27 +12,24 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 app.set('views',path.join(__dirname,'../views'));
 
-
-
-
-app.get('/testing', function(req, res) {
-	require('../controllers/testingController').index(req,res);
+app.get('/mahasiswa', function(req, res) {
+	require('../controllers/mahasiswaController').index(req,res);
 });
 
-app.post('/create/testing', function(req, res) {
-	res.send(require('../controllers/testingController').create(req,res));
+app.post('/mahasiswa', function(req, res) {
+	res.send(require('../controllers/mahasiswaController').create(req,res));
 });
 
-app.post('/edit/testing/:id', function(req, res) {
-	res.send(require('../controllers/testingController').update(req,res));
+app.put('/mahasiswa/:id', function(req, res) {
+	res.send(require('../controllers/mahasiswaController').update(req,res));
 });
 
-app.get('/show/edit/testing/:id', function(req, res) {
-	res.send(require('../controllers/testingController').show_edit(req,res));
+app.get('/show/edit/mahasiswa/:id', function(req, res) {
+	require('../controllers/mahasiswaController').show_edit(req,res);
 });
 
-app.delete('/delete/testing/:id', function(req, res) {
-	res.send(require('../controllers/testingController').erase(req,res));
+app.delete('/mahasiswa/:id', function(req, res) {
+	res.send(require('../controllers/mahasiswaController').erase(req,res));
 });
 
 app.listen(port);
