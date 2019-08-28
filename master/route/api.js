@@ -13,6 +13,28 @@ app.set('view engine', 'ejs');
 app.set('views',path.join(__dirname,'../views'));
 
 
+
+
+app.get('/members', function(req, res) {
+	require('../controllers/membersController').index(req,res);
+});
+
+app.post('/create/members', function(req, res) {
+	res.send(require('../controllers/membersController').create(req,res));
+});
+
+app.put('/edit/members/:id', function(req, res) {
+	res.send(require('../controllers/membersController').update(req,res));
+});
+
+app.get('/show/edit/members/:id', function(req, res) {
+	require('../controllers/membersController').show_edit(req,res);
+});
+
+app.get('/delete/members/:id', function(req, res) {
+	res.send(require('../controllers/membersController').erase(req,res));
+});
+
 app.listen(port);
 
 console.log('Aurora Serve on port ' + port);

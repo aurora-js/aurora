@@ -340,11 +340,14 @@ function create_crud_file(name,model){
  
          // For generate field
          key_rules_update.forEach(function(element,index){
-            
-             function_update = function_update + "\n\t\t[" +"'"+ element + "'," + "'='"+ ",req.body." + element +"]";
-             if(key_rules_update[index+1] != undefined){
-                 function_update = function_update + ",";
-             }
+            if(index > 0){
+
+                function_update = function_update + "\n\t\t[" +"'"+ element + "'," + "'='"+ ",req.body." + element +"]";
+                if(key_rules_update[index+1] != undefined){
+                    function_update = function_update + ",";
+                }
+
+            }
          });
          function_update = function_update + "\n\t],\n\t'where' : [";
  
