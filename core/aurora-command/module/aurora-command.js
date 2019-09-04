@@ -227,7 +227,37 @@ var column_type = ['increment',
                    'decimal', 
                    'float', 
                    'double', 
-                   'real'
+                   'real',
+                   'bit',
+                   'boolean',         
+                   'serial',            
+                   'Date',       
+                   'datetime', 
+                   'timestamp',         
+                   'time',                  
+                   'year',        
+                   'char',            
+                   'varchar',  
+                   'tinytext',
+                   'text',      
+                   'mediumtext',
+                   'longtext',            
+                   'binary',        
+                   'varbinary',      
+                   'tinyblob',       
+                   'mediumblob',       
+                   'blob',                  
+                   'longblob',           
+                   'enums',                      
+                   'set',                      
+                   'geometry',         
+                   'point',                    
+                   'linestring',            
+                   'polygon',                  
+                   'multipoint',           
+                   'multilinestring',    
+                   'multipolygon',        
+                   'geometrycollection' 
                   ];
 
 //Status relation
@@ -379,8 +409,11 @@ function create_column_type(){
   .then(function(answers) {
     
     //If with input length
-    if(answers.column_type != 'increment' && answers.column_type != 'float' && answers.column_type != 'double'){
+    if(answers.column_type != 'increment' && answers.column_type != 'float' && answers.column_type != 'double' && answers.column_type != 'real' && answers.column_type != 'boolean' && answers.column_type != 'serial' && answers.column_type != 'year' && answers.column_type != 'tinytext' && answers.column_type != 'text' && answers.column_type != 'mediumtext' && answers.column_type != 'longtext' && answers.column_type != 'tinyblob' && answers.column_type != 'mediumblob' && answers.column_type != 'blob' && answers.column_type != 'longblob' && answers.column_type != 'geometry' && answers.column_type != 'point' && answers.column_type != 'linestring' && answers.column_type != 'polygon' && answers.column_type != 'multipoint' && answers.column_type != 'multilinestring' && answers.column_type != 'multipolygon' && answers.column_type != 'geometrycollection'){
       add_column('type',answers.column_type,false);
+      if(column_generate.type == 'enums' || column_generate.type ==' set'){
+        return create_column_set_value();
+      }
       return create_column_length();
     }else{
       //If no input length
@@ -389,6 +422,7 @@ function create_column_type(){
         return create_column_attribute();
       }else{
         add_column('type',answers.column_type,true);
+        //If for edit column
         if(run_generate < column_schema && status_edit == false){
           return create_column();
         }else{
@@ -419,6 +453,34 @@ function create_column_length(){
       return create_column_attribute();
     }else{
       add_column('length',answers.column,true);
+      if(run_generate < column_schema && status_edit == false){
+        return create_column();
+      }else{
+        show_column().then(function(){
+          return confirm_column();
+        });
+      }
+    } 
+  });
+}
+
+//Function for add column set value for enums type and set
+function create_column_set_value(){
+  return inquirer
+  .prompt([
+    {
+      name: 'column',
+      type: 'input',
+      message: 'The value of column '+run_generate+' that you want to make ? (Example : a,b,c,d)',
+    },
+  ])
+  .then(answers => {
+    
+    if(column_generate.type != "increment"){
+      add_column('length',"\""+answers.column+"\"",false);
+      return create_column_attribute();
+    }else{
+      add_column('length',"\""+answers.column+"\"",true);
       if(run_generate < column_schema && status_edit == false){
         return create_column();
       }else{
