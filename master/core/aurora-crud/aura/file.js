@@ -214,7 +214,7 @@ function create_crud_file(name,model){
         var function_read =" ";
         var function_update =" ";
         var function_erase =" ";
-        
+        var function_show_detail = " ";
         //Check model name
         if(model != null && model != "" && model != " " && model != undefined){
             var file_model = fs.readdirSync('./model');
