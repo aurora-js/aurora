@@ -411,7 +411,7 @@ function create_column_type(){
     //If with input length
     if(answers.column_type != 'increment' && answers.column_type != 'float' && answers.column_type != 'double' && answers.column_type != 'real' && answers.column_type != 'boolean' && answers.column_type != 'serial' && answers.column_type != 'year' && answers.column_type != 'tinytext' && answers.column_type != 'text' && answers.column_type != 'mediumtext' && answers.column_type != 'longtext' && answers.column_type != 'tinyblob' && answers.column_type != 'mediumblob' && answers.column_type != 'blob' && answers.column_type != 'longblob' && answers.column_type != 'geometry' && answers.column_type != 'point' && answers.column_type != 'linestring' && answers.column_type != 'polygon' && answers.column_type != 'multipoint' && answers.column_type != 'multilinestring' && answers.column_type != 'multipolygon' && answers.column_type != 'geometrycollection'){
       add_column('type',answers.column_type,false);
-      if(column_generate.type == 'enums' || column_generate.type ==' set'){
+      if(column_generate.type == 'enums' || column_generate.type =='set'){
         return create_column_set_value();
       }
       return create_column_length();
