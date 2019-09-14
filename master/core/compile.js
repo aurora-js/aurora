@@ -10,6 +10,7 @@ var app = "";
 
 //Run serve
 function serve() {
+    aurora_enviroment();
     require('../route/api');
 }
 
