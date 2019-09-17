@@ -306,13 +306,13 @@ function date(val, leng) {
     add_value('type', 'DATE', false);
 }
 
-function datetime(val, leng) {
+function dateTime(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'DATETIME', false);
 }
 
-function timestamp(val, leng) {
+function timeStamp(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'TIMESTAMP', false);
@@ -343,7 +343,7 @@ function varchar(val, leng) {
     add_value('type', 'VARCHAR', false);
 }
 
-function tinytext(val, leng) {
+function tinyText(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'TINYTEXT', false);
@@ -355,13 +355,13 @@ function text(val, leng) {
     add_value('type', 'TEXT', false);
 }
 
-function mediumtext(val, leng) {
+function mediumText(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'MEDIUMTEXT', false);
 }
 
-function longtext(val, leng) {
+function longText(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'LONGTEXT', false);
@@ -373,19 +373,19 @@ function binary(val, leng) {
     add_value('type', 'BINARY', false);
 }
 
-function varbinary(val, leng) {
+function varBinary(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'VARBINARY', false);
 }
 
-function tinyblob(val, leng) {
+function tinyBlob(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'TINYBLOB', false);
 }
 
-function mediumblob(val, leng) {
+function mediumBlob(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'MEDIUMBLOB', false);
@@ -397,7 +397,7 @@ function blob(val, leng) {
     add_value('type', 'BLOB', false);
 }
 
-function longblob(val, leng) {
+function longBlob(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'LONGBLOB', false);
@@ -427,7 +427,7 @@ function point(val, leng) {
     add_value('type', 'POINT', false);
 }
 
-function linestring(val, leng) {
+function lineString(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'LINESTRING', false);
@@ -439,25 +439,25 @@ function polygon(val, leng) {
     add_value('type', 'POLYGON', false);
 }
 
-function multipoint(val, leng) {
+function multiPoint(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'MULTIPOINT', false);
 }
 
-function multilinestring(val, leng) {
+function multiLineString(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'MULTILINESTRING', false);
 }
 
-function multipolygon(val, leng) {
+function multiPolygon(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'MULTIPOLYGON', false);
 }
 
-function geometrycollection(val, leng) {
+function geometryCollection(val, leng) {
     add_value('name', val, false);
     add_value('length', leng || null, false);
     add_value('type', 'GEOMETRYCOLLECTION', false);

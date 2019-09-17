@@ -472,7 +472,7 @@ function check_attribute(field) {
     }
 
     if (field.default != null) {
-        query_attribute = query_attribute + " DEFAULT " + field.default;
+        query_attribute = query_attribute + " DEFAULT " + field.default +' '+ field.default_value;
     }
 
     if (field.comment != null) {
