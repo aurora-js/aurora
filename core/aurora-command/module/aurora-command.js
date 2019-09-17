@@ -224,6 +224,9 @@ inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
 //Type column
 var column_type = ['increment',
                    'integer', 
+                   'smallInteger',
+                   'mediumInteger',
+                   'bigInteger',
                    'decimal', 
                    'float', 
                    'double', 
@@ -409,7 +412,7 @@ function create_column_type(){
   .then(function(answers) {
     
     //If with input length
-    if(answers.column_type != 'increment' && answers.column_type != 'float' && answers.column_type != 'double' && answers.column_type != 'real' && answers.column_type != 'boolean' && answers.column_type != 'serial' && answers.column_type != 'year' && answers.column_type != 'tinyText' && answers.column_type != 'text' && answers.column_type != 'mediumText' && answers.column_type != 'longText' && answers.column_type != 'tinyBlob' && answers.column_type != 'mediumBlob' && answers.column_type != 'blob' && answers.column_type != 'longBlob' && answers.column_type != 'geometry' && answers.column_type != 'point' && answers.column_type != 'lineString' && answers.column_type != 'polygon' && answers.column_type != 'multiPoint' && answers.column_type != 'multiLineString' && answers.column_type != 'multiPolygon' && answers.column_type != 'geometryCollection'){
+    if(answers.column_type != 'increment' && answers.column_type != 'float' && answers.column_type != 'double' && answers.column_type != 'smallInteger' && answers.column_type != 'mediumInteger' && answers.column_type != 'bigInteger' && answers.column_type != 'real' && answers.column_type != 'boolean' && answers.column_type != 'serial' && answers.column_type != 'year' && answers.column_type != 'tinyText' && answers.column_type != 'text' && answers.column_type != 'mediumText' && answers.column_type != 'longText' && answers.column_type != 'tinyBlob' && answers.column_type != 'mediumBlob' && answers.column_type != 'blob' && answers.column_type != 'longBlob' && answers.column_type != 'geometry' && answers.column_type != 'point' && answers.column_type != 'lineString' && answers.column_type != 'polygon' && answers.column_type != 'multiPoint' && answers.column_type != 'multiLineString' && answers.column_type != 'multiPolygon' && answers.column_type != 'geometryCollection'){
       add_column('type',answers.column_type,false);
       if(column_generate.type == 'enums' || column_generate.type =='set'){
         return create_column_set_value();
