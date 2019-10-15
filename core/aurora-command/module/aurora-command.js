@@ -849,7 +849,14 @@ program.command('new:project <value>').description('Create a New Project With Au
     }
 
     var source = path.join(path.dirname(fs.realpathSync(__filename)), '../../../master');
-    var destination = stdout.replace(/\r?\n|\r/g,'').toString()+"\\"+value;
+    
+    //If Platform Linux 
+    if (process.platform == "linux") {
+      var destination = stdout.replace(/\r?\n|\r/g,'').toString()+value;
+    }else{
+      var destination = stdout.replace(/\r?\n|\r/g,'').toString()+"\\"+value;
+    }
+
     // copy source folder to destination
     fs_copy.copy(source, destination, function (err) {
         if (err){
