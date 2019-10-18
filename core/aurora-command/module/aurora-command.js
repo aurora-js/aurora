@@ -28,8 +28,13 @@ var path = require('path');
 var fs   = require('fs');
 var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../../');
 
+//If Platform Linux 
+if (process.platform == "linux") {
+  var compile = require(lib + 'compile');
+}else{
+  var compile = require(lib + '/compile');
+}
 
-var compile = require(lib + '/compile');
 // require('../../compile');
 // console.log(compile);
 
@@ -452,10 +457,15 @@ function create_column_length(){
   .then(answers => {
     
     if(column_generate.type != "increment"){
-      add_column('length',answers.column,false);
+      console.log(answers.column);
+      //Handle if answers length is null 
+      if(answers.column != undefined && answers.column != null && answers.column != "" && isNaN(answers.column) != true){
+        add_column('length',answers.column,false);
+      }
+      
       return create_column_attribute();
     }else{
-      add_column('length',answers.column,true);
+
       if(run_generate < column_schema && status_edit == false){
         return create_column();
       }else{
@@ -874,7 +884,15 @@ function get_directory(){
   return new Promise(function(resolve,reject){
       //For get directory in run command
       const { exec } = require('child_process');
-      exec('cd', (err, stdout, stderr) => {
+
+      //If Platform Linux 
+      if (process.platform == "linux") {
+        var command_direct = "pwd";
+      }else{
+        var command_direct = "cd";
+      }
+
+      exec(command_direct, (err, stdout, stderr) => {
         if (err) {
           // node couldn't execute the command
           console.log('Error Get Dir');
