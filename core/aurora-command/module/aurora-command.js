@@ -904,8 +904,13 @@ function get_directory(){
   });
 }
 
+//For handle command not found 
+program.on('command:*', function () {
+  console.error('Command %s not found!.\n', program.args.join(' '));
+  program.help();
+});
+
 // allow commander to parse `process.argv`
 program.parse(process.argv);
-
 
 module.exports.create_database = create_database;
