@@ -45,7 +45,7 @@ function insert_query(table_name,val){
                                 action: false
                             });
                         console.log(err);
-                        console.log("your insert code stucture not match, please check your maincontroller");
+                        console.log({action:false});
                 } else {
                         resolve({
                                 action: true

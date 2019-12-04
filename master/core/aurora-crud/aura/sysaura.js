@@ -160,7 +160,8 @@ function create_attr_update(val) {
                     // console.log("test looo");    
                     if (err) {
                         // if error
-                        console.log('ERROR!\n', err);
+                        console.log({action:false});
+                     
                     } else {
                         // get data field from table
                         resolve(data);
