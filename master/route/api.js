@@ -11,6 +11,28 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 app.set('views',path.join(__dirname,'../views'));
+
+
+app.get('/testing', function(req, res) {
+	require('../controllers/testingController').index(req,res);
+});
+
+app.post('/testing', function(req, res) {
+	res.send(require('../controllers/testingController').create(req,res));
+});
+
+app.put('/testing/:id', function(req, res) {
+	res.send(require('../controllers/testingController').update(req,res));
+});
+
+app.get('/show/edit/testing/:id', function(req, res) {
+	require('../controllers/testingController').show_edit(req,res);
+});
+
+app.delete('/testing/:id', function(req, res) {
+	res.send(require('../controllers/testingController').erase(req,res));
+});
+
 app.listen(port);
 
 console.log('Aurora Serve on port ' + port);
