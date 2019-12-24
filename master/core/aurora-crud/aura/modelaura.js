@@ -195,7 +195,7 @@ function string_attr(field,value,rules){
 
 //Check field number value or not
 function number_attr(field,value,rules){
-    if(typeof value != "number"){
+    if(isNaN(value)){
         var info = field+" must be number";
         var check_custom_message = (rules.filter(item => item.indexOf('message_number') > -1));
 

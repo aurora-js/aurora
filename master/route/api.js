@@ -11,6 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 app.set('views',path.join(__dirname,'../views'));
+
+
 app.listen(port);
 
 console.log('Aurora Serve on port ' + port);
