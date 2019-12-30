@@ -21,7 +21,7 @@ const fuzzy = require('fuzzy');
 const cTable = require('console.table');
 
 //Version Auora 
-program.version('Aurora - 0.0.6 Alpha\nAurora Command - 0.0.1', '-v, --version');
+program.version('Aurora - 0.0.7 Alpha\nAurora Command - 0.0.1', '-v, --version');
 
 //Require compile module
 var path = require('path');

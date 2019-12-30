@@ -154,8 +154,9 @@ function run(type,exitsuccess,schema) {
         2. Type
         3. True/False add row in field_arr
 */
-function increment(val) {
+function increment(val,leng) {
     add_value('name', val, true);
+    add_value('length', leng || null, false);
     add_value('type', 'INT', false);
     add_value('notNull', true, false);
     add_value('autoIncrement', true, false);
